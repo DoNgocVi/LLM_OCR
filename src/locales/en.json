@@ -1,0 +1,15 @@
+{
+  "common": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot password",
+    "create_account1": "New to SmartRead?",
+    "create_account2": "Create an account"
+  },
+  "validate": {
+    "email_require": "Email address is required. Please enter it.",
+    "password_require": "Password is required. Please enter it.",
+    "invalid_email": "Please enter a valid email address."
+  }
+}
