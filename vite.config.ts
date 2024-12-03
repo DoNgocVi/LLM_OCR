@@ -1,21 +1,21 @@
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import tsconfigPathsPlugin from 'vite-tsconfig-paths'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import AutoImport from 'unplugin-auto-import/vite'
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import UnoCSS from 'unocss/vite'
 // https://vite.dev/config/
 
 const __filename = fileURLToPath(import.meta.url);
-
 // Lấy đường dẫn thư mục hiện tại
 const __dirname = dirname(__filename);
 export default defineConfig({
   plugins: [
     vue(),
-    tsconfigPathsPlugin(),
+    UnoCSS(),
     AutoImport({
       imports: ['vue', '@vueuse/core', 'vue-router'],
       dts: 'src/auto-imports.d.ts', // plugins này sẽ tự động generated ra file auto-imports.d.ts trong source src.
@@ -23,16 +23,27 @@ export default defineConfig({
       vueTemplate: true,
     }),
     Components({
-      resolvers: [AntDesignVueResolver()],
+      resolvers: [NaiveUiResolver()],
       include: [/\.vue$/, /\.vue\?vue/],
       dts: 'src/components.d.ts', // plugins này sẽ tự động generated ra file components.d.ts trong source src.
     }),
+    tsconfigPaths(),
   ],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
+  resolve:{
+    alias:{
+      '@layouts': resolve(__dirname, './src/layouts'),
+      '@pages': resolve(__dirname, './src/pages'),
       '@components': resolve(__dirname, './src/components'),
-      '@assets': resolve(__dirname, './src/assets'),
-    },
-  },
+    }
+  }
 })
+
+// resolve: {
+  //   alias: {
+  //     '@': resolve(__dirname, './src'),
+  //     '@components': resolve(__dirname, './src/components'),
+  //     '@layouts': resolve(__dirname, './src/layouts'),
+  //     '@assets': resolve(__dirname, './src/assets'),
+  //     '@pages': resolve(__dirname, './src/pages'),
+  //   },
+  // },

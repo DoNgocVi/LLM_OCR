@@ -1,9 +1,11 @@
 import { createApp } from 'vue'
 import './style.css'
+import 'uno.css';
 import App from './App.vue'
-import 'ant-design-vue/dist/reset.css';
 import router from './routes'
+import naive from 'naive-ui'
 
 const app = createApp(App);
-app.use(router); // Không còn lỗi
+app.use(router);
+app.use(naive)
 app.mount('#app');
