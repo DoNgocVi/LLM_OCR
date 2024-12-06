@@ -1,7 +1,9 @@
 <template>
   <div>
     <n-config-provider :theme-overrides="getThemeOverrides">
-      <slot />
+      <n-message-provider>
+        <slot />
+      </n-message-provider>
     </n-config-provider>
   </div>
 </template>

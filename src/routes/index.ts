@@ -4,13 +4,27 @@ export const routes = [
   {
     path: '/',
     component: () => import('@components/HelloWorld.vue'),
-    // requiresAuth: true,
+  },
+  {
+    path: '/auth',
+    component: () => import('@layouts/AuthLayout.vue'),
+    children: [
+      {
+        path: 'login',
+        component: () => import('@pages/Auth/Login.vue'),
+      }
+    ]
   },
   {
     path: '/dashboard',
-    component: () => import('@pages/DashBoard.vue'),
-    // requiresAuth: true,
-  },
+    component: () => import('@layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'staff',
+        component: () => import('@pages/Dashboard/Staff.vue'),
+      }
+    ]
+  }
 ];
 
 const router = createRouter({
