@@ -1,0 +1,15 @@
+{
+  "common": {
+    "login": "ログイン",
+    "email": "電子メール",
+    "password": "パスワード",
+    "forgot_password": "パスワードをお忘れですか",
+    "create_account1": "SmartReadを初めてご利用ですか？",
+    "create_account2": "アカウントを作成"
+  },
+  "validate": {
+    "email_require": "メールアドレスが未入力です。入力してください。",
+    "password_require": "パスワードが未入力です。入力してください。",
+    "invalid_email": "正しいメールアドレスを入力してください"
+  }
+}

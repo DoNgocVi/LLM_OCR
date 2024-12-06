@@ -29,21 +29,15 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  resolve:{
-    alias:{
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
       '@layouts': resolve(__dirname, './src/layouts'),
+      '@locales': resolve(__dirname, './src/locales'),
       '@pages': resolve(__dirname, './src/pages'),
+      '@assets': resolve(__dirname, './src/assets'),
       '@components': resolve(__dirname, './src/components'),
+      '@constants': resolve(__dirname, './src/constants'),
     }
   }
 })
-
-// resolve: {
-  //   alias: {
-  //     '@': resolve(__dirname, './src'),
-  //     '@components': resolve(__dirname, './src/components'),
-  //     '@layouts': resolve(__dirname, './src/layouts'),
-  //     '@assets': resolve(__dirname, './src/assets'),
-  //     '@pages': resolve(__dirname, './src/pages'),
-  //   },
-  // },
