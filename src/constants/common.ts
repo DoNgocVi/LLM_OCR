@@ -8,3 +8,14 @@ export const optionsLanguage = [
     label: 'Japan'
   }
 ]
+
+export const defaultOptionSelect = [
+  {
+    label: 'Everybody\'s Got Something to Hide Except Me and My Monkey',
+    value: 'song0',
+  },
+  {
+    label: 'Drive My Car',
+    value: 'song1'
+  }
+]

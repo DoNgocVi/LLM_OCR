@@ -1,26 +1,19 @@
 <template>
-  <div class="header h-[50px] px-10 bg-emerald-6 flex justify-between items-center">
-    <div class="flex items-center justify-center gap-2">
-      <n-icon size="24" color="white" class="cursor-pointer">
-        <QuestionCircle16Regular />
-      </n-icon>
-      <n-icon size="22" color="white" class="cursor-pointer">
-        <Settings32Regular />
-      </n-icon>
-      <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-        <n-badge :value="2" :offset="[4, -3]">
-          <n-icon size="24" color="white" class="cursor-pointer">
-            <PersonCircleOutline />
-          </n-icon>
-        </n-badge>
-      </n-dropdown>
+  <div class="header h-[50px] px-10 flex justify-end">
+    <div class="flex items-center justify-center gap-6">
+      <span class="text-sm">株式会社ITSO</span>
+      <div class="flex items-center gap-2">
+        <n-icon size="24" color="#aaaaaa" class="cursor-pointer">
+          <PersonCircle />
+        </n-icon>
+        <span>江戸川⁨⁩コナン</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { QuestionCircle16Regular, Settings32Regular } from '@vicons/fluent'
-  import { PersonCircleOutline } from '@vicons/ionicons5'
+  import { PersonCircle } from '@vicons/ionicons5'
   const options = ref([
     {
       label: 'Marina Bay Sands',

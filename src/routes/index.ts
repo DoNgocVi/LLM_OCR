@@ -11,12 +11,14 @@ export const routes = [
     children: [
       {
         path: 'login',
+        name: 'Login',
         component: () => import('@pages/Auth/Login.vue')
       }
     ]
   },
   {
     path: '/dashboard',
+    name: 'Dashboard',
     component: () => import('@layouts/MainLayout.vue'),
     children: [
       {
@@ -24,6 +26,11 @@ export const routes = [
         component: () => import('@pages/Dashboard/Staff.vue')
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@pages/NotFound.vue') // Chỉ định trang 404
   }
 ]
 

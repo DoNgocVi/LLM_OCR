@@ -30,19 +30,24 @@ export default defineConfig({
   theme: {
     colors: {
       primary: {
-        DEFAULT: '#059669', // Xanh đậm
-        light: '#3B82F6', // Xanh nhạt
-        dark: '#1E3A8A', // Xanh tối
+        DEFAULT: '#059669',
+        light: '#3B82F6',
+        dark: '#1E3A8A',
       },
       secondary: {
-        DEFAULT: '#6B7280', // Xám
-        light: '#9CA3AF', // Xám nhạt
-        dark: '#4B5563', // Xám tối
+        DEFAULT: '#6B7280',
+        light: '#9CA3AF',
+        dark: '#4B5563',
       },
-      danger: '#EF4444', // Màu đỏ cảnh báo
-      success: '#10B981', // Màu xanh thành công
-      warning: '#F59E0B', // Màu vàng cảnh báo
-      main: '#F0F5F3'
+      danger: '#EF4444',
+      success: '#10B981',
+      warning: '#F59E0B',
+      main: '#F0F1F3',
+      grey: '#5B5B5B',
+      grey_dark: '#D1D1D1',
+      black: "#181818",
+      dark_medium: "#4F4F4F",
+      purple: '#7B61FF'
     },
   },
 })

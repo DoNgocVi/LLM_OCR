@@ -1,10 +1,20 @@
 <template>
-  <div class="mt-4">
-    <div class="pl-5">
-      <MainLogo />
+  <div class="h-full flex flex-col justify-between">
+    <div class="pt-4">
+      <div class="pl-5">
+        <MainLogo class="w-[76px]" />
+      </div>
+      <div class="mt-4">
+        <n-menu :options="menuOptions" :disabled-field="'option1'" @update:value="handleUpdateValue" />
+      </div>
     </div>
-    <div class="mt-4">
-      <n-menu :options="menuOptions" :disabled-field="'option1'" @update:value="handleUpdateValue" />
+    <div class="border-t-1 border-t-solid border-t-grey mx-3">
+      <ul class="list-none flex flex-col gap-2 text-grey ps-6">
+        <li>ヘルプ</li>
+        <li>利用規約</li>
+        <li>運営会社</li>
+        <li>お問い合わせ</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -19,6 +29,8 @@
   import CheckListIcon from '@/assets/images/icons/CheckListIcon.vue'
   import SettingIcon from '@/assets/images/icons/SettingIcon.vue'
   import BuildingIcon from '@/assets/images/icons/BuildingIcon.vue'
+
+  const emit = defineEmits(['setTitle'])
   const renderIcon = (icon: Component) => {
     return () => h(NIcon, null, { default: () => h(icon) })
   }
@@ -144,7 +156,10 @@
   ]
 
   const handleUpdateValue = (key: string, item: MenuOption) => {
-    console.log(item)
+    const labelVNode = typeof item.label === 'function' ? item.label() : item.label
+    const labelText = labelVNode.children ? labelVNode.children.default() : labelVNode
+    console.log(labelText, 'labelText meu')
+    emit('setTitle', labelText)
   }
 </script>
 <style lang="scss" scoped>

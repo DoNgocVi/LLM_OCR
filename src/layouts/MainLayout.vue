@@ -1,11 +1,12 @@
 <template>
-  <div class="h-screen flex flex-col font-sans bg-main">
+  <div class="h-screen flex flex-col bg-main">
     <div class="flex flex-1">
       <div class="h-full">
-        <MenuBar />
+        <MenuBar @setTitle="handleSetTitle" />
       </div>
-      <div class="flex-1">
+      <div class="flex-1 px-4">
         <Header />
+        <p class="title font-bold text-2xl color-black">{{ headerName }}</p>
         <router-view />
       </div>
     </div>
@@ -14,4 +15,9 @@
 
 <script setup lang="ts">
   import Header from './Header.vue'
+  const headerName = ref<string>('ジョブ結果')
+
+  const handleSetTitle = (title: string) => {
+    headerName.value = title
+  }
 </script>

@@ -1,15 +1,14 @@
 <template>
-  <div class="px-6 py-5">
-    <p class="title font-bold text-xl color-primary">湯ックを</p>
-    <div class="flex justify-between mt-3">
-      <div class="flex gap-3">
-        <n-button @click="showModal = true">長りま</n-button>
-        <n-button>再更けさ</n-button>
-      </div>
-      <div class="flex gap-3">
-        <n-button disabled>民際ぜ</n-button>
-        <n-button disabled>オハナ佳通</n-button>
-        <n-button>ルほち</n-button>
+  <div class="">
+    <div class="mt-3 bg-white rounded-[20px] px-3 py-2">
+      <p>フィルター</p>
+      <div class="flex gap-4">
+        <n-input placeholder="キーワード検索" class="rounded-[10px]">
+          <template #prefix>
+            <n-icon :component="SearchOutline" />
+          </template>
+        </n-input>
+        <n-select v-model:value="value1" :options="defaultOptionSelect" />
       </div>
     </div>
     <div class="mt-4">
@@ -23,10 +22,7 @@
       />
     </div>
   </div>
-  <div>
-    {{ count }}
-  </div>
-  <n-button @click="commonStore.increment">Increment</n-button>
+
   <n-modal
     v-model:show="showModal"
     :auto-focus="false"
@@ -51,8 +47,11 @@
   import { DataTableColumns, NButton, useMessage } from 'naive-ui'
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
+  import { SearchOutline } from '@vicons/ionicons5'
+  import { defaultOptionSelect } from '@/constants/common'
   const commonStore = useCommonStore()
   const { count } = storeToRefs(commonStore)
+  const value1 = ref()
   type Song = {
     no: number
     title: string

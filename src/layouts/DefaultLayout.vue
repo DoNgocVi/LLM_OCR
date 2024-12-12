@@ -28,12 +28,20 @@
     Menu: {
       itemTextColor: '#5B5B5B', // Text khi không active
       itemTextColorActive: '#000', // Text khi active
-      itemIconColor: '# 858D9D', // Icon khi không active
+      itemIconColor: '#858D9D', // Icon khi không active
       itemIconColorActive: '#3799DC', // Icon khi active
       itemColorActive: '#fff', // Background khi active
-      itemColorHover: '#e6f7ff', // Background khi hover
-      itemBorderRadius: '10px', // Bo góc item
-      itemBorderActive: '1px solid green'
+      itemColorActiveHover: '#fff', // Background active khi hover
+      itemTextColorActiveHover: '#000', // Text active khi hover
+      itemColorHover: '#fff' // Background khi hover
+    },
+    Input: {
+      border: '1px solid #D1D1D1', // Màu viền khi focus
+      borderFocus: '1px solid #4F4F4F',
+      boxShadowFocus: '0 0 0 2px rgba(79, 70, 1, 0)' // Hiệu ứng đổ bóng khi focus
+    },
+    Alert: {
+      closeIconColor: '#5B5B5B' // Màu nút đóng
     }
   }
 </script>
