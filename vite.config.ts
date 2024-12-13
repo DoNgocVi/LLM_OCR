@@ -7,6 +7,8 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import UnoCSS from 'unocss/vite'
+import vercel from 'vite-plugin-vercel';
+
 // https://vite.dev/config/
 
 const __filename = fileURLToPath(import.meta.url)
@@ -15,6 +17,7 @@ const __dirname = dirname(__filename)
 export default defineConfig({
   plugins: [
     vue(),
+    vercel(),
     UnoCSS(),
     AutoImport({
       imports: ['vue', '@vueuse/core', 'vue-router'],
@@ -29,6 +32,10 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  base: '/',
+  build: {
+    outDir: 'dist',
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),

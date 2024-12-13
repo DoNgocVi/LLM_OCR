@@ -38,10 +38,9 @@
     Input: {
       border: '1px solid #D1D1D1', // Màu viền khi focus
       borderFocus: '1px solid #4F4F4F',
-      boxShadowFocus: '0 0 0 2px rgba(79, 70, 1, 0)' // Hiệu ứng đổ bóng khi focus
-    },
-    Alert: {
-      closeIconColor: '#5B5B5B' // Màu nút đóng
+      borderHover: '1px solid #4F4F4F',
+      boxShadowFocus: '0 0 0 2px rgba(79, 70, 1, 0)', // Hiệu ứng đổ bóng khi focus
+      borderError: '#ED584F'
     }
   }
 </script>

@@ -13,6 +13,16 @@ export const routes = [
         path: 'login',
         name: 'Login',
         component: () => import('@pages/Auth/Login.vue')
+      },
+      {
+        path: 'forgot-password',
+        name: 'ForgotPassword',
+        component: () => import('@pages/Auth/ForgotPassword.vue')
+      },
+      {
+        path: 'reset-password',
+        name: 'ResetPassword',
+        component: () => import('@pages/Auth/ResetPassword.vue')
       }
     ]
   },
@@ -24,6 +34,10 @@ export const routes = [
       {
         path: '',
         component: () => import('@pages/Dashboard/Staff.vue')
+      },
+      {
+        path: '/my-account',
+        component: () => import('@pages/Dashboard/MyAccount.vue')
       }
     ]
   },

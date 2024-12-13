@@ -162,16 +162,4 @@
     emit('setTitle', labelText)
   }
 </script>
-<style lang="scss" scoped>
-  :deep(.n-menu-item-content) {
-    // padding-left: 36px !important;
-  }
-  :deep(.n-menu-item-group-title) {
-    // padding-left: 26px !important;
-  }
-  :deep(.n-menu) {
-    .n-menu-item-content.n-menu-item-content--selected a {
-      // color: black !important;
-    }
-  }
-</style>
+<style lang="scss" scoped></style>

@@ -5,7 +5,7 @@
         <MenuBar @setTitle="handleSetTitle" />
       </div>
       <div class="flex-1 px-4">
-        <Header />
+        <Header @setTitle="handleSetTitle" />
         <p class="title font-bold text-2xl color-black">{{ headerName }}</p>
         <router-view />
       </div>
@@ -18,6 +18,7 @@
   const headerName = ref<string>('ジョブ結果')
 
   const handleSetTitle = (title: string) => {
+    console.log(title, 'string title')
     headerName.value = title
   }
 </script>
