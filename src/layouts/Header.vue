@@ -14,18 +14,8 @@
           }"
           @select="handleSelect"
         >
-          <n-button
-            class="flex items-center gap-2 custom-2"
-            :theme-overrides="{
-              color: 'transparent',
-              border: 'none',
-              borderHover: 'none',
-              borderFocus: 'none',
-              textColor: '',
-              waveOpacity: '0'
-            }"
-          >
-            江戸川⁨⁩コナン
+          <n-button class="flex items-center gap-2 btn-dropdown pl-1 pr-[6px]" :theme-overrides="buttonTheme">
+            {{ userName }}
             <n-icon>
               <CaretDownOutline style="color: #858d9d; margin-left: 6px; margin-top: 1px" />
             </n-icon>
@@ -77,10 +67,24 @@
   import { useI18n } from 'vue-i18n'
   import CustomButton from '@components/CustomButton.vue'
 
+  const buttonTheme = {
+    color: 'transparent',
+    colorHover: '#F5F5F5',
+    border: 'none',
+    borderHover: 'none',
+    borderFocus: 'none',
+    borderPressed: 'none',
+    textColor: '#181818',
+    textColorHover: '#181818',
+    textColorFocus: '#181818',
+    textColorPressed: '#181818',
+    waveOpacity: '0'
+  }
   const { t } = useI18n()
   const router = useRouter()
   const emit = defineEmits(['setTitle'])
   const showModalLogout = ref<boolean>(false)
+  const userName = ref<string>('ゲスト')
   const handleSelect = (value: string) => {
     if (value === 'my-account') {
       emit('setTitle', t('title.user_setting'))

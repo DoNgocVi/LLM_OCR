@@ -4,20 +4,20 @@ import SuccessIcon from '@/assets/images/icons/SuccessIcon.vue'
 const typeStyles = {
   success: {
     backgroundColor: '#11A572',
-    icon: SuccessIcon,
+    icon: SuccessIcon
   },
   error: {
     backgroundColor: '#D8392F',
-    icon: InfoIcon,
+    icon: InfoIcon
   },
   default: {
     backgroundColor: '#FFFFFF', // Default màu khác nếu cần
-    icon: null,
+    icon: null
   },
   loading: {
     backgroundColor: '#FFFFFF', // Default màu khác nếu cần
-    icon: null,
-  },
+    icon: null
+  }
 }
 export const renderMessage: MessageRenderMessage = (props) => {
   const { type = 'default' } = props as { type: keyof typeof typeStyles }
@@ -29,7 +29,7 @@ export const renderMessage: MessageRenderMessage = (props) => {
     width: '480px',
     textAlign: 'center',
     backgroundColor: typeStyles[type]?.backgroundColor || '#FFFFFF',
-    borderRadius: '8px',
+    borderRadius: '8px'
   }
 
   return h(
@@ -53,7 +53,8 @@ export const renderMessage: MessageRenderMessage = (props) => {
             default: () => props.content
           }
         ),
-      icon: () => h(type === 'error' ? InfoIcon : SuccessIcon, { style: { color: '#fff', fontSize: '24px', marginTop: '1px' } }),
+      icon: () =>
+        h(type === 'error' ? InfoIcon : SuccessIcon, { style: { color: '#fff', fontSize: '24px', marginTop: '1px' } })
     }
   )
 }

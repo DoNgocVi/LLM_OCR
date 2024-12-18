@@ -10,7 +10,7 @@
         type="password"
         placeholder="パスワード"
         show-password-on="click"
-        class="rounded-lg h-[44px] flex items-center"
+        class="rounded-lg flex h-[46px] items-center"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
@@ -33,7 +33,7 @@
         type="password"
         placeholder="パスワードを入力（確認のため、同じパスワードを入力）"
         show-password-on="click"
-        class="rounded-lg h-[44px] flex items-center"
+        class="rounded-lg h-[46px] flex items-center"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"

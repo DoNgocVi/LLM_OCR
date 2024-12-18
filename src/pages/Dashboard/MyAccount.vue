@@ -12,12 +12,12 @@
 </template>
 
 <script setup lang="ts">
-  import { useI18n } from 'vue-i18n'
+  // import { useI18n } from 'vue-i18n'
   import FormResetPassword from '@/components/Auth/FormResetPassword.vue'
   import { useMessage } from 'naive-ui'
   import { renderMessage } from '@/composables/auth'
   import { defaultDurationToast } from '@/constants/common'
-  const { t } = useI18n()
+  // const { t } = useI18n()
   const message = useMessage()
   const handleResetPassword = (isSuccess: boolean) => {
     if (isSuccess) {

@@ -9,7 +9,7 @@
     "title_forgot": "パスワード再設定",
     "cancel": "キャンセル",
     "go_back_login": "ログイン画面に戻る",
-    "go_back_login2": "ログイン画面へ",  
+    "go_back_login2": "ログイン画面へ",
     "setting": "設定",
     "submit": "送信",
     "title_forgot_success": "パスワードの設定が完了しました"
@@ -29,7 +29,7 @@
     "enter_email": "メールアドレスを入力",
     "enter_password": "パスワードを入力"
   },
-  "title":{
+  "title": {
     "user_setting": "パスワード再設定"
   }
 }

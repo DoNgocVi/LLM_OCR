@@ -28,7 +28,7 @@
                 v-model:value="form.email"
                 :input-props="{ type: 'email', name: 'email' }"
                 :placeholder="$t('placeholder.enter_email')"
-                class="rounded-lg h-[44px] flex items-center"
+                class="rounded-lg h-[46px] flex items-center"
                 :theme-overrides="{
                   borderError: '1px solid #ED584F'
                 }"

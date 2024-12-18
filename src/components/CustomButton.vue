@@ -42,7 +42,7 @@
   const sizeClass = computed(() => {
     switch (props.size) {
       case 'small':
-        return 'h-[44px] text-sm'
+        return 'h-[52px] text-sm'
       case 'large':
         return 'h-[56px] text-lg'
       default:
