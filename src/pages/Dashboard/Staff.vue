@@ -118,7 +118,6 @@
     const infoPage = {
       page
     }
-    console.log(infoPage)
     isLoading.value = true
     setTimeout(() => {
       isLoading.value = false

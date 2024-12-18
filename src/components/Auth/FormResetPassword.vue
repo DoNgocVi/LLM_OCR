@@ -8,18 +8,18 @@
       <n-input
         v-model:value="form.password"
         type="password"
-        placeholder="パスワード"
+        placeholder="パスワードを入力"
         show-password-on="click"
-        class="rounded-lg h-[44px] flex items-center"
+        class="rounded-lg flex h-[46px] items-center text-black"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
       >
         <template #password-visible-icon>
-          <n-icon :size="20" :component="Eye" />
+          <n-icon :size="24" :component="Eye" />
         </template>
         <template #password-invisible-icon>
-          <n-icon :size="20" :component="EyeOff" />
+          <n-icon :size="24" :component="EyeOff" />
         </template>
       </n-input>
     </n-form-item>
@@ -33,16 +33,16 @@
         type="password"
         placeholder="パスワードを入力（確認のため、同じパスワードを入力）"
         show-password-on="click"
-        class="rounded-lg h-[44px] flex items-center"
+        class="rounded-lg h-[46px] flex items-center text-black"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
       >
         <template #password-visible-icon>
-          <n-icon :size="20" :component="Eye" />
+          <n-icon :size="24" :component="Eye" />
         </template>
         <template #password-invisible-icon>
-          <n-icon :size="20" :component="EyeOff" />
+          <n-icon :size="24" :component="EyeOff" />
         </template>
       </n-input>
     </n-form-item>
@@ -91,13 +91,13 @@
   const rules = computed(() => {
     return {
       password: {
-        required: helpers.withMessage(t('validate.new_password_require'), required),
+        required: helpers.withMessage(t('validate.require'), required),
         strongPassword: helpers.withMessage(t('validate.strong_password'), (value: string) =>
           /^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)
         )
       },
       confirmPassword: {
-        required: helpers.withMessage(t('validate.password_confirm_require'), required),
+        required: helpers.withMessage(t('validate.require'), required),
         sameAs: helpers.withMessage(t('validate.same_password'), sameAs(form.password))
       }
     }

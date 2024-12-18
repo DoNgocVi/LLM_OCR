@@ -9,7 +9,7 @@
       </p>
     </div>
     <div class="mx-a w-[350px] px-6 py-8 border-1 border-grey_dark border-solid rounded-lg box-border shadow-lg">
-      <h1 class="m-1 text-xl font-bold text-center text-black">{{ $t('common.login') }}</h1>
+      <h1 class="text-xl line-height-[30px] font-bold text-center text-black">{{ $t('common.login') }}</h1>
       <div class="mt-8">
         <n-form novalidate label-placement="left" label-width="auto" require-mark-placement="right-hanging">
           <div class="flex flex-col gap-4">
@@ -22,7 +22,7 @@
                 v-model:value="form.email"
                 :input-props="{ type: 'email', name: 'email' }"
                 :placeholder="$t('placeholder.enter_email')"
-                class="rounded-lg h-[44px] flex items-center"
+                class="rounded-lg h-[46px] flex items-center text-black"
                 :theme-overrides="{
                   borderError: '1px solid #ED584F'
                 }"
@@ -39,16 +39,16 @@
                 type="password"
                 :placeholder="$t('placeholder.enter_password')"
                 show-password-on="click"
-                class="rounded-lg h-[44px] flex items-center"
+                class="rounded-lg h-[46px] flex items-center"
                 :theme-overrides="{
                   borderError: '1px solid #ED584F'
                 }"
               >
                 <template #password-visible-icon>
-                  <n-icon :size="20" :component="Eye" />
+                  <n-icon :size="24" :component="Eye" />
                 </template>
                 <template #password-invisible-icon>
-                  <n-icon :size="20" :component="EyeOff" />
+                  <n-icon :size="24" :component="EyeOff" />
                 </template>
               </n-input>
             </n-form-item>
@@ -115,7 +115,7 @@
   const v$ = useVuelidate(rules, form)
 
   const toastErrorMessage = () => {
-    message.error('入力に誤りがあります。もう一度入力してください', {
+    message.error(t('validate.toast_reset_password'), {
       render: renderMessage,
       duration: defaultDurationToast
     })

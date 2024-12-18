@@ -15,6 +15,8 @@
   </n-button>
 </template>
 <script setup lang="ts">
+  import { generateThemeOverrides } from '@/composables/common'
+
   //   import type { TypeButton } from '@/types/index.ts'
   const props = defineProps({
     type: {
@@ -42,39 +44,38 @@
   const sizeClass = computed(() => {
     switch (props.size) {
       case 'small':
-        return 'h-[44px] text-sm'
+        return 'h-[52px] text-sm'
       case 'large':
         return 'h-[56px] text-lg'
       default:
-        return 'h-[44px] text-base'
+        return 'h-[42px] text-sm'
     }
   })
   const buttonStyles = {
     default: {
-      border: '1px solid #D1D1D1',
-      borderHover: '1px solid #D1D1D1',
-      borderFocus: '1px solid #D1D1D1',
-      textColor: '#4F4F4F',
-      textColorFocus: '#4F4F4F',
-      textColorHover: '#4F4F4F',
-      textColorPressed: '#4F4F4F',
-      colorFocus: '#F5F5F5',
-      colorHover: '#F5F5F5',
-      colorPressed: '#F5F5F5'
+      ...generateThemeOverrides({
+        color: '#F5F5F5',
+        textColor: '#4F4F4F',
+        border: '1px solid #D1D1D1'
+      }),
+      color: '#fff'
     },
     secondary: {
-      color: '#3799DC',
-      border: 'none',
-      borderHover: 'none',
-      borderFocus: 'none',
-      colorFocus: '#1175BA',
-      colorHover: '#1175BA',
-      colorPressed: '#1175BA',
+      ...generateThemeOverrides({
+        color: '#1175BA',
+        textColor: '#fff',
+        border: 'none'
+      }),
+      color: '#3799DC'
+    },
+    primary: {
       fontWeight: 'bold',
-      textColor: '#fff',
-      textColorFocus: '#fff',
-      textColorHover: '#fff',
-      textColorPressed: '#fff'
+      ...generateThemeOverrides({
+        color: '#F5F5F5',
+        textColor: '#3799DC',
+        border: '1px solid #D1D1D1'
+      }),
+      color: '#fff'
     }
   }
   const styleButton = computed(() => buttonStyles[props.type] || buttonStyles.default)

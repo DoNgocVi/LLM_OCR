@@ -18,7 +18,6 @@
   const headerName = ref<string>('ジョブ結果')
 
   const handleSetTitle = (title: string) => {
-    console.log(title, 'string title')
     headerName.value = title
   }
 </script>

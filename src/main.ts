@@ -12,7 +12,6 @@ import './assets/fonts.css'
 import '@unocss/reset/normalize.css'
 import { selectLocalLangue } from './utils'
 const savedLocale = localStorage.getItem('language') || selectLocalLangue()
-console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)
 const i18n = createI18n({
   legacy: false,
   locale: 'ja',
@@ -26,6 +25,6 @@ const pinia = createPinia()
 const app = createApp(App)
 app.use(router)
 app.use(naive)
-app.use(i18n) 
+app.use(i18n)
 app.use(pinia)
 app.mount('#app')

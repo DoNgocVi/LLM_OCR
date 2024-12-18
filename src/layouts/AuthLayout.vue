@@ -1,10 +1,10 @@
 <template>
   <div class="h-screen flex flex-col justify-between items-center">
-    <div class="flex-1 w-full"></div>
+    <div class="flex-1 w-full max-h-[100px]"></div>
     <div class="flex justify-center items-center mt-10">
       <div class="auth-wrapper flex flex-col items-center mb-8">
         <div style="color: black">
-          <MainLogo class="w-[256px] h-[100px]" />
+          <MainLogo class="w-[183px] h-[100px]" />
         </div>
         <router-view />
       </div>
@@ -23,7 +23,7 @@
               <a
                 class="font-400 color-blue hover:color-dark_blue transition-all"
                 :href="item.link || ''"
-                target="_self"
+                target="_blank"
                 rel="noopener"
               >
                 {{ item.text }}
@@ -49,5 +49,6 @@
     font-size: 12px;
     display: block;
     color: #4a4c56;
+    line-height: 24px;
   }
 </style>

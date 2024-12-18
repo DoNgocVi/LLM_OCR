@@ -158,7 +158,6 @@
   const handleUpdateValue = (key: string, item: MenuOption) => {
     const labelVNode = typeof item.label === 'function' ? item.label() : item.label
     const labelText = labelVNode.children ? labelVNode.children.default() : labelVNode
-    console.log(labelText, 'labelText meu')
     emit('setTitle', labelText)
   }
 </script>

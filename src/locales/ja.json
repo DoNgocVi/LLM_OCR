@@ -9,7 +9,7 @@
     "title_forgot": "パスワード再設定",
     "cancel": "キャンセル",
     "go_back_login": "ログイン画面に戻る",
-    "go_back_login2": "ログイン画面へ",  
+    "go_back_login2": "ログイン画面へ",
     "setting": "設定",
     "submit": "送信",
     "title_forgot_success": "パスワードの設定が完了しました"
@@ -23,13 +23,14 @@
     "invalid_password": "半角英数字6文字以上で設定してください",
     "same_password": "パスワードが一致しません",
     "invalid_email": "入力形式に誤りがあります",
-    "strong_password": "半角英数字6文字以上で設定してください"
+    "strong_password": "半角英数字6文字以上で設定してください",
+    "toast_reset_password": "入力に誤りがあります。もう一度入力してください。"
   },
   "placeholder": {
     "enter_email": "メールアドレスを入力",
     "enter_password": "パスワードを入力"
   },
-  "title":{
+  "title": {
     "user_setting": "パスワード再設定"
   }
 }
