@@ -25,18 +25,9 @@
   const message = useMessage()
   const handleResetPassword = (isSuccess: boolean) => {
     if (isSuccess) {
-      message.success('1231231', {
+      message.success('パスワードの変更が完了しました', {
         render: renderMessage,
         duration: defaultDurationToast
-      })
-
-      setTimeout(() => {
-        const closeButton = document.querySelectorAll('.n-base-close') as NodeListOf<HTMLElement>
-        if (closeButton.length) {
-          closeButton.forEach((element: HTMLElement) => {
-            element.style.color = '#fff'
-          })
-        }
       })
     }
   }

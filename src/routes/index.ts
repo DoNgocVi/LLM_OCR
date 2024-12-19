@@ -44,6 +44,10 @@ export const routes = [
         component: () => import('@pages/Dashboard/UsageData.vue')
       },
       {
+        path: 'setting',
+        component: () => import('@pages/Dashboard/Setting.vue')
+      },
+      {
         path: '/my-account',
         component: () => import('@pages/Dashboard/MyAccount.vue')
       }

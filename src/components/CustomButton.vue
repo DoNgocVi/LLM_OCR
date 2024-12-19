@@ -66,16 +66,19 @@
         textColor: '#fff',
         border: 'none'
       }),
-      color: '#3799DC'
+      color: '#3799DC',
+      colorDisabled: '#ACACAC',
+      textColorDisabled: '#FFF',
+      borderDisabled: 'none '
     },
     primary: {
       fontWeight: 'bold',
       ...generateThemeOverrides({
         color: '#F5F5F5',
         textColor: '#3799DC',
-        border: '1px solid #D1D1D1'
+        border: '1px solid #3799DC'
       }),
-      color: '#fff'
+      color: '#FFF'
     }
   }
   const styleButton = computed(() => buttonStyles[props.type] || buttonStyles.default)

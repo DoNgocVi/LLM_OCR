@@ -122,14 +122,6 @@
         duration: defaultDurationToast
       })
     }
-    setTimeout(() => {
-      const closeButton = document.querySelectorAll('.n-base-close') as NodeListOf<HTMLElement>
-      if (closeButton.length) {
-        closeButton.forEach((element: HTMLElement) => {
-          element.style.color = '#fff'
-        })
-      }
-    })
   }
 
   // Helper to determine Naive UI feedback style

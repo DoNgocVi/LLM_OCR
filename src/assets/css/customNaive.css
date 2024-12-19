@@ -1,0 +1,18 @@
+.n-base-close {
+  color: #fff;
+}
+
+.n-base-select-menu.n-select-menu {
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.n-button:not(.n-button--disabled, .btn-dropdown):focus {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.n-base-select-menu .n-base-select-option::before {
+  left: 0;
+  right: 0;
+}

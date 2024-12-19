@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import './style.css'
+import './assets/css/customNaive.css'
 import enLocal from '@locales/en.json'
 import jaLocal from '@locales/ja.json'
 import naive from 'naive-ui'
@@ -10,8 +11,8 @@ import { createPinia } from 'pinia'
 import 'uno.css'
 import './assets/fonts.css'
 import '@unocss/reset/normalize.css'
-import { selectLocalLangue } from './utils'
-const savedLocale = localStorage.getItem('language') || selectLocalLangue()
+// import { selectLocalLangue } from './utils'
+// const savedLocale = localStorage.getItem('language') || selectLocalLangue()
 const i18n = createI18n({
   legacy: false,
   locale: 'ja',

@@ -32,5 +32,12 @@
   },
   "title": {
     "user_setting": "パスワード再設定"
+  },
+  "dashboard": {
+    "setting": {
+      "title": "設定した期間を過ぎると、データは自動削除されます。",
+      "label": "データ保存期間",
+      "msg_success": "保存されました"
+    }
   }
 }

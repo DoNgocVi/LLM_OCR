@@ -41,6 +41,9 @@
       borderHover: '1px solid #4F4F4F',
       boxShadowFocus: '0 0 0 2px rgba(79, 70, 1, 0)', // Hiệu ứng đổ bóng khi focus
       borderError: '#ED584F'
+    },
+    Select: {
+      borderRadius: '10px'
     }
   }
 </script>
