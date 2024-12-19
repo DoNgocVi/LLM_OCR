@@ -48,6 +48,10 @@ export const routes = [
         component: () => import('@pages/Dashboard/Setting.vue')
       },
       {
+        path: 'company-information',
+        component: () => import('@pages/Dashboard/CompanyInformation.vue')
+      },
+      {
         path: '/my-account',
         component: () => import('@pages/Dashboard/MyAccount.vue')
       }

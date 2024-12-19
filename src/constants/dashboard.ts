@@ -110,7 +110,7 @@ export const menuOptions: MenuOption[] = [
               h(
                 RouterLink,
                 {
-                  to: 'dashboard',
+                  to: '/dashboard/setting',
                   class: 'hover:underline'
                 },
                 { default: () => 'ユーザー管理' }
@@ -137,7 +137,7 @@ export const menuOptions: MenuOption[] = [
           h(
             RouterLink,
             {
-              to: '',
+              to: '/dashboard/company-information',
               class: 'hover:underline'
             },
             { default: () => '企業アカウント管理' }

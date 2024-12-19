@@ -66,11 +66,16 @@
   }
   :deep(.n-menu .n-menu-item-content::before) {
     background-color: transparent !important;
+    left: 26px !important;
+    border-radius: 10px;
   }
   :deep(.n-menu .n-menu-item-content--selected::before) {
     left: 26px !important;
     border-radius: 10px;
     background-color: #fff !important;
     box-shadow: 0px 3px 8px rgba($color: #000000, $alpha: 0.1);
+  }
+  :deep(.n-menu .n-submenu .n-submenu-children) {
+    overflow: visible;
   }
 </style>
