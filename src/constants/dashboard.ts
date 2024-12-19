@@ -137,7 +137,7 @@ export const menuOptions: MenuOption[] = [
           h(
             RouterLink,
             {
-              to: '',
+              to: '/dashboard/company-information',
               class: 'hover:underline'
             },
             { default: () => '企業アカウント管理' }

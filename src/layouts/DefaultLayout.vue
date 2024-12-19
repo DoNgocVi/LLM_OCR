@@ -43,7 +43,22 @@
       borderError: '#ED584F'
     },
     Select: {
-      borderRadius: '10px'
+      peers: {
+        InternalSelection: {
+          borderRadius: '8px',
+          border: '1px solid #D1D1D1',
+          borderHover: '1px solid #D1D1D1',
+          borderFocus: '1px solid #D1D1D1',
+          borderActive: '1px solid #D1D1D1',
+          boxShadowActive: '0 0 4px rgba(0, 0, 0, 0.25)',
+          boxShadowFocus: '0 0 4px rgba(0, 0, 0, 0.25'
+        },
+        InternalSelectMenu: {
+          optionTextColorActive: '#4F4F4F',
+          optionCheckColor: '#858D9D',
+          borderRadius: '0px'
+        }
+      }
     }
   }
 </script>
