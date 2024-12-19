@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CustomButton: typeof import('./components/CustomButton.vue')['default']
+    CustomSelect: typeof import('./components/CustomSelect.vue')['default']
     FormResetPassword: typeof import('./components/Auth/FormResetPassword.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     MenuBar: typeof import('./components/MenuBar.vue')['default']
@@ -23,6 +24,7 @@ declare module 'vue' {
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NModal: typeof import('naive-ui')['NModal']
     NSelect: typeof import('naive-ui')['NSelect']
+    NSpace: typeof import('naive-ui')['NSpace']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

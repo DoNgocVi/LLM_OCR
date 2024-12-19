@@ -39,6 +39,25 @@ export const timeOptions = [
   }
 ]
 
+export const pageOptions = [
+  {
+    label: '50件',
+    value: '50'
+  },
+  {
+    label: '100件',
+    value: '100'
+  },
+  {
+    label: '150件',
+    value: '150'
+  },
+  {
+    label: '200件',
+    value: '200'
+  },
+]
+
 const renderIcon = (icon: Component) => {
   return () => h(NIcon, null, { default: () => h(icon) })
 }
@@ -102,7 +121,7 @@ export const menuOptions: MenuOption[] = [
             },
             { default: () => 'プロジェクト管理' }
           ),
-        key: 'option4',
+        key: 'parent-user-management',
         icon: renderIcon(CheckListIcon),
         children: [
           {
@@ -110,12 +129,12 @@ export const menuOptions: MenuOption[] = [
               h(
                 RouterLink,
                 {
-                  to: 'dashboard',
+                  to: '/dashboard/user-management',
                   class: 'hover:underline'
                 },
                 { default: () => 'ユーザー管理' }
               ),
-            key: 'option4-1'
+            key: 'user-management',
           }
         ]
       },
@@ -129,7 +148,7 @@ export const menuOptions: MenuOption[] = [
             },
             { default: () => '共有設定' }
           ),
-        key: 'option5',
+        key: 'setting',
         icon: renderIcon(SettingIcon)
       },
       {
@@ -137,12 +156,12 @@ export const menuOptions: MenuOption[] = [
           h(
             RouterLink,
             {
-              to: '',
+              to: '/dashboard/company-information',
               class: 'hover:underline'
             },
-            { default: () => '企業アカウント管理' }
+            { default: () => '企業情報' }
           ),
-        key: 'option6',
+        key: 'company-information',
         icon: renderIcon(BuildingIcon)
       }
     ]

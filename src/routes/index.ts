@@ -44,8 +44,27 @@ export const routes = [
         component: () => import('@pages/Dashboard/UsageData.vue')
       },
       {
+        path: 'user-management',
+        redirect: '/dashboard/user-management/list-user',
+        component: () => import('@pages/Dashboard/UserManagement/UserLayout.vue'),
+        children: [
+          {
+            path: 'list-user',
+            component: () => import('@pages/Dashboard/UserManagement/UserManagement.vue'),
+          },
+          {
+            path: 'register-user',
+            component: () => import('@pages/Dashboard/UserManagement/RegisterUser.vue'),
+          }
+        ]
+      },
+      {
         path: 'setting',
         component: () => import('@pages/Dashboard/Setting.vue')
+      },
+      {
+        path: 'company-information',
+        component: () => import('@pages/Dashboard/CompanyInformation.vue')
       },
       {
         path: '/my-account',

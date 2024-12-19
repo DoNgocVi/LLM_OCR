@@ -90,7 +90,13 @@
   const message = useMessage()
   const loading = ref<boolean>(false)
   const isIncorrectAccount = ref<boolean>(true)
-  const form = reactive({
+
+  type formType = {
+    email: string
+    password: string
+  }
+
+  const form = reactive<formType>({
     email: '',
     password: ''
   })
@@ -137,7 +143,7 @@
     toastErrorMessage()
   }
   // Helper to determine Naive UI feedback style
-  const validationStatus = (field: 'email' | 'password') => {
+  const validationStatus = (field: keyof formType) => {
     if (v$.value[field].$dirty && v$.value[field].$error) {
       errors[field] = v$.value[field].$invalid ? `${v$.value[field].$errors[0].$message}` : ''
       return 'error'

@@ -20,43 +20,7 @@
     <div class="mt-8 pb-[14px] border-b-1 border-b-solid border-grey_light px-2 flex items-center gap-[120px]">
       <p class="font-bold">{{ $t('dashboard.setting.label') }}</p>
       <div class="w-[200px]">
-        <n-select
-          v-model:show="show"
-          :value="valueSelect"
-          placeholder="Please select a song"
-          :class="{
-            'no-click': !isEdit
-          }"
-          :options="timeOptions"
-          :theme-overrides="{
-            peers: {
-              InternalSelection: {
-                borderRadius: '8px',
-                border: isEdit ? '1px solid #D1D1D1' : 'none',
-                borderHover: isEdit ? '1px solid #D1D1D1' : 'none',
-                borderFocus: isEdit ? '1px solid #D1D1D1' : 'none',
-                borderActive: isEdit ? '1px solid #D1D1D1' : 'none',
-                boxShadowActive: isEdit ? '0 0 4px rgba(0, 0, 0, 0.25)' : 'none',
-                boxShadowFocus: isEdit ? '0 0 4px rgba(0, 0, 0, 0.25)' : 'none'
-              },
-              InternalSelectMenu: {
-                optionTextColorActive: '#4F4F4F',
-                optionCheckColor: '#858D9D',
-                borderRadius: '0px'
-              }
-            }
-          }"
-          @update:value="handleSelect"
-        >
-          <template #arrow>
-            <transition name="slide-left">
-              <template v-if="isEdit">
-                <CaretUpOutline v-if="show" />
-                <CaretDownOutline v-else />
-              </template>
-            </transition>
-          </template>
-        </n-select>
+        <CustomSelect v-model:value="valueSelect" :options="timeOptions" :isEdit="isEdit" />
       </div>
     </div>
   </div>
@@ -65,20 +29,15 @@
   import { renderMessage } from '@/composables/auth'
   import { defaultDurationToast } from '@/constants/common'
   import { timeOptions } from '@/constants/dashboard'
-  import { CaretDownOutline, CaretUpOutline } from '@vicons/ionicons5'
   import { useMessage } from 'naive-ui'
   import { useI18n } from 'vue-i18n'
 
   const { t } = useI18n()
   const message = useMessage()
   const isEdit = ref(false)
-  const show = ref(false)
   const loading = ref(false)
   const valueSelect = ref<string>('7day') // get value from api
   const currentValueSelect = ref<string>('7day')
-  const handleSelect = (value: string) => {
-    valueSelect.value = value
-  }
 
   const handelSubmit = () => {
     loading.value = true

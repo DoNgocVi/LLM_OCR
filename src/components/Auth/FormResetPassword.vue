@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4 form-reset">
     <n-form-item
       :validation-status="validationStatus('password')"
       :feedback="errors.password"
@@ -10,7 +10,7 @@
         type="password"
         placeholder="パスワードを入力"
         show-password-on="click"
-        class="rounded-lg flex h-[46px] items-center text-black"
+        :class="['rounded-lg', props.isSmallInput ? 'h-[36px]' : 'h-[46px]', 'flex', 'items-center', 'text-black']"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
@@ -33,7 +33,7 @@
         type="password"
         placeholder="パスワードを入力（確認のため、同じパスワードを入力）"
         show-password-on="click"
-        class="rounded-lg h-[46px] flex items-center text-black"
+        :class="['rounded-lg', props.isSmallInput ? 'h-[36px]' : 'h-[46px]', 'flex', 'items-center', 'text-black']"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
@@ -47,14 +47,8 @@
       </n-input>
     </n-form-item>
   </div>
-  <div class="flex items-center mt-8" :class="$attrs.class">
-    <CustomButton
-      type="secondary"
-      :content="$t('common.setting')"
-      :loading="loading"
-      size="small"
-      @click="validateForm"
-    />
+  <div class="flex items-center mt-8 mx-a" :class="props.btnCssOverwrite">
+    <CustomButton type="secondary" :content="$t('common.setting')" :loading="loading" @click="validateForm" />
   </div>
 </template>
 <script setup lang="ts">
@@ -71,7 +65,9 @@
     msgToastError: {
       type: String,
       default: ''
-    }
+    },
+    btnCssOverwrite: String,
+    isSmallInput: Boolean
   })
   const emit = defineEmits(['onResetPassword'])
   const { t } = useI18n()
@@ -112,7 +108,10 @@
       setTimeout(() => {
         loading.value = false
         isSuccess.value = true
+        v$.value.$reset()
         emit('onResetPassword', true)
+        form.password = ''
+        form.confirmPassword = ''
       }, 1500)
       return
     }

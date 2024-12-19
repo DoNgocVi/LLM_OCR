@@ -14,11 +14,21 @@
             borderRadius: '8px'
           }"
           @select="handleSelect"
+          @update-show="
+            () => {
+              isShowDropdown = !isShowDropdown
+            }
+          "
         >
-          <n-button class="flex items-center gap-2 btn-dropdown pl-1 pr-[6px]" :theme-overrides="buttonTheme">
+          <n-button class="flex items-center gap-2 pl-1 pr-[6px] btn-dropdown" :theme-overrides="buttonTheme">
             {{ userName }}
             <n-icon>
-              <CaretDownOutline style="color: #858d9d; margin-left: 6px; margin-top: 1px" />
+              <template v-if="isShowDropdown">
+                <CaretUpOutline style="color: #858d9d; margin-left: 6px; margin-top: 1px" />
+              </template>
+              <template v-else>
+                <CaretDownOutline style="color: #858d9d; margin-left: 6px; margin-top: 1px" />
+              </template>
             </n-icon>
           </n-button>
         </n-dropdown>
@@ -43,9 +53,9 @@
   >
     <template #header>
       <div class="pos-relative font-sans">
-        <p class="text-center font-bold text-[20px] mt-3">ログアウトしますか？</p>
+        <p class="text-center font-bold text-[20px] mt-3">{{ $t('common.msg_logout') }}</p>
         <div
-          class="pos-absolute -top-[70px] -right-[38px] rounded-full bg-[#D1D1D1] w-[32px] h-[32px] flex items-center justify-center cursor-pointer"
+          class="pos-absolute -top-[70px] -right-[38px] rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all"
           @click="showModalLogout = false"
         >
           <n-icon size="18" :component="Close"></n-icon>
@@ -62,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-  import { CaretDownOutline, PersonCircle, Close } from '@vicons/ionicons5'
+  import { CaretDownOutline, CaretUpOutline, PersonCircle, Close } from '@vicons/ionicons5'
   import { NIcon } from 'naive-ui'
   import { accountOption } from '@/constants/common'
   import { useRouter } from 'vue-router'
@@ -86,6 +96,8 @@
   const emit = defineEmits(['setTitle'])
   const showModalLogout = ref<boolean>(false)
   const userName = ref<string>('ゲスト')
+  const isShowDropdown = ref<boolean>(false)
+
   const handleSelect = (value: string) => {
     if (value === 'my-account') {
       emit('setTitle', t('title.user_setting'))

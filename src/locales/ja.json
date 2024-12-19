@@ -12,7 +12,8 @@
     "go_back_login2": "ログイン画面へ",
     "setting": "設定",
     "submit": "送信",
-    "title_forgot_success": "パスワードの設定が完了しました"
+    "title_forgot_success": "パスワードの設定が完了しました",
+    "msg_logout": "ログアウトしますか？"
   },
   "validate": {
     "require": "入力してください",
@@ -24,7 +25,8 @@
     "same_password": "パスワードが一致しません",
     "invalid_email": "入力形式に誤りがあります",
     "strong_password": "半角英数字6文字以上で設定してください",
-    "toast_reset_password": "入力に誤りがあります。もう一度入力してください。"
+    "toast_reset_password": "入力に誤りがあります。もう一度入力してください。",
+    "phone_number": "入力形式に誤りがあります"
   },
   "placeholder": {
     "enter_email": "メールアドレスを入力",
@@ -38,6 +40,16 @@
       "title": "設定した期間を過ぎると、データは自動削除されます。",
       "label": "データ保存期間",
       "msg_success": "保存されました"
+    },
+    "job": {
+      "title": "フィルター",
+      "msg_error1": "入力に誤りがあります。",
+      "msg_error2": "入力内容をご確認の上、再度入力してください。"
+    },
+    "user_management":{
+      "title": "ユーザー 一覧",
+      "btn_add": "ユーザー新規登録",
+      "msg_empty_data": "該当データがありません"
     }
   }
 }

@@ -4,8 +4,12 @@
     :theme-overrides="styleButton"
     :loading="props.loading"
     :disabled="props.disabled"
+    :icon-placement="iconPlacement"
   >
-    <slot v-if="$slots.default" />
+    <div v-if="$slots.icon">
+      <slot name="icon" />
+      <slot name="default"></slot>
+    </div>
     <template v-else>
       <template v-if="props.icon">
         <i :class="`icon-${props.icon}`" class="mr-2"></i>
@@ -24,8 +28,7 @@
       default: 'default'
     },
     content: {
-      type: String,
-      required: true
+      type: String
     },
     loading: {
       type: Boolean,
@@ -39,7 +42,11 @@
       type: String,
       default: 'medium'
     },
-    icon: String
+    icon: String,
+    iconPlacement: {
+      type: String as PropType<'left' | 'right'>,
+      default: 'left'
+    }
   })
   const sizeClass = computed(() => {
     switch (props.size) {

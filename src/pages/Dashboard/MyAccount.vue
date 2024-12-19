@@ -6,7 +6,8 @@
         <n-form label-placement="left" label-width="auto" require-mark-placement="right-hanging">
           <FormResetPassword
             :msgToastError="$t('validate.toast_reset_password')"
-            class="w-[310px] mx-a"
+            btnCssOverwrite="w-[220px] mx-a"
+            :isSmallInput="true"
             @onResetPassword="handleResetPassword"
           />
         </n-form>
@@ -32,4 +33,8 @@
     }
   }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  :deep(.form-reset) {
+    gap: 32px;
+  }
+</style>
