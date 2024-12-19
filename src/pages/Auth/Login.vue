@@ -8,7 +8,7 @@
         パスワードをお忘れの方は、「パスワードをお忘れの方」よりパスワードの再設定を行なってください。
       </p>
     </div>
-    <div class="mx-a w-[350px] px-6 py-8 border-1 border-grey_dark border-solid rounded-lg box-border shadow-lg">
+    <div class="mx-a w-[350px] px-6 py-8 border-1 border-grey_light border-solid rounded-lg box-border shadow-lg">
       <h1 class="text-xl line-height-[30px] font-bold text-center text-black">{{ $t('common.login') }}</h1>
       <div class="mt-8">
         <n-form novalidate label-placement="left" label-width="auto" require-mark-placement="right-hanging">

@@ -7,7 +7,7 @@
           <PersonCircle />
         </n-icon>
         <n-dropdown
-          class="w-[232px] border-1 border-solid border-grey_dark shadow-none"
+          class="w-[232px] border-1 border-solid border-grey_light shadow-none"
           trigger="click"
           :options="accountOption"
           :theme-overrides="{
@@ -89,7 +89,7 @@
   const handleSelect = (value: string) => {
     if (value === 'my-account') {
       emit('setTitle', t('title.user_setting'))
-      router.push(value)
+      router.push(`/${value}`)
     } else {
       showModalLogout.value = true
     }

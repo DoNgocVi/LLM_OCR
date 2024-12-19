@@ -8,7 +8,7 @@
   <div v-else>
     <h1 class="text-xl font-bold text-center text-black mt-[60px]">{{ $t('common.title_forgot') }}</h1>
     <div
-      class="mx-a w-[725px] px-6 py-8 border-1 border-grey_dark border-solid rounded-lg box-border shadow-lg mt-[60px]"
+      class="mx-a w-[725px] px-6 py-8 border-1 border-grey_light border-solid rounded-lg box-border shadow-lg mt-[60px]"
     >
       <div>
         <p class="text-black text-base text-center">新しいパスワードを設定してください。</p>

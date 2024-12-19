@@ -25,7 +25,7 @@ export const defaultOptionSelect: {
 
 export const menuFooterItems: {
   text: string
-  link: string | null
+  link: string
 }[] = [
   { text: '利用規約', link: '#' },
   { text: '運用会社', link: 'https://itso.co.jp/company/' },

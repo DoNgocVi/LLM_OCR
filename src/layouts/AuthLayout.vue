@@ -15,7 +15,7 @@
         <template v-for="(item, index) in menuFooterItems" :key="index">
           <li class="flex items-center">
             <template v-if="item.link == '#'">
-              <RouterLink class="font-400 color-blue hover:color-dark_blue transition-all" :to="item.link">
+              <RouterLink class="font-400 color-blue hover:color-dark_blue transition-all" to="/policy">
                 {{ item.text }}
               </RouterLink>
             </template>

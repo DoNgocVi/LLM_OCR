@@ -50,7 +50,7 @@
   import { SearchOutline } from '@vicons/ionicons5'
   import { defaultOptionSelect } from '@/constants/common'
   const commonStore = useCommonStore()
-  const { count } = storeToRefs(commonStore)
+  const {} = storeToRefs(commonStore)
   const value1 = ref()
   type Song = {
     no: number
@@ -115,9 +115,10 @@
     })
   )
   const handlePageChange = (page: number) => {
-    const infoPage = {
-      page
-    }
+    // const infoPage = {
+    //   page
+    // }
+    console.log(page, 'page')
     isLoading.value = true
     setTimeout(() => {
       isLoading.value = false

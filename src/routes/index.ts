@@ -33,13 +33,26 @@ export const routes = [
     children: [
       {
         path: '',
-        component: () => import('@pages/Dashboard/Staff.vue')
+        redirect: 'dashboard/job-result'
+      },
+      {
+        path: 'job-result',
+        component: () => import('@pages/Dashboard/JobResults.vue')
+      },
+      {
+        path: 'usage-data',
+        component: () => import('@pages/Dashboard/UsageData.vue')
       },
       {
         path: '/my-account',
         component: () => import('@pages/Dashboard/MyAccount.vue')
       }
     ]
+  },
+  {
+    path: '/policy',
+    name: 'Policy',
+    component: () => import('@pages/Policy.vue') // Chỉ định trang 404
   },
   {
     path: '/:pathMatch(.*)*',
