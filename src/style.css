@@ -11,6 +11,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  font-family:
+    CustomNotoSansJP,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -40,9 +55,7 @@ p {
 #app {
   margin: 0 auto;
 }
-.n-button:not(.n-button--disabled):focus {
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

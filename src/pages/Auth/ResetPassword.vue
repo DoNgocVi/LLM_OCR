@@ -1,26 +1,28 @@
 <template>
   <div v-if="isSuccess">
-    <h1 class="m-1 text-xl font-bold text-center text-black mt-[60px]">{{ $t('common.title_forgot_success') }}</h1>
-    <div class="flex items-center gap-6 mt-[60px]">
-      <n-button class="w-full rounded-lg h-[44px] color-white flex-1" color="#3799DC" @click="goBackLogin">
-        {{ $t('common.go_back_login2') }}
-      </n-button>
+    <h1 class="text-xl font-bold text-center text-black mt-[60px]">{{ $t('common.title_forgot_success') }}</h1>
+    <div class="flex items-center gap-6 mt-[60px] w-[375px]">
+      <CustomButton type="secondary" :content="$t('common.go_back_login2')" size="small" @click="goBackLogin" />
     </div>
   </div>
   <div v-else>
     <h1 class="text-xl font-bold text-center text-black mt-[60px]">{{ $t('common.title_forgot') }}</h1>
     <div
-      class="mx-a w-[725px] px-6 py-8 border-1 border-grey_dark border-solid rounded-lg box-border shadow-lg mt-[60px]"
+      class="mx-a w-[725px] px-6 py-8 border-1 border-grey_light border-solid rounded-lg box-border shadow-lg mt-[60px]"
     >
       <div>
         <p class="text-black text-base text-center">新しいパスワードを設定してください。</p>
         <div class="mt-8">
           <n-form label-placement="left" label-width="auto" require-mark-placement="right-hanging">
-            <FormResetPassword class="w-full mx-a" msgToastError="入力に誤りがあります。もう一度入力してください" />
+            <FormResetPassword
+              class="w-full mx-a"
+              :msgToastError="$t('validate.toast_reset_password')"
+              @onResetPassword="handleResetPassword"
+            />
           </n-form>
         </div>
       </div>
-      <p class="text-center mt-8">
+      <p class="text-center mt-8 line-height-[21px]">
         <span
           class="text-center text-sm color-primary cursor-pointer hover:color-dark_blue transition-all"
           @click="goBackLogin"
@@ -43,7 +45,9 @@
   const goBackLogin = () => {
     router.push('login')
   }
-
+  const handleResetPassword = () => {
+    isSuccess.value = true
+  }
   onMounted(() => {
     console.log('mounted', route.query.id)
   })

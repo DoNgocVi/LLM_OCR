@@ -8,8 +8,8 @@
         パスワードをお忘れの方は、「パスワードをお忘れの方」よりパスワードの再設定を行なってください。
       </p>
     </div>
-    <div class="mx-a w-[350px] px-6 py-8 border-1 border-grey_dark border-solid rounded-lg box-border shadow-lg">
-      <h1 class="m-1 text-xl font-bold text-center text-black">{{ $t('common.login') }}</h1>
+    <div class="mx-a w-[350px] px-6 py-8 border-1 border-grey_light border-solid rounded-lg box-border shadow-lg">
+      <h1 class="text-xl line-height-[30px] font-bold text-center text-black">{{ $t('common.login') }}</h1>
       <div class="mt-8">
         <n-form novalidate label-placement="left" label-width="auto" require-mark-placement="right-hanging">
           <div class="flex flex-col gap-4">
@@ -22,7 +22,7 @@
                 v-model:value="form.email"
                 :input-props="{ type: 'email', name: 'email' }"
                 :placeholder="$t('placeholder.enter_email')"
-                class="rounded-lg h-[44px] flex items-center"
+                class="rounded-lg h-[46px] flex items-center text-black"
                 :theme-overrides="{
                   borderError: '1px solid #ED584F'
                 }"
@@ -39,16 +39,16 @@
                 type="password"
                 :placeholder="$t('placeholder.enter_password')"
                 show-password-on="click"
-                class="rounded-lg h-[44px] flex items-center"
+                class="rounded-lg h-[46px] flex items-center"
                 :theme-overrides="{
                   borderError: '1px solid #ED584F'
                 }"
               >
                 <template #password-visible-icon>
-                  <n-icon :size="20" :component="Eye" />
+                  <n-icon :size="24" :component="Eye" />
                 </template>
                 <template #password-invisible-icon>
-                  <n-icon :size="20" :component="EyeOff" />
+                  <n-icon :size="24" :component="EyeOff" />
                 </template>
               </n-input>
             </n-form-item>
@@ -79,7 +79,7 @@
   import { useMessage } from 'naive-ui'
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, helpers } from '@vuelidate/validators'
-  import { RouterLink } from 'vue-router'
+  import { RouterLink, useRouter } from 'vue-router'
   import { renderMessage } from '@/composables/auth'
   import { useI18n } from 'vue-i18n'
   import { defaultDurationToast } from '@/constants/common'
@@ -87,10 +87,17 @@
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
 
   const { t } = useI18n()
+  const router = useRouter()
   const message = useMessage()
   const loading = ref<boolean>(false)
   const isIncorrectAccount = ref<boolean>(true)
-  const form = reactive({
+
+  type formType = {
+    email: string
+    password: string
+  }
+
+  const form = reactive<formType>({
     email: '',
     password: ''
   })
@@ -115,37 +122,39 @@
   const v$ = useVuelidate(rules, form)
 
   const toastErrorMessage = () => {
-    message.error('入力に誤りがあります。もう一度入力してください', {
+    message.error(t('validate.toast_reset_password'), {
       render: renderMessage,
       duration: defaultDurationToast
-    })
-    setTimeout(() => {
-      const closeButton = document.querySelectorAll('.n-base-close') as NodeListOf<HTMLElement>
-      if (closeButton.length) {
-        closeButton.forEach((element: HTMLElement) => {
-          element.style.color = '#fff'
-        })
-      }
     })
   }
 
   const validateForm = async () => {
     const result = await v$.value.$validate() // Validate all form
     if (result) {
-      // Handle call api
-      loading.value = true
-      setTimeout(() => {
-        // Todo: handle invalid account
-        isIncorrectAccount.value = false
-        loading.value = false
-        toastErrorMessage()
-      }, defaultDurationToast)
+      try {
+        // Handle call api
+        const draftToken =
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiJuaHMzMTA4IiwiZXhwIjoxNTU4MDYzODM3fQ449KVmOFWcpOUjnYGm'
+        loading.value = true
+        setTimeout(() => {
+          // Todo: handle invalid account
+          // isIncorrectAccount.value = false
+          loading.value = false
+          localStorage.setItem('token', draftToken)
+          router.push('/dashboard/job-result')
+          // toastErrorMessage()
+        }, defaultDurationToast)
+      } catch (error) {
+        console.log(error)
+      }
+
       return
     }
     toastErrorMessage()
   }
+
   // Helper to determine Naive UI feedback style
-  const validationStatus = (field: 'email' | 'password') => {
+  const validationStatus = (field: keyof formType) => {
     if (v$.value[field].$dirty && v$.value[field].$error) {
       errors[field] = v$.value[field].$invalid ? `${v$.value[field].$errors[0].$message}` : ''
       return 'error'
@@ -161,9 +170,6 @@
   :deep(.n-input__input-el:-webkit-autofill) {
     -webkit-text-fill-color: black !important;
     -webkit-background-clip: text;
-  }
-  :deep(.n-input__input-el) {
-    caret-color: black !important;
   }
   :deep(.n-form-item-feedback__line) {
     color: #ed584f;

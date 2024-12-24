@@ -1,19 +1,39 @@
 <template>
   <div class="h-full flex flex-col justify-between">
     <div class="pt-4">
-      <div class="pl-5">
-        <MainLogo class="w-[76px]" />
+      <div class="pl-8">
+        <MainLogo class="w-[58px] h-[28px]" />
       </div>
       <div class="mt-4">
-        <n-menu :options="menuOptions" :disabled-field="'option1'" @update:value="handleUpdateValue" />
+        <n-menu
+          :value="menuActive"
+          :options="menuOptions"
+          :disabled-field="'option1'"
+          :expand-icon="customExpandIcon"
+          :defaultExpandedKeys="defaultExpandedKeys"
+          @update:value="handleUpdateValue"
+        />
       </div>
     </div>
-    <div class="border-t-1 border-t-solid border-t-grey mx-3">
-      <ul class="list-none flex flex-col gap-2 text-grey ps-6">
-        <li>ヘルプ</li>
-        <li>利用規約</li>
-        <li>運営会社</li>
-        <li>お問い合わせ</li>
+    <div class="border-t-1 border-t-solid border-t-grey_light mx-6">
+      <ul class="list-none flex flex-col gap-2 text-grey ps-6 mb-4 mt-2">
+        <li v-for="item of menuFooterItems">
+          <template v-if="item.link == '#'">
+            <RouterLink class="font-400 text-grey hover:text-grey_dark transition-all" to="/policy">
+              {{ item.text }}
+            </RouterLink>
+          </template>
+          <template v-else>
+            <a
+              class="font-400 text-grey hover:text-grey_dark transition-all"
+              :href="item.link || ''"
+              target="_blank"
+              rel="noopener"
+            >
+              {{ item.text }}
+            </a>
+          </template>
+        </li>
       </ul>
     </div>
   </div>
@@ -21,145 +41,57 @@
 
 <script setup lang="ts">
   import { MenuOption, NIcon } from 'naive-ui'
-  import { RouterLink } from 'vue-router'
+  import { RouterLink, useRoute } from 'vue-router'
   import MainLogo from '@assets/images/main-logo.vue'
-  import DocumentIcon from '@/assets/images/icons/DocumentIcon.vue'
-  import ChartIcon from '@/assets/images/icons/ChartIcon.vue'
-  import Group1Icon from '@/assets/images/icons/Group1Icon.vue'
-  import CheckListIcon from '@/assets/images/icons/CheckListIcon.vue'
-  import SettingIcon from '@/assets/images/icons/SettingIcon.vue'
-  import BuildingIcon from '@/assets/images/icons/BuildingIcon.vue'
+  import { menuFooterItems } from '@/constants/common'
+  import { menuOptions } from '@/constants/dashboard'
+  import { CaretDownOutline } from '@vicons/ionicons5'
 
+  const route = useRoute()
+  const defaultExpandedKeys = ['parent-user-management']
+  const valueAfterDashboard = route.path.split('/dashboard/')[1]
   const emit = defineEmits(['setTitle'])
-  const renderIcon = (icon: Component) => {
-    return () => h(NIcon, null, { default: () => h(icon) })
-  }
-  const menuOptions: MenuOption[] = [
-    {
-      label: () =>
-        h(
-          'div',
-          {
-            class: 'text-black font-bold text-sm'
-          },
-          { default: () => '機能' }
-        ),
-      type: 'group',
-      children: [
-        {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: 'dashboard',
-                class: 'hover:underline'
-              },
-              { default: () => 'ジョブ結果' }
-            ),
-          key: 'option1',
-          icon: renderIcon(DocumentIcon)
-        },
-        {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: 'dashboard',
-                class: 'hover:underline'
-              },
-              { default: () => '使用量データ' }
-            ),
-          key: 'option2',
-          icon: renderIcon(ChartIcon)
-        },
-        {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: 'dashboard',
-                class: 'hover:underline'
-              },
-              { default: () => 'テンプレート' }
-            ),
-          key: 'option3',
-          icon: renderIcon(Group1Icon)
-        }
-      ]
-    },
-    {
-      label: () =>
-        h(
-          'div',
-          {
-            class: 'text-black font-bold text-sm'
-          },
-          { default: () => '設定' }
-        ),
-      type: 'group',
-      children: [
-        {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: 'dashboard',
-                class: 'hover:underline'
-              },
-              { default: () => 'プロジェクト管理' }
-            ),
-          key: 'option4',
-          icon: renderIcon(CheckListIcon),
-          children: [
-            {
-              label: () =>
-                h(
-                  RouterLink,
-                  {
-                    to: 'dashboard',
-                    class: 'hover:underline'
-                  },
-                  { default: () => 'ユーザー管理' }
-                ),
-              key: 'option4-1'
-            }
-          ]
-        },
-        {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: 'dashboard',
-                class: 'hover:underline'
-              },
-              { default: () => '共有設定' }
-            ),
-          key: 'option5',
-          icon: renderIcon(SettingIcon)
-        },
-        {
-          label: () =>
-            h(
-              RouterLink,
-              {
-                to: 'dashboard',
-                class: 'hover:underline'
-              },
-              { default: () => '企業アカウント管理' }
-            ),
-          key: 'option6',
-          icon: renderIcon(BuildingIcon)
-        }
-      ]
-    }
-  ]
-
+  const menuActive = ref<string>(valueAfterDashboard ? valueAfterDashboard : 'job-result')
   const handleUpdateValue = (key: string, item: MenuOption) => {
+    menuActive.value = `${item.key}`
+    if (!key) return
     const labelVNode = typeof item.label === 'function' ? item.label() : item.label
     const labelText = labelVNode.children ? labelVNode.children.default() : labelVNode
-    console.log(labelText, 'labelText meu')
     emit('setTitle', labelText)
   }
+
+  const customExpandIcon = () =>
+    h(
+      NIcon,
+      { style: { color: 'green' } },
+      () => h(CaretDownOutline) // Sử dụng icon tùy chỉnh của bạn
+    )
+  defineExpose({
+    handleUpdateValue
+  })
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  :deep(.n-menu.n-menu--vertical) {
+    margin-top: -26px;
+    .n-menu-item-group {
+      padding-top: 30px;
+    }
+  }
+  :deep(.n-menu .n-menu-item-content::before) {
+    left: 26px !important;
+    border-radius: 10px;
+  }
+  :deep(.n-menu .n-menu-item-content--selected::before) {
+    left: 26px !important;
+    border-radius: 10px;
+    background-color: #fff !important;
+    box-shadow: 0px 3px 8px rgba($color: #000000, $alpha: 0.1);
+  }
+  :deep(.n-menu .n-submenu .n-submenu-children) {
+    overflow: visible;
+  }
+  :deep(.n-base-icon.n-menu-item-content__arrow) {
+    margin-left: 8px;
+    color: #858d9d;
+  }
+</style>

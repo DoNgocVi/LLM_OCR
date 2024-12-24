@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-4 form-reset">
     <n-form-item
       :validation-status="validationStatus('password')"
       :feedback="errors.password"
@@ -8,18 +8,18 @@
       <n-input
         v-model:value="form.password"
         type="password"
-        placeholder="パスワード"
+        placeholder="パスワードを入力"
         show-password-on="click"
-        class="rounded-lg h-[44px] flex items-center"
+        :class="['rounded-lg', props.isSmallInput ? 'h-[36px]' : 'h-[46px]', 'flex', 'items-center', 'text-black']"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
       >
         <template #password-visible-icon>
-          <n-icon :size="20" :component="Eye" />
+          <n-icon :size="24" :component="Eye" />
         </template>
         <template #password-invisible-icon>
-          <n-icon :size="20" :component="EyeOff" />
+          <n-icon :size="24" :component="EyeOff" />
         </template>
       </n-input>
     </n-form-item>
@@ -33,28 +33,22 @@
         type="password"
         placeholder="パスワードを入力（確認のため、同じパスワードを入力）"
         show-password-on="click"
-        class="rounded-lg h-[44px] flex items-center"
+        :class="['rounded-lg', props.isSmallInput ? 'h-[36px]' : 'h-[46px]', 'flex', 'items-center', 'text-black']"
         :theme-overrides="{
           borderError: '1px solid #ED584F'
         }"
       >
         <template #password-visible-icon>
-          <n-icon :size="20" :component="Eye" />
+          <n-icon :size="24" :component="Eye" />
         </template>
         <template #password-invisible-icon>
-          <n-icon :size="20" :component="EyeOff" />
+          <n-icon :size="24" :component="EyeOff" />
         </template>
       </n-input>
     </n-form-item>
   </div>
-  <div class="flex items-center mt-8" :class="$attrs.class">
-    <CustomButton
-      type="secondary"
-      :content="$t('common.setting')"
-      :loading="loading"
-      size="small"
-      @click="validateForm"
-    />
+  <div class="flex items-center mt-8 mx-a" :class="props.btnCssOverwrite">
+    <CustomButton type="secondary" :content="$t('common.setting')" :loading="loading" @click="validateForm" />
   </div>
 </template>
 <script setup lang="ts">
@@ -71,7 +65,9 @@
     msgToastError: {
       type: String,
       default: ''
-    }
+    },
+    btnCssOverwrite: String,
+    isSmallInput: Boolean
   })
   const emit = defineEmits(['onResetPassword'])
   const { t } = useI18n()
@@ -91,13 +87,13 @@
   const rules = computed(() => {
     return {
       password: {
-        required: helpers.withMessage(t('validate.new_password_require'), required),
+        required: helpers.withMessage(t('validate.require'), required),
         strongPassword: helpers.withMessage(t('validate.strong_password'), (value: string) =>
           /^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)
         )
       },
       confirmPassword: {
-        required: helpers.withMessage(t('validate.password_confirm_require'), required),
+        required: helpers.withMessage(t('validate.require'), required),
         sameAs: helpers.withMessage(t('validate.same_password'), sameAs(form.password))
       }
     }
@@ -112,7 +108,10 @@
       setTimeout(() => {
         loading.value = false
         isSuccess.value = true
+        v$.value.$reset()
         emit('onResetPassword', true)
+        form.password = ''
+        form.confirmPassword = ''
       }, 1500)
       return
     }
@@ -122,14 +121,6 @@
         duration: defaultDurationToast
       })
     }
-    setTimeout(() => {
-      const closeButton = document.querySelectorAll('.n-base-close') as NodeListOf<HTMLElement>
-      if (closeButton.length) {
-        closeButton.forEach((element: HTMLElement) => {
-          element.style.color = '#fff'
-        })
-      }
-    })
   }
 
   // Helper to determine Naive UI feedback style

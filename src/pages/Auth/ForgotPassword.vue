@@ -1,10 +1,10 @@
 <template>
   <h1 class="text-xl font-bold text-center text-black mt-[60px]">{{ $t('common.title_forgot') }}</h1>
   <div
-    class="mx-a w-[725px] px-6 py-8 border-1 border-grey_dark border-solid rounded-lg box-border shadow-lg mt-[60px]"
+    class="mx-a w-[725px] px-6 py-8 border-1 border-grey_light border-solid rounded-lg box-border shadow-lg mt-[60px]"
   >
     <div v-if="sendEmailSuccess">
-      <p class="text-black text-base line-height-[24px]">
+      <p class="text-black text-base line-height-[24px] text-center">
         入力されたメールアドレスに、パスワード再設定用のリンクを送信しました。
         <br />
         メールに記載されたリンクより、パスワード再設定のお手続きをお願いいたします。
@@ -12,7 +12,7 @@
     </div>
     <div v-else>
       <p class="text-dark_medium text-center text-base">
-        パスワードをリセットするには、
+        パスワードを再設定するには、
         <br />
         登録しているメールアドレスを入力してください。
       </p>
@@ -28,7 +28,7 @@
                 v-model:value="form.email"
                 :input-props="{ type: 'email', name: 'email' }"
                 :placeholder="$t('placeholder.enter_email')"
-                class="rounded-lg h-[44px] flex items-center"
+                class="rounded-lg h-[46px] flex items-center text-black"
                 :theme-overrides="{
                   borderError: '1px solid #ED584F'
                 }"
@@ -110,17 +110,9 @@
       }, 2000)
       return
     }
-    message.error('入力に誤りがあります。もう一度入力してください', {
+    message.error(t('validate.toast_reset_password'), {
       render: renderMessage,
       duration: 2000
-    })
-    setTimeout(() => {
-      const closeButton = document.querySelectorAll('.n-base-close') as NodeListOf<HTMLElement>
-      if (closeButton.length) {
-        closeButton.forEach((element: HTMLElement) => {
-          element.style.color = '#fff'
-        })
-      }
     })
   }
 

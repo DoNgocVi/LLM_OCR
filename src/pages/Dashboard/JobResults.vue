@@ -1,13 +1,24 @@
 <template>
   <div class="">
-    <div class="mt-3 bg-white rounded-[20px] px-3 py-2">
-      <p>フィルター</p>
-      <div class="flex gap-4">
-        <n-input placeholder="キーワード検索" class="rounded-[10px]">
-          <template #prefix>
-            <n-icon :component="SearchOutline" />
-          </template>
-        </n-input>
+    <div class="mt-3 bg-white rounded-[20px] px-5 py-[20px]">
+      <div>
+        <p>{{ $t('dashboard.job.title') }}</p>
+      </div>
+      <div class="flex gap-4 mt-2">
+        <div class="max-w-[280px] w-full">
+          <n-input
+            placeholder="キーワード検索"
+            class="w-full"
+            :theme-overrides="{
+              iconColor: '#858D9D',
+              borderRadius: '8px'
+            }"
+          >
+            <template #prefix>
+              <n-icon :component="Search" />
+            </template>
+          </n-input>
+        </div>
         <n-select v-model:value="value1" :options="defaultOptionSelect" />
       </div>
     </div>
@@ -47,10 +58,10 @@
   import { DataTableColumns, NButton, useMessage } from 'naive-ui'
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
-  import { SearchOutline } from '@vicons/ionicons5'
+  import { Search } from '@vicons/ionicons5'
   import { defaultOptionSelect } from '@/constants/common'
   const commonStore = useCommonStore()
-  const { count } = storeToRefs(commonStore)
+  const {} = storeToRefs(commonStore)
   const value1 = ref()
   type Song = {
     no: number
@@ -115,10 +126,10 @@
     })
   )
   const handlePageChange = (page: number) => {
-    const infoPage = {
-      page
-    }
-    console.log(infoPage)
+    // const infoPage = {
+    //   page
+    // }
+    console.log(page, 'page')
     isLoading.value = true
     setTimeout(() => {
       isLoading.value = false
