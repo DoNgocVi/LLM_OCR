@@ -58,3 +58,18 @@ export const renderMessage: MessageRenderMessage = (props) => {
     }
   )
 }
+
+export const generatePassword = (length = 12) => {
+  const lowerCase = 'abcdefghijklmnopqrstuvwxyz'
+  const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const numbers = '0123456789'
+  const specialChars = '!@#$%^&*()_+[]{}|;:,.<>?'
+  const allChars = lowerCase + upperCase + numbers + specialChars
+
+  let password = ''
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * allChars.length)
+    password += allChars[randomIndex]
+  }
+  return password
+}
