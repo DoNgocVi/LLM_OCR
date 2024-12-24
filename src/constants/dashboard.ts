@@ -170,7 +170,7 @@ export const menuOptions: MenuOption[] = [
               to: '/dashboard/company-information',
               class: 'hover:underline'
             },
-            { default: () => '企業情報' }
+            { default: () => '共通設定' }
           ),
         key: 'company-information',
         icon: renderIcon(BuildingIcon)

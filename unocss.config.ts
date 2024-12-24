@@ -58,6 +58,7 @@ export default defineConfig({
       grey_light: '#D1D1D1',
       grey_dark: '#4A4C56',
       gray_dark: '#ACACAC',
+      gray_light: '#858D9D',
       black: '#181818',
       dark_medium: '#4F4F4F',
       purple: '#7B61FF',

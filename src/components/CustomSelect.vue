@@ -11,6 +11,7 @@
       peers: {
         InternalSelection: {
           borderRadius: '10px',
+          heightMedium: '36px',
           border: props.isEdit ? '1px solid #D1D1D1' : 'none',
           borderHover: props.isEdit ? '1px solid #D1D1D1' : 'none',
           borderFocus: props.isEdit ? '1px solid #D1D1D1' : 'none',
@@ -56,8 +57,10 @@
       type: String,
       default: ''
     },
-    value: String
+    value: String,
+    size: String
   })
+
   const valueSelect = ref<string | undefined>(props.value)
   const handleSelect = (newValue: string) => {
     emit('update:value', newValue)

@@ -65,14 +65,8 @@
     <template #footer>
       <div class="flex items-center mt-1 gap-6 font-sans">
         <CustomButton
-          type="primary"
+          type="default"
           content="キャンセル"
-          :theme-overrides="{
-            border: '1px solid #D1D1D1',
-            borderHover: '1px solid #D1D1D1',
-            borderFocus: '1px solid #D1D1D1',
-            borderPressed: '1px solid #D1D1D1'
-          }"
           @click="
             () => {
               showModalLogout = false

@@ -41,21 +41,33 @@
             <CustomSelect v-model:value="form.role" class="max-w-[180px] w-full" :options="roleOption" />
           </n-form-item>
           <n-form-item label="パスワード">
-            <CustomButton class="max-w-[160px]" type="primary" content="パスワード再設定" @click="" />
+            <CustomButton
+              class="max-w-[160px]"
+              type="primary"
+              :content="$t('dashboard.user_management.btn_set_password')"
+              @click="
+                () => {
+                  isModalVisible = true
+                }
+              "
+            />
           </n-form-item>
         </div>
       </n-form>
     </div>
   </div>
+  <ModalSetPassword v-model:show="isModalVisible" v-model:password="form.password" />
 </template>
 <script lang="ts" setup>
   import { roleOption } from '@/constants/dashboard'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
+  import ModalSetPassword from './ModalSetPassword.vue'
 
   const { t } = useI18n()
   const router = useRouter()
   const loading = ref(false)
+  const isModalVisible = ref(false)
   const form = reactive({
     name: '',
     email: '',

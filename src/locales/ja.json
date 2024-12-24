@@ -53,7 +53,12 @@
     "user_management": {
       "title": "ユーザー 一覧",
       "btn_add": "ユーザー新規登録",
-      "msg_empty_data": "該当データがありません"
+      "msg_empty_data": "該当データがありません",
+      "btn_set_password": "パスワード再設定",
+      "modal_title": "パスワードを再設定",
+      "modal_label_checkbox": "パスワードを自動的に生成する",
+      "copy_password": "クリックしてパスワードをコピー",
+      "msg_tooltip": "パスワードをコピーしました"
     }
   }
 }
