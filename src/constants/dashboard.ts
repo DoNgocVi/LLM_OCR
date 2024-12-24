@@ -55,7 +55,18 @@ export const pageOptions = [
   {
     label: '200件',
     value: '200'
+  }
+]
+
+export const roleOption = [
+  {
+    label: '管理者',
+    value: 'admin'
   },
+  {
+    label: 'ユーザー',
+    value: 'normal'
+  }
 ]
 
 const renderIcon = (icon: Component) => {
@@ -134,7 +145,7 @@ export const menuOptions: MenuOption[] = [
                 },
                 { default: () => 'ユーザー管理' }
               ),
-            key: 'user-management',
+            key: 'user-management'
           }
         ]
       },

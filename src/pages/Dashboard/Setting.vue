@@ -15,8 +15,7 @@
         />
       </div>
     </div>
-
-    <p>{{ $t('dashboard.setting.title') }}</p>
+    <p class="mt-6">{{ $t('dashboard.setting.title') }}</p>
     <div class="mt-8 pb-[14px] border-b-1 border-b-solid border-grey_light px-2 flex items-center gap-[120px]">
       <p class="font-bold">{{ $t('dashboard.setting.label') }}</p>
       <div class="w-[200px]">

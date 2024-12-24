@@ -10,6 +10,7 @@
           :options="menuOptions"
           :disabled-field="'option1'"
           :expand-icon="customExpandIcon"
+          :defaultExpandedKeys="defaultExpandedKeys"
           @update:value="handleUpdateValue"
         />
       </div>
@@ -44,8 +45,10 @@
   import MainLogo from '@assets/images/main-logo.vue'
   import { menuFooterItems } from '@/constants/common'
   import { menuOptions } from '@/constants/dashboard'
-  import { CaretUpOutline, CaretDownOutline } from '@vicons/ionicons5'
+  import { CaretDownOutline } from '@vicons/ionicons5'
+
   const route = useRoute()
+  const defaultExpandedKeys = ['parent-user-management']
   const valueAfterDashboard = route.path.split('/dashboard/')[1]
   const emit = defineEmits(['setTitle'])
   const menuActive = ref<string>(valueAfterDashboard ? valueAfterDashboard : 'job-result')

@@ -1,7 +1,10 @@
 <template>
   <n-button
     :class="['w-full rounded-lg font-bold flex-1', sizeClass]"
-    :theme-overrides="styleButton"
+    :theme-overrides="{
+      ...styleButton,
+      ...props.themeOverrides
+    }"
     :loading="props.loading"
     :disabled="props.disabled"
     :icon-placement="iconPlacement"
@@ -20,7 +23,7 @@
 </template>
 <script setup lang="ts">
   import { generateThemeOverrides } from '@/composables/common'
-
+  import { ExtractThemeOverrides, Theme } from 'naive-ui/es/_mixins/use-theme'
   //   import type { TypeButton } from '@/types/index.ts'
   const props = defineProps({
     type: {
@@ -46,6 +49,10 @@
     iconPlacement: {
       type: String as PropType<'left' | 'right'>,
       default: 'left'
+    },
+    themeOverrides: {
+      type: Object as PropType<ExtractThemeOverrides<Theme<'Button'>>>,
+      default: () => ({})
     }
   })
   const sizeClass = computed(() => {

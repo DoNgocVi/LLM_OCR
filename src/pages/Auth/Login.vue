@@ -79,7 +79,7 @@
   import { useMessage } from 'naive-ui'
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, helpers } from '@vuelidate/validators'
-  import { RouterLink } from 'vue-router'
+  import { RouterLink, useRouter } from 'vue-router'
   import { renderMessage } from '@/composables/auth'
   import { useI18n } from 'vue-i18n'
   import { defaultDurationToast } from '@/constants/common'
@@ -87,6 +87,7 @@
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
 
   const { t } = useI18n()
+  const router = useRouter()
   const message = useMessage()
   const loading = ref<boolean>(false)
   const isIncorrectAccount = ref<boolean>(true)
@@ -130,18 +131,28 @@
   const validateForm = async () => {
     const result = await v$.value.$validate() // Validate all form
     if (result) {
-      // Handle call api
-      loading.value = true
-      setTimeout(() => {
-        // Todo: handle invalid account
-        isIncorrectAccount.value = false
-        loading.value = false
-        toastErrorMessage()
-      }, defaultDurationToast)
+      try {
+        // Handle call api
+        const draftToken =
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiJuaHMzMTA4IiwiZXhwIjoxNTU4MDYzODM3fQ449KVmOFWcpOUjnYGm'
+        loading.value = true
+        setTimeout(() => {
+          // Todo: handle invalid account
+          // isIncorrectAccount.value = false
+          loading.value = false
+          localStorage.setItem('token', draftToken)
+          router.push('/dashboard/job-result')
+          // toastErrorMessage()
+        }, defaultDurationToast)
+      } catch (error) {
+        console.log(error)
+      }
+
       return
     }
     toastErrorMessage()
   }
+
   // Helper to determine Naive UI feedback style
   const validationStatus = (field: keyof formType) => {
     if (v$.value[field].$dirty && v$.value[field].$error) {
@@ -159,9 +170,6 @@
   :deep(.n-input__input-el:-webkit-autofill) {
     -webkit-text-fill-color: black !important;
     -webkit-background-clip: text;
-  }
-  :deep(.n-input__input-el) {
-    caret-color: black !important;
   }
   :deep(.n-form-item-feedback__line) {
     color: #ed584f;

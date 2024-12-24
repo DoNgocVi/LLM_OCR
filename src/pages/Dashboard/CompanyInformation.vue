@@ -54,12 +54,12 @@
                   />
                 </n-form-item>
               </template>
-              <template v-else-if="form[`${field.key}`].length">
+              <template v-else>
                 {{ form[`${field.key}`] }}
               </template>
-              <template v-else>
+              <!-- <template v-else>
                 <p class="text-grey_light empty"></p>
-              </template>
+              </template> -->
             </div>
           </div>
         </n-form>
@@ -73,7 +73,7 @@
   import { useMessage } from 'naive-ui'
   import { useI18n } from 'vue-i18n'
   import { useVuelidate } from '@vuelidate/core'
-  import { required, email, helpers } from '@vuelidate/validators'
+  import { required, email, helpers, maxLength } from '@vuelidate/validators'
   import isEqual from 'lodash/isEqual'
 
   type FormType = {
@@ -111,8 +111,14 @@
     { label: 'ご契約中のプラン', key: 'planSubscribed', editable: false },
     { label: '郵便番号', key: 'postCode', editable: true, error: '', placeholder: '郵便番号を入力' },
     { label: '住所', key: 'address', editable: true, error: '', placeholder: '住所を入力' },
-    { label: '電話番号', key: 'phoneNumber', editable: true, error: '', placeholder: '担当者名を入力' },
-    { label: 'ご連絡先メールアドレス', key: 'emailAddress', editable: true, error: '', placeholder: '担当者名を入力' },
+    { label: '電話番号', key: 'phoneNumber', editable: true, error: '', placeholder: t('placeholder.enter_phone') },
+    {
+      label: 'ご連絡先メールアドレス',
+      key: 'emailAddress',
+      editable: true,
+      error: '',
+      placeholder: 'メールアドレスを入力'
+    },
     { label: 'ご連絡先担当者名', key: 'personName', editable: true, error: '', placeholder: '担当者名を入力' }
   ])
   const form = reactive<FormType>({
@@ -134,16 +140,27 @@
     personName: undefined
   })
 
+  const noWhitespaceOnly = helpers.withMessage(
+    t('validate.only_white_space'),
+    (value: string) => !!value && value.trim().length > 0
+  )
+
   const rules = computed(() => {
     return {
       company: {
-        required: helpers.withMessage(t('validate.require'), required)
+        noWhitespaceOnly,
+        required: helpers.withMessage(t('validate.require'), required),
+        maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       postCode: {
-        required: helpers.withMessage(t('validate.require'), required)
+        noWhitespaceOnly,
+        required: helpers.withMessage(t('validate.require'), required),
+        maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       address: {
-        required: helpers.withMessage(t('validate.require'), required)
+        noWhitespaceOnly,
+        required: helpers.withMessage(t('validate.require'), required),
+        maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       phoneNumber: {
         required: helpers.withMessage(t('validate.require'), required),
@@ -156,7 +173,9 @@
         email: helpers.withMessage(t('validate.invalid_email'), email)
       },
       personName: {
-        required: helpers.withMessage(t('validate.require'), required)
+        noWhitespaceOnly,
+        required: helpers.withMessage(t('validate.require'), required),
+        maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       }
     }
   })
@@ -199,6 +218,7 @@
     { deep: true }
   )
   onMounted(() => {
+    //TODO: api get information company with axios
     // Move into function get initial information
     initialFormState.value = { ...form }
   })

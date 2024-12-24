@@ -39,7 +39,7 @@
       itemIconColorChildActive: '#5B5B5B',
       itemTextColorChildActiveHover: '#181818',
       arrowColorChildActiveHover: '#858d9d',
-      arrowColorChildActive: '858d9d'
+      arrowColorChildActive: '#858d9d'
     },
     Input: {
       border: '1px solid #D1D1D1', // Màu viền khi focus

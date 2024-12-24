@@ -16,3 +16,7 @@
   left: 0;
   right: 0;
 }
+
+.n-input__input-el {
+  caret-color: black !important;
+}

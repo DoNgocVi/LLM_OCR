@@ -64,8 +64,22 @@
     </template>
     <template #footer>
       <div class="flex items-center mt-1 gap-6 font-sans">
-        <CustomButton type="primary" content="キャンセル" @click="showModalLogout = false" />
-        <CustomButton type="secondary" content="ログアウト" @click="handleLogout" />
+        <CustomButton
+          type="primary"
+          content="キャンセル"
+          :theme-overrides="{
+            border: '1px solid #D1D1D1',
+            borderHover: '1px solid #D1D1D1',
+            borderFocus: '1px solid #D1D1D1',
+            borderPressed: '1px solid #D1D1D1'
+          }"
+          @click="
+            () => {
+              showModalLogout = false
+            }
+          "
+        />
+        <CustomButton type="secondary" content="ログアウト" :loading="loadingLogout" @click="handleLogout" />
       </div>
     </template>
   </n-modal>
@@ -97,17 +111,24 @@
   const showModalLogout = ref<boolean>(false)
   const userName = ref<string>('ゲスト')
   const isShowDropdown = ref<boolean>(false)
+  const loadingLogout = ref<boolean>(false)
 
   const handleSelect = (value: string) => {
     if (value === 'my-account') {
       emit('setTitle', t('title.user_setting'))
-      router.push(`/${value}`)
+      // router.push(`/${value}`)
     } else {
       showModalLogout.value = true
     }
   }
   const handleLogout = () => {
     // Todo: handle call api logout
+    loadingLogout.value = true
+    localStorage.removeItem('token')
+    setTimeout(() => {
+      loadingLogout.value = false
+      router.push('/auth/login')
+    }, 1500)
   }
 </script>
 <style lang="scss" scoped></style>

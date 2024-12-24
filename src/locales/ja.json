@@ -26,11 +26,15 @@
     "invalid_email": "入力形式に誤りがあります",
     "strong_password": "半角英数字6文字以上で設定してください",
     "toast_reset_password": "入力に誤りがあります。もう一度入力してください。",
-    "phone_number": "入力形式に誤りがあります"
+    "phone_number": "入力形式に誤りがあります",
+    "only_white_space": "入力形式に誤りがあります",
+    "max_length_255": "最大255文字です"
   },
   "placeholder": {
     "enter_email": "メールアドレスを入力",
-    "enter_password": "パスワードを入力"
+    "enter_password": "パスワードを入力",
+    "enter_phone": "電話番号を入力",
+    "enter_name": "名前を入力"
   },
   "title": {
     "user_setting": "パスワード再設定"
@@ -46,7 +50,7 @@
       "msg_error1": "入力に誤りがあります。",
       "msg_error2": "入力内容をご確認の上、再度入力してください。"
     },
-    "user_management":{
+    "user_management": {
       "title": "ユーザー 一覧",
       "btn_add": "ユーザー新規登録",
       "msg_empty_data": "該当データがありません"
