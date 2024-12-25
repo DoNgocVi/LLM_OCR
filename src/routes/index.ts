@@ -52,10 +52,12 @@ export const routes = [
         children: [
           {
             path: 'list-user',
+            name: 'ListUser',
             component: () => import('@pages/Dashboard/UserManagement/UserManagement.vue')
           },
           {
             path: 'register-user',
+            name: 'RegisterUser',
             component: () => import('@pages/Dashboard/UserManagement/RegisterUser.vue')
           }
         ]

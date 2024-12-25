@@ -43,7 +43,6 @@
     :mask-closable="false"
     preset="card"
     positive-text="Confirm"
-    negative-text="Cancel"
     :closable="false"
     :style="{
       maxWidth: '330px',

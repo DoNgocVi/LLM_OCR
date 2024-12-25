@@ -80,7 +80,7 @@
         textColor: '#fff',
         border: 'none'
       }),
-      color: '#3799DC',
+
       colorDisabled: '#ACACAC',
       textColorDisabled: '#FFF',
       borderDisabled: 'none '
@@ -93,6 +93,15 @@
         border: '1px solid #3799DC'
       }),
       color: '#FFF'
+    },
+    error: {
+      fontWeight: 'bold',
+      ...generateThemeOverrides({
+        color: '#D8392F',
+        textColor: '#fff',
+        border: 'none'
+      }),
+      color: '#ED584F'
     }
   }
   const styleButton = computed(() => buttonStyles[props.type] || buttonStyles.default)

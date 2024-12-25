@@ -4,7 +4,7 @@
     <div class="w-full flex justify-end">
       <div class="max-w-[464px] w-full flex gap-6">
         <CustomButton type="default" content="キャンセル" @click="backToList" />
-        <CustomButton type="secondary" content="保存" :loading="loading" @click="handelSubmit" />
+        <CustomButton type="secondary" content="保存" :loading="loading" @click="validateForm" />
       </div>
     </div>
     <div class="mt-6">
@@ -16,7 +16,12 @@
         require-mark-placement="right-hanging"
       >
         <div class="flex flex-col gap-4">
-          <n-form-item label="名前" :feedback="errors.name" :show-feedback="!!errors.name">
+          <n-form-item
+            label="名前"
+            :validation-status="validationStatus('name')"
+            :feedback="errors.name"
+            :show-feedback="!!errors.name"
+          >
             <n-input
               v-model:value="form.name"
               :placeholder="$t('placeholder.enter_name')"
@@ -26,10 +31,14 @@
               }"
             />
           </n-form-item>
-          <n-form-item label="メールアドレス" :feedback="errors.email" :show-feedback="!!errors.email">
+          <n-form-item
+            label="メールアドレス"
+            :validation-status="validationStatus('email')"
+            :feedback="errors.email"
+            :show-feedback="!!errors.email"
+          >
             <n-input
               v-model:value="form.email"
-              :input-props="{ type: 'email', name: 'email' }"
               :placeholder="$t('placeholder.enter_email')"
               class="rounded-lg h-[36px] flex items-center text-black max-w-[680px] w-full"
               :theme-overrides="{
@@ -37,10 +46,36 @@
               }"
             />
           </n-form-item>
-          <n-form-item label="権限">
+          <n-form-item>
+            <template #label>
+              <div class="flex items-center gap-2">
+                <p class="text-black">権限</p>
+                <n-tooltip
+                  class="-ml-5"
+                  placement="bottom-start"
+                  trigger="hover"
+                  arrow-class="pos-relative top-[6px] !left-[26px]"
+                  :theme-overrides="{
+                    color: '#5B5B5B',
+                    borderRadius: '8px'
+                  }"
+                >
+                  <template #trigger>
+                    <n-icon class="cursor-pointer" color="#858D9D" :size="18" :component="InformationCircleOutline" />
+                  </template>
+                  <p>ユーザーは「機能」のみの使用、</p>
+                  <p>管理者は「機能」「設定」の全てを使用できます</p>
+                </n-tooltip>
+              </div>
+            </template>
             <CustomSelect v-model:value="form.role" class="max-w-[180px] w-full" :options="roleOption" />
           </n-form-item>
-          <n-form-item label="パスワード">
+          <n-form-item
+            label="パスワード"
+            :validation-status="validationStatus('password')"
+            :feedback="errors.password"
+            :show-feedback="!!errors.password"
+          >
             <CustomButton
               class="max-w-[160px]"
               type="primary"
@@ -56,34 +91,103 @@
       </n-form>
     </div>
   </div>
-  <ModalSetPassword v-model:show="isModalVisible" v-model:password="form.password" />
+  <ModalSetPassword v-model:show="isModalVisible" v-model:password="form.password" :error="errors.password" />
 </template>
 <script lang="ts" setup>
   import { roleOption } from '@/constants/dashboard'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import ModalSetPassword from './ModalSetPassword.vue'
-
+  import { ref, reactive, onMounted } from 'vue'
+  import { email, helpers, required } from '@vuelidate/validators'
+  import useVuelidate from '@vuelidate/core'
+  import { InformationCircleOutline } from '@vicons/ionicons5'
   const { t } = useI18n()
   const router = useRouter()
+  const route = useRoute()
+
   const loading = ref(false)
   const isModalVisible = ref(false)
-  const form = reactive({
+  const isEditUser = ref(false)
+
+  type formType = {
+    id: string
+    name: string
+    email: string
+    role: string
+    password: string
+  }
+
+  const form = reactive<formType>({
+    id: '',
     name: '',
     email: '',
     role: 'admin',
     password: ''
   })
-  const errors = reactive({
+
+  const errors = reactive<Omit<formType, 'id'>>({
     name: '',
     email: '',
     role: '',
     password: ''
   })
-  const handelSubmit = () => {
-    console.log('submit')
+
+  const initializeForm = () => {
+    form.id = (route.query.id as string) || ''
+    form.name = (route.query.name as string) || ''
+    form.email = (route.query.email as string) || ''
+    form.role = (route.query.role as string) || 'admin'
+  }
+
+  const rules = computed(() => {
+    return {
+      name: { required: helpers.withMessage(t('validate.require'), required) },
+      email: {
+        required: helpers.withMessage(t('validate.email_require'), required),
+        email: helpers.withMessage(t('validate.invalid_email'), email)
+      },
+      password: {
+        required: helpers.withMessage(t('validate.require'), required),
+        strongPassword: helpers.withMessage(t('validate.strong_password'), (value: string) =>
+          /^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)
+        )
+      }
+    }
+  })
+
+  const v$ = useVuelidate(rules, form)
+
+  const validateForm = async () => {
+    const result = await v$.value.$validate()
+    if (result) {
+      console.log(form, form)
+      //Handle form submission
+      return
+    }
+  }
+
+  const validationStatus = (field: keyof Omit<formType, 'id'>) => {
+    if (v$.value[field]?.$dirty && v$.value[field].$error) {
+      errors[field] = v$.value[field].$invalid ? `${v$.value[field].$errors[0].$message}` : ''
+      return 'error'
+    }
+    if (v$.value[field].$dirty && !v$.value[field].$error) {
+      errors[field] = ''
+      return 'success'
+    }
+    return undefined
   }
   const backToList = () => {
     router.push('list-user')
   }
+
+  onMounted(() => {
+    if (route.query.id) {
+      initializeForm()
+      isEditUser.value = true
+    } else {
+      isEditUser.value = false
+    }
+  })
 </script>

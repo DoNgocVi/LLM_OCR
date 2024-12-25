@@ -2,7 +2,9 @@
   <div>
     <n-config-provider :theme-overrides="getThemeOverrides">
       <n-message-provider>
-        <slot />
+        <n-modal-provider>
+          <slot />
+        </n-modal-provider>
       </n-message-provider>
     </n-config-provider>
   </div>

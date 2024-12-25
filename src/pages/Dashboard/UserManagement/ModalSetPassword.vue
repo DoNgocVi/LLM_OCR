@@ -35,28 +35,45 @@
         <p>{{ $t('dashboard.user_management.modal_label_checkbox') }}</p>
       </div>
       <div class="mt-6">
-        <div class="relative transition-container">
+        <div
+          :class="{
+            'max-h-[36px]': !props.error
+          }"
+          class="relative transition-container"
+        >
           <transition name="fade-slide">
             <div v-if="!autoSetPassword" key="input">
-              <n-input
-                v-model:password="props.password"
-                type="password"
-                class="rounded-lg h-[36px] flex items-center text-black max-w-[680px] w-full"
-                :theme-overrides="{
-                  borderError: '1px solid #ED584F'
-                }"
-                :placeholder="$t('placeholder.enter_password')"
-                show-password-on="click"
-              >
-                <template #password-visible-icon>
-                  <n-icon :size="24" :component="Eye" />
-                </template>
-                <template #password-invisible-icon>
-                  <n-icon :size="24" :component="EyeOff" />
-                </template>
-              </n-input>
+              <n-form novalidate label-placement="left" label-width="auto" require-mark-placement="right-hanging">
+                <n-form-item
+                  :validation-status="props.error ? 'error' : 'success'"
+                  :feedback="props.error"
+                  :show-feedback="!!props.error"
+                >
+                  <n-input
+                    v-model:value="props.password"
+                    type="password"
+                    class="rounded-lg h-[36px] flex items-center text-black max-w-[680px] w-full"
+                    :validation-status="props.error ? 'error' : ''"
+                    :feedback="props.error"
+                    :show-feedback="props.error"
+                    :theme-overrides="{
+                      borderError: '1px solid #ED584F'
+                    }"
+                    :placeholder="$t('placeholder.enter_password')"
+                    show-password-on="click"
+                    @update:value="(value) => emit('update:password', value)"
+                  >
+                    <template #password-visible-icon>
+                      <n-icon :size="24" :component="Eye" />
+                    </template>
+                    <template #password-invisible-icon>
+                      <n-icon :size="24" :component="EyeOff" />
+                    </template>
+                  </n-input>
+                </n-form-item>
+              </n-form>
             </div>
-            <div v-else key="password">
+            <div v-else key="password" class="h-[36px] mt-[6pz]">
               <div v-if="showPassword" class="flex gap-4">
                 <div class="max-w-[120px] min-w-[100px]">{{ props.password }}</div>
                 <n-icon
@@ -100,10 +117,9 @@
             @update:show="handleUpdateShow"
           >
             <template #trigger>
-              <p
-                :class="`text-primary cursor-pointer inline-block before:content-['${$t('dashboard.user_management.copy_password')}'] before:text-amber`"
-              ></p>
-              <!-- <div class="before:content-['asdasdsds']"></div> -->
+              <p :class="`text-primary cursor-pointer inline-block`">
+                {{ $t('dashboard.user_management.copy_password') }}
+              </p>
             </template>
             <span>{{ $t('dashboard.user_management.msg_tooltip') }}</span>
           </n-tooltip>
@@ -121,9 +137,18 @@
             borderFocus: '1px solid #D1D1D1',
             borderPressed: '1px solid #D1D1D1'
           }"
-          @click="() => {}"
+          @click="handleCloseModal"
         />
-        <CustomButton type="secondary" content="ログアウト" :loading="false" @click="() => {}" />
+        <CustomButton
+          type="secondary"
+          content="再設定"
+          :loading="false"
+          @click="
+            () => {
+              $emit('update:show', false)
+            }
+          "
+        />
       </div>
     </template>
   </n-modal>
@@ -141,6 +166,10 @@
     password: {
       type: String,
       default: ''
+    },
+    error: {
+      type: String,
+      default: ''
     }
   })
 
@@ -153,6 +182,7 @@
   })
 
   watch(autoSetPassword, (value: boolean) => {
+    console.log(props.error, 'props.error')
     if (value) {
       emit('update:password', '')
       const newPassword = generatePassword()
@@ -160,15 +190,19 @@
       emit('update:password', newPassword)
     }
   })
-
+  const handleCloseModal = () => {
+    //delete password
+    emit('update:password', '')
+    //close modal
+    emit('update:show', false)
+  }
   const handleUpdateShow = (show: boolean) => {
     console.log(show, 'show')
   }
 </script>
 <style scope lang="scss">
   .transition-container {
-    max-height: 24px; /* Đặt chiều cao tối thiểu tương ứng với nội dung lớn nhất */
-    position: relative;
+    min-height: 40px;
   }
 
   .fade-slide-enter-active {

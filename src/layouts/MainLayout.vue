@@ -1,10 +1,10 @@
 <template>
-  <div class="h-screen flex flex-col bg-main">
-    <div v class="flex flex-1">
-      <div class="h-full">
+  <div class="h-screen bg-main">
+    <div class="flex items-start h-full">
+      <div class="max-h-[100vh] h-full">
         <MenuBar ref="childRef" @setTitle="handleSetTitle" />
       </div>
-      <div class="flex-1 px-8">
+      <div class="flex-1 px-8 h-full overflow-auto">
         <Header @setTitle="handleSetTitleFromHeader" />
         <p class="title font-bold text-2xl color-black">{{ headerName }}</p>
         <div v-if="isShowResetPassword">

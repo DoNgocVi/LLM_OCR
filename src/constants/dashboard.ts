@@ -2,8 +2,11 @@ import BuildingIcon from '@/assets/images/icons/BuildingIcon.vue'
 import ChartIcon from '@/assets/images/icons/ChartIcon.vue'
 import CheckListIcon from '@/assets/images/icons/CheckListIcon.vue'
 import DocumentIcon from '@/assets/images/icons/DocumentIcon.vue'
+import PencilIcon from '@/assets/images/icons/PencilIcon.vue'
 import SettingIcon from '@/assets/images/icons/SettingIcon.vue'
-import { MenuOption, NIcon } from 'naive-ui'
+import TrashIcon from '@/assets/images/icons/TrashIcon.vue'
+import { User } from '@/types/dashboard'
+import { DataTableColumns, MenuOption, NButton, NIcon } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 
 export const timeOptions = [
@@ -178,3 +181,93 @@ export const menuOptions: MenuOption[] = [
     ]
   }
 ]
+
+export const createColumns = ({
+  edit,
+  deleteRow
+}: {
+  edit: (row: User) => void
+  deleteRow: (row: User) => void
+}): DataTableColumns<User> => {
+  return [
+    {
+      title: '名前 ',
+      key: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name, 'ja')
+    },
+    {
+      title: 'メールアドレス ',
+      titleAlign: 'center',
+      key: 'email'
+    },
+    {
+      title: '権限',
+      key: 'role',
+      sorter: (row1: User, row2: User) => {
+        return row1.role - row2.role
+      }
+    },
+    {
+      title: '編集',
+      key: 'edit',
+      width: 120,
+      render(row) {
+        return h(
+          NButton,
+          {
+            size: 'small',
+            themeOverrides: {
+              color: 'transparent',
+              waveOpacity: '0',
+              border: 'none',
+              borderFocus: 'none',
+              borderHover: 'none',
+              borderPressed: 'none',
+              textColor: '#858D9D',
+              textColorHover: '##56637F'
+            },
+            class: 'btn-dropdown',
+            onClick: () => edit(row)
+          },
+          {
+            icon: () =>
+              h(PencilIcon, {
+                style: { fontSize: '24px', marginTop: '1px' }
+              })
+          }
+        )
+      }
+    },
+    {
+      title: '削除',
+      key: 'deleteRow',
+      width: 120,
+      render(row) {
+        return h(
+          NButton,
+          {
+            size: 'small',
+            themeOverrides: {
+              color: 'transparent',
+              waveOpacity: '0',
+              border: 'none',
+              borderFocus: 'none',
+              borderHover: 'none',
+              borderPressed: 'none',
+              textColor: '#858D9D',
+              textColorHover: '##56637F'
+            },
+            class: 'btn-dropdown',
+            onClick: () => deleteRow(row)
+          },
+          {
+            icon: () =>
+              h(TrashIcon, {
+                style: { fontSize: '24px', marginTop: '1px' }
+              })
+          }
+        )
+      }
+    }
+  ]
+}

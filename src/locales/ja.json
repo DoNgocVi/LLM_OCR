@@ -13,7 +13,9 @@
     "setting": "設定",
     "submit": "送信",
     "title_forgot_success": "パスワードの設定が完了しました",
-    "msg_logout": "ログアウトしますか？"
+    "msg_logout": "ログアウトしますか？",
+    "msg_delete": "このユーザーを削除します",
+    "content_msg_delete": "この操作は取り消せません。本当に削除しますか？"
   },
   "validate": {
     "require": "入力してください",
