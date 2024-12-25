@@ -157,7 +157,7 @@ export const menuOptions: MenuOption[] = [
               to: '/dashboard/setting',
               class: 'hover:underline'
             },
-            { default: () => '共有設定' }
+            { default: () => '共通設定' }
           ),
         key: 'setting',
         icon: renderIcon(SettingIcon)
@@ -170,7 +170,7 @@ export const menuOptions: MenuOption[] = [
               to: '/dashboard/company-information',
               class: 'hover:underline'
             },
-            { default: () => '共通設定' }
+            { default: () => '企業情報' }
           ),
         key: 'company-information',
         icon: renderIcon(BuildingIcon)
