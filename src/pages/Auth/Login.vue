@@ -111,7 +111,7 @@
     return {
       email: {
         required: helpers.withMessage(t('validate.require'), required),
-        email: helpers.withMessage(t('validate.invalid_email'), email)
+        email: helpers.withMessage(t('validate.invalid_format'), email)
       },
       password: {
         required: helpers.withMessage(t('validate.require'), required)

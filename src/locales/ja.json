@@ -25,11 +25,9 @@
     "password_confirm_require": "もう一度新しいパスワードを入力してください",
     "invalid_password": "半角英数字6文字以上で設定してください",
     "same_password": "パスワードが一致しません",
-    "invalid_email": "入力形式に誤りがあります",
+    "invalid_format": "入力形式に誤りがあります",
     "strong_password": "半角英数字6文字以上で設定してください",
     "toast_reset_password": "入力に誤りがあります。もう一度入力してください。",
-    "phone_number": "入力形式に誤りがあります",
-    "only_white_space": "入力形式に誤りがあります",
     "max_length_255": "最大255文字です"
   },
   "placeholder": {
@@ -54,6 +52,7 @@
     },
     "user_management": {
       "title": "ユーザー 一覧",
+      "title_register": "ユーザー新規登録",
       "btn_add": "ユーザー新規登録",
       "msg_empty_data": "該当データがありません",
       "btn_set_password": "パスワード再設定",

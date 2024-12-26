@@ -1,0 +1,10 @@
+{
+  "company": "Json sample company",
+  "id": "123456789",
+  "planSubscribed": "Basic",
+  "postCode": "101-2422",
+  "address": "Tokyo",
+  "phoneNumber": "123-1234-1234",
+  "emailAddress": "test@email.company",
+  "personName": "User Name"
+}

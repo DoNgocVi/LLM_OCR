@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p class="text-base">{{ $t('dashboard.user_management.title') }}</p>
-    <div class="w-full flex justify-end">
+    <p class="text-base">{{ $t('dashboard.user_management.title_register') }}</p>
+    <div class="w-full flex justify-end mt-6">
       <div class="max-w-[464px] w-full flex gap-6">
         <CustomButton type="default" content="キャンセル" @click="backToList" />
         <CustomButton type="secondary" content="保存" :loading="loading" @click="validateForm" />
@@ -102,6 +102,10 @@
   import { email, helpers, required } from '@vuelidate/validators'
   import useVuelidate from '@vuelidate/core'
   import { InformationCircleOutline } from '@vicons/ionicons5'
+  import { useUserManagementStore } from '@/stores/userManagement'
+  import type { FormRegisterUserType } from '@/types/dashboard'
+
+  const userManagementStore = useUserManagementStore()
   const { t } = useI18n()
   const router = useRouter()
   const route = useRoute()
@@ -110,15 +114,7 @@
   const isModalVisible = ref(false)
   const isEditUser = ref(false)
 
-  type formType = {
-    id: string
-    name: string
-    email: string
-    role: string
-    password: string
-  }
-
-  const form = reactive<formType>({
+  const form = reactive<FormRegisterUserType>({
     id: '',
     name: '',
     email: '',
@@ -126,7 +122,7 @@
     password: ''
   })
 
-  const errors = reactive<Omit<formType, 'id'>>({
+  const errors = reactive<Omit<FormRegisterUserType, 'id'>>({
     name: '',
     email: '',
     role: '',
@@ -144,8 +140,8 @@
     return {
       name: { required: helpers.withMessage(t('validate.require'), required) },
       email: {
-        required: helpers.withMessage(t('validate.email_require'), required),
-        email: helpers.withMessage(t('validate.invalid_email'), email)
+        required: helpers.withMessage(t('validate.require'), required),
+        email: helpers.withMessage(t('validate.invalid_format'), email)
       },
       password: {
         required: helpers.withMessage(t('validate.require'), required),
@@ -157,17 +153,25 @@
   })
 
   const v$ = useVuelidate(rules, form)
-
   const validateForm = async () => {
     const result = await v$.value.$validate()
+
+    loading.value = true
     if (result) {
-      console.log(form, form)
-      //Handle form submission
+      if (isEditUser.value) {
+        await userManagementStore.editUser(form)
+        loading.value = false
+        backToList()
+        return
+      }
+      await userManagementStore.createUser(form)
+      loading.value = false
+      backToList()
       return
     }
   }
 
-  const validationStatus = (field: keyof Omit<formType, 'id'>) => {
+  const validationStatus = (field: keyof Omit<FormRegisterUserType, 'id'>) => {
     if (v$.value[field]?.$dirty && v$.value[field].$error) {
       errors[field] = v$.value[field].$invalid ? `${v$.value[field].$errors[0].$message}` : ''
       return 'error'

@@ -6,7 +6,16 @@
       </div>
       <div v-else class="w-full flex justify-end">
         <div class="max-w-[464px] w-full flex gap-6">
-          <CustomButton type="default" content="キャンセル" @click="isEdit = false" />
+          <CustomButton
+            type="default"
+            content="キャンセル"
+            @click="
+              () => {
+                isEdit = false
+                isFormInvalid = false
+              }
+            "
+          />
           <CustomButton
             type="secondary"
             content="保存"
@@ -17,11 +26,12 @@
         </div>
       </div>
     </div>
-    <div v-if="isFormInvalid" class="text-red bg-[#FEECEE] box-border py-3 px-6 mb-3 rounded-[4px] mt-3">
-      <p class="">{{ $t('dashboard.job.msg_error1') }}</p>
-      <p class="mt-2">{{ $t('dashboard.job.msg_error2') }}</p>
-    </div>
-    <div>
+
+    <div class="mt-6">
+      <div v-if="isFormInvalid" class="text-red bg-[#FEECEE] box-border py-3 px-6 mb-3 rounded-[4px]">
+        <p class="">{{ $t('dashboard.job.msg_error1') }}</p>
+        <p class="mt-2">{{ $t('dashboard.job.msg_error2') }}</p>
+      </div>
       <div class="company-info">
         <n-form novalidate label-placement="left" label-width="auto" require-mark-placement="right-hanging">
           <div
@@ -35,8 +45,8 @@
                 <n-form-item
                   :validation-status="validationStatus(field.key)"
                   :class="{
-                    'mt-3': errors[field.key],
-                    'mb-3': errors[field.key]
+                    'mt-3 mb-3': errors[field.key],
+                    [field.width ? field.width : 'w-[676px]']: field?.width
                   }"
                   :feedback="errors[field.key]"
                   :show-feedback="!!errors[field.key]"
@@ -51,15 +61,17 @@
                       heightMedium: '36px',
                       borderError: '1px solid #ED584F'
                     }"
+                    @change="
+                      (value: string) => {
+                        changeCodeNumber(field.key, value)
+                      }
+                    "
                   />
                 </n-form-item>
               </template>
               <template v-else>
                 {{ form[`${field.key}`] }}
               </template>
-              <!-- <template v-else>
-                <p class="text-grey_light empty"></p>
-              </template> -->
             </div>
           </div>
         </n-form>
@@ -75,43 +87,54 @@
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, helpers, maxLength } from '@vuelidate/validators'
   import isEqual from 'lodash/isEqual'
+  import { formatPhoneNumber } from '@/composables/common'
+  import type { FormCompanyType } from '@/types/dashboard'
+  import { useUserManagementStore } from '@/stores/userManagement'
+  import { storeToRefs } from 'pinia'
+  import mockData from '../../mocks/dataCompany.json'
 
-  type FormType = {
-    company: string
-    id: string
-    planSubscribed: string
-    postCode: string
-    address: string
-    phoneNumber: string
-    emailAddress: string
-    personName: string
-  }
-
+  const userManagementStore = useUserManagementStore()
   const { t } = useI18n()
   const message = useMessage()
   const isEdit = ref<boolean>(false)
   const loading = ref<boolean>(false)
-  const valueSelect = ref<string>('7day') // get value from api
-  const currentValueSelect = ref<string>('7day')
+  const valueSelect = ref<string>('1month') // get value from api
+  const currentValueSelect = ref<string>('1month')
   const isFormInvalid = ref<boolean>(false)
   const isFormChanged = ref<boolean>(false)
   const initialFormState = ref({})
-
+  const { form } = storeToRefs(userManagementStore)
+  const { setFormData } = userManagementStore
   const fields = ref<
     {
       label: string
       editable: boolean
       error?: string
-      key: keyof FormType
+      key: keyof FormCompanyType
       placeholder?: string
+      width?: string
     }[]
   >([
     { label: '企業名', key: 'company', editable: true, error: '', placeholder: '企業名を入力' },
     { label: '企業ID', key: 'id', editable: false },
     { label: 'ご契約中のプラン', key: 'planSubscribed', editable: false },
-    { label: '郵便番号', key: 'postCode', editable: true, error: '', placeholder: '郵便番号を入力' },
+    {
+      label: '郵便番号',
+      key: 'postCode',
+      editable: true,
+      error: '',
+      placeholder: '郵便番号を入力',
+      width: 'w-[180px]'
+    },
     { label: '住所', key: 'address', editable: true, error: '', placeholder: '住所を入力' },
-    { label: '電話番号', key: 'phoneNumber', editable: true, error: '', placeholder: t('placeholder.enter_phone') },
+    {
+      label: '電話番号',
+      key: 'phoneNumber',
+      editable: true,
+      error: '',
+      placeholder: t('placeholder.enter_phone'),
+      width: 'w-[350px]'
+    },
     {
       label: 'ご連絡先メールアドレス',
       key: 'emailAddress',
@@ -121,17 +144,8 @@
     },
     { label: 'ご連絡先担当者名', key: 'personName', editable: true, error: '', placeholder: '担当者名を入力' }
   ])
-  const form = reactive<FormType>({
-    company: '',
-    id: 'xxxxxxxxxxxx',
-    planSubscribed: 'Basic',
-    postCode: '',
-    address: '',
-    phoneNumber: '',
-    emailAddress: '',
-    personName: ''
-  })
-  const errors = reactive<Partial<Record<keyof FormType, string | undefined>>>({
+
+  const errors = reactive<Partial<Record<keyof FormCompanyType, string | undefined>>>({
     company: undefined,
     postCode: undefined,
     address: undefined,
@@ -141,40 +155,41 @@
   })
 
   const noWhitespaceOnly = helpers.withMessage(
-    t('validate.only_white_space'),
+    t('validate.invalid_format'),
     (value: string) => !!value && value.trim().length > 0
   )
 
   const rules = computed(() => {
     return {
       company: {
-        noWhitespaceOnly,
         required: helpers.withMessage(t('validate.require'), required),
+        noWhitespaceOnly,
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       postCode: {
-        noWhitespaceOnly,
         required: helpers.withMessage(t('validate.require'), required),
-        maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
+        validPhoneNumber: helpers.withMessage(t('validate.invalid_format'), (value: string) =>
+          /^\+?([0-9]{3})\)?[-. ]?([0-9]{4})$/.test(value)
+        )
       },
       address: {
-        noWhitespaceOnly,
         required: helpers.withMessage(t('validate.require'), required),
+        noWhitespaceOnly,
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       phoneNumber: {
         required: helpers.withMessage(t('validate.require'), required),
-        validPhoneNumber: helpers.withMessage(t('validate.phone_number'), (value: string) =>
-          /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(value)
+        validPhoneNumber: helpers.withMessage(t('validate.invalid_format'), (value: string) =>
+          /^\+?([0-9]{2,3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(value)
         )
       },
       emailAddress: {
         required: helpers.withMessage(t('validate.require'), required),
-        email: helpers.withMessage(t('validate.invalid_email'), email)
+        email: helpers.withMessage(t('validate.invalid_format'), email)
       },
       personName: {
-        noWhitespaceOnly,
         required: helpers.withMessage(t('validate.require'), required),
+        noWhitespaceOnly,
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       }
     }
@@ -198,7 +213,7 @@
       }, 1000)
     }
   }
-  const validationStatus = (field: keyof FormType) => {
+  const validationStatus = (field: keyof FormCompanyType) => {
     if (v$.value[field].$dirty && v$.value[field].$error) {
       errors[field] = v$.value[field].$invalid ? `${v$.value[field].$errors[0].$message}` : ''
       return 'error'
@@ -210,17 +225,29 @@
     return undefined
   }
 
+  const changeCodeNumber = (key: keyof FormCompanyType, value: string) => {
+    const allowedKeys = ['phoneNumber', 'postCode']
+    if (!allowedKeys.includes(key)) return
+    const result = formatPhoneNumber(value, key === 'postCode')
+    if (result) {
+      form.value[key] = result
+    } else if (form.value[key].trim().length) {
+      v$.value[key].$touch()
+    }
+  }
+
   watch(
     () => form,
     (newForm) => {
-      isFormChanged.value = !isEqual(newForm, initialFormState.value)
+      isFormChanged.value = !isEqual(newForm.value, initialFormState.value)
     },
     { deep: true }
   )
   onMounted(() => {
     //TODO: api get information company with axios
-    // Move into function get initial information
-    initialFormState.value = { ...form }
+    const data = mockData
+    setFormData(data)
+    initialFormState.value = { ...form.value }
   })
   onUnmounted(() => {
     isEdit.value = false

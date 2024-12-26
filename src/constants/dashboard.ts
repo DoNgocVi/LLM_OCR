@@ -224,7 +224,9 @@ export const createColumns = ({
               borderHover: 'none',
               borderPressed: 'none',
               textColor: '#858D9D',
-              textColorHover: '##56637F'
+              textColorHover: '#56637F',
+              textColorFocus: '#56637F',
+              textColorPressed: '#56637F'
             },
             class: 'btn-dropdown',
             onClick: () => edit(row)
@@ -255,7 +257,9 @@ export const createColumns = ({
               borderHover: 'none',
               borderPressed: 'none',
               textColor: '#858D9D',
-              textColorHover: '##56637F'
+              textColorHover: '#56637F',
+              textColorFocus: '#56637F',
+              textColorPressed: '#56637F'
             },
             class: 'btn-dropdown',
             onClick: () => deleteRow(row)

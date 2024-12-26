@@ -93,7 +93,7 @@
     return {
       email: {
         required: helpers.withMessage('入力してください', required),
-        email: helpers.withMessage(t('validate.invalid_email'), email)
+        email: helpers.withMessage(t('validate.invalid_format'), email)
       }
     }
   })

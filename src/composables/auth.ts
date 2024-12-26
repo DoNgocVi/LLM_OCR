@@ -66,10 +66,29 @@ export const generatePassword = (length = 12) => {
   const specialChars = '!@#$%^&*()_+[]{}|;:,.<>?'
   const allChars = lowerCase + upperCase + numbers + specialChars
 
-  let password = ''
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * allChars.length)
-    password += allChars[randomIndex]
+  if (length < 4) {
+    throw new Error('Password length must be at least 4 to include all required character types.')
   }
-  return password
+
+  // Đảm bảo mỗi loại ký tự bắt buộc xuất hiện ít nhất một lần
+  const passwordArray = [
+    lowerCase[Math.floor(Math.random() * lowerCase.length)],
+    upperCase[Math.floor(Math.random() * upperCase.length)],
+    numbers[Math.floor(Math.random() * numbers.length)],
+    specialChars[Math.floor(Math.random() * specialChars.length)],
+  ]
+
+  // Điền các ký tự còn lại vào mật khẩu
+  for (let i = 4; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * allChars.length)
+    passwordArray.push(allChars[randomIndex])
+  }
+
+  // Xáo trộn mật khẩu để các ký tự bắt buộc không nằm ở đầu
+  for (let i = passwordArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+      ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
+  }
+
+  return passwordArray.join('')
 }

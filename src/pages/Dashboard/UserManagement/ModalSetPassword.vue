@@ -182,12 +182,13 @@
   })
 
   watch(autoSetPassword, (value: boolean) => {
-    console.log(props.error, 'props.error')
     if (value) {
       emit('update:password', '')
       const newPassword = generatePassword()
       console.log(newPassword)
       emit('update:password', newPassword)
+    } else {
+      emit('update:password', '')
     }
   })
   const handleCloseModal = () => {

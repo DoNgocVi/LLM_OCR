@@ -1,13 +1,18 @@
 import CustomButton from '@/components/CustomButton.vue'
 import Header from '@/layouts/Header.vue'
+import { useUserManagementStore } from '@/stores/userManagement'
 import { Close } from '@vicons/ionicons5'
 import { useModal } from 'naive-ui'
+import { storeToRefs } from 'pinia'
+const userManagementStore = useUserManagementStore()
 
-type settingModal = {
+export type SettingModalType = {
   content?: string
   title: string
   type: 'error' | 'default'
+  onDelete: () => void
 }
+const { loadingDelete } = storeToRefs(userManagementStore)
 export const generateThemeOverrides = (baseProperties: Record<string, string>): Record<string, string> => {
   const states = ['Hover', 'Focus', 'Pressed']
   const overrides: Record<string, string> = { ...baseProperties }
@@ -21,7 +26,7 @@ export const generateThemeOverrides = (baseProperties: Record<string, string>): 
   return overrides
 }
 
-export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: settingModal) => {
+export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: SettingModalType) => {
   const m = modal.create({
     title: () => {
       return h('div', { class: 'flex items-center justify-center gap-2' }, [
@@ -47,16 +52,45 @@ export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: 
           'div',
           {
             class:
-              'pos-absolute -top-[70px] -right-[38px] rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all',
+              'pos-absolute rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all',
+            style: 'right: -26px; top: -74px',
             onClick: () => m.destroy()
           },
-          [h(Close, { class: 'text-#181818 h-[18px]' })]
+          [h(Close, { class: 'text-green', style: 'width: 18px' })]
         )
       ]),
     footer: () =>
       h('div', { class: 'flex justify-end gap-2' }, [
-        h(CustomButton, { type: 'default', content: 'キャンセル', onClick: () => m.destroy() }, 'Cancel'),
-        h(CustomButton, { type: setting.type, content: '削除する', onClick: () => m.destroy() }, 'Delete')
+        h(CustomButton, { type: 'default', content: 'キャンセル', onClick: () => m.destroy() }),
+        h(CustomButton, {
+          loading: loadingDelete.value,
+          type: setting.type,
+          content: '削除する',
+          onClick: async () => {
+            await setting?.onDelete()
+            m.destroy()
+          }
+        })
       ])
   })
+}
+
+export const formatPhoneNumber = (value: string, isPostCode: boolean = false) => {
+  const numericValue = value.replace(/[^0-9]/g, '')
+  let formattedValue
+  // format phone number
+  if ((numericValue.length === 10 && !isPostCode) || (numericValue.length === 11 && !isPostCode)) {
+    formattedValue =
+      numericValue.length === 10
+        ? numericValue.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3') // 10
+        : numericValue.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3') // 11
+    return formattedValue
+  }
+  // format post code
+  else if (numericValue.length === 7 && isPostCode) {
+    formattedValue = numericValue.replace(/(\d{3})(\d{4})/, '$1-$2')
+    return formattedValue
+  } else {
+    return false
+  }
 }

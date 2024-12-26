@@ -16,17 +16,30 @@
       {{ $t('dashboard.user_management.btn_add') }}
     </CustomButton>
   </div>
-  <div class="mt-4">
+  <div class="mt-5">
     <n-data-table
       :columns="columns"
-      :data="data"
+      :data="listUser"
       :pagination="pagination"
       :bordered="false"
       :on-update:page="handlePageChange"
       :loading="isLoading"
       :themeOverrides="{
         borderRadius: '10px',
-        thTextColor: '#4A4C56'
+        thTextColor: '#4A4C56',
+        peers: {
+          Pagination: {
+            itemColorActive: '#5B5B5B',
+            itemColorActiveHover: '#2A2A2A',
+            itemTextColor: '#4F4F4F',
+            itemTextColorHover: '#4F4F4F',
+            itemTextColorActive: '#FFF',
+            itemBorder: '1px solid #D1D1D1',
+            itemBorderHover: '1px solid #D1D1D1',
+            itemBorderActive: '1px solid #5B5B5B',
+            itemSizeMedium: '32px'
+          }
+        }
       }"
     >
       <template #empty>
@@ -36,42 +49,47 @@
   </div>
 </template>
 <script lang="ts" setup>
+  // import { renderMessage } from '@/composables/auth'
+  // import { useMessage } from 'naive-ui'
+  // import { defaultDurationToast } from '@/constants/common'
   import AddIcon from '@/assets/images/icons/AddIcon.vue'
   import CustomButton from '@/components/CustomButton.vue'
   import { useRouter } from 'vue-router'
   import { useModal } from 'naive-ui'
-  // import { renderMessage } from '@/composables/auth'
-  // import { defaultDurationToast } from '@/constants/common'
   import { pageOptions } from '@/constants/dashboard'
   import { PaginationInfo } from 'naive-ui'
-  // import { useMessage } from 'naive-ui'
   import { DEFAULT_PAGE_SIZE } from '@/constants/common'
   import { createColumns } from '@/constants/dashboard'
   import type { User } from '@/types/dashboard'
-  import { Close } from '@vicons/ionicons5'
   import { showModalDeleteRow } from '@/composables/common'
   import { useI18n } from 'vue-i18n'
+  import { useUserManagementStore } from '@/stores/userManagement'
+  import { storeToRefs } from 'pinia'
 
+  // const message = useMessage()
+  const userManagementStore = useUserManagementStore()
   const { t } = useI18n()
   const router = useRouter()
   const modal = useModal()
-  // const message = useMessage()
   const loading = ref<boolean>(false)
-  const data = ref(createData())
+  // const loadingDelete = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const pageSize = ref<string>(DEFAULT_PAGE_SIZE)
   const currentPage = ref<number>(1)
   const itemCount = ref<number>()
+  const { listUser, loadingDelete } = storeToRefs(userManagementStore)
+  const { setListUser, deleteUser } = userManagementStore
+
   const pagination = ref({
     pageSize: +pageSize.value,
     onChange: (page: number) => {
-      console.log('change')
       currentPage.value = page
     },
     prev: (props: PaginationInfo) => {
       itemCount.value = props.itemCount
       return h(CustomButton, {
         type: 'default',
+        size: 'pagination',
         content: '前へ',
         disabled: props.page === 1
       })
@@ -79,6 +97,7 @@
     next: (props: PaginationInfo) => {
       return h(CustomButton, {
         type: 'default',
+        size: 'pagination',
         content: '次へ',
         disabled: props.endIndex + 1 === props.itemCount
       })
@@ -87,7 +106,6 @@
 
   const handleRegisterUser = () => {
     router.push('register-user')
-    console.log('submit')
   }
 
   const handlePageChange = (page: number) => {
@@ -104,7 +122,7 @@
       email: `example${index}@email.com`,
       role: Math.floor(Math.random() * 20) % 2 === 1 ? '管理者' : 'ユーザー',
       address: `New York name. ${index} Lake Park`
-    }))
+    })) as User[]
   }
 
   const onUpdatePageSize = (pageSize: number) => {
@@ -125,23 +143,36 @@
         })
       },
       deleteRow(row: User) {
-        console.log(row, 'delete')
         showModalDeleteRow(modal, {
           title: t('common.msg_delete'),
           content: t('common.content_msg_delete'),
-          type: 'error'
+          type: 'error',
+          onDelete: async () => {
+            loadingDelete.value = true
+            // Simulate the API call as a Promise
+            await new Promise((resolve) => {
+              setTimeout(() => {
+                deleteUser(row.id)
+                resolve(true)
+              }, 2000)
+            })
+            loadingDelete.value = false
+          }
         })
-        // data.value = data.value.filter((item) => item.id !== row.id)
-        // message.info(`Delete ${row.email}`)
       }
     })
   )
+
   onMounted(() => {
     isLoading.value = true
-    //Todo: call api
     setTimeout(() => {
       isLoading.value = false
     }, 500)
+    //TODO: call api
+    // Mock data
+    if (listUser.value.length) return
+    const data = createData()
+    setListUser(data)
   })
 </script>
 <style lang="scss" scoped>
@@ -156,5 +187,8 @@
     border: 1px solid #d1d1d1;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+  }
+  :deep(.n-pagination-item:not(.n-pagination-item--clickable)) {
+    border: none !important;
   }
 </style>

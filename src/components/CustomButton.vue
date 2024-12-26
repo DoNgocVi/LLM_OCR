@@ -17,7 +17,7 @@
       <template v-if="props.icon">
         <i :class="`icon-${props.icon}`" class="mr-2"></i>
       </template>
-      <span class="font-bold">{{ props.content }}</span>
+      <span :class="['font-bold', props.size === 'pagination' ? 'text-xs' : 'text-sm']">{{ props.content }}</span>
     </template>
   </n-button>
 </template>
@@ -61,6 +61,8 @@
         return 'h-[52px] text-sm'
       case 'large':
         return 'h-[56px] text-lg'
+      case 'pagination':
+        return '!w-[48px] h-[32px]'
       default:
         return 'h-[42px] text-sm'
     }
@@ -70,7 +72,8 @@
       ...generateThemeOverrides({
         color: '#F5F5F5',
         textColor: '#4F4F4F',
-        border: '1px solid #D1D1D1'
+        border: '1px solid #D1D1D1',
+        waveOpacity: '0'
       }),
       color: '#fff'
     },
@@ -80,7 +83,7 @@
         textColor: '#fff',
         border: 'none'
       }),
-
+      waveOpacity: '0',
       colorDisabled: '#ACACAC',
       textColorDisabled: '#FFF',
       borderDisabled: 'none '
@@ -92,6 +95,7 @@
         textColor: '#3799DC',
         border: '1px solid #3799DC'
       }),
+      waveOpacity: '0',
       color: '#FFF'
     },
     error: {
@@ -101,6 +105,7 @@
         textColor: '#fff',
         border: 'none'
       }),
+      waveOpacity: '0',
       color: '#ED584F'
     }
   }
