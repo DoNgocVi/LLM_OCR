@@ -74,7 +74,7 @@
             label="パスワード"
             :validation-status="validationStatus('password')"
             :feedback="errors.password"
-            :show-feedback="!!errors.password"
+            :show-feedback="false"
           >
             <CustomButton
               class="max-w-[160px]"
@@ -156,8 +156,8 @@
   const validateForm = async () => {
     const result = await v$.value.$validate()
 
-    loading.value = true
     if (result) {
+      loading.value = true
       if (isEditUser.value) {
         await userManagementStore.editUser(form)
         loading.value = false
