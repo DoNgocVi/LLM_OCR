@@ -1,5 +1,6 @@
 import {
   defineConfig,
+  e,
   presetAttributify,
   presetIcons,
   presetUno,
@@ -65,6 +66,13 @@ export default defineConfig({
       blue: '#3799DC',
       dark_blue: "#1175BA ",
       red: '#ED584F'
+    },
+    breakpoints: {
+      sm: '640px',
+      md: '950px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px'
     }
   }
 })

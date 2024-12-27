@@ -50,6 +50,9 @@
       "msg_error1": "入力に誤りがあります。",
       "msg_error2": "入力内容をご確認の上、再度入力してください。"
     },
+    "company": {
+      "msg_success": "企業情報の変更を保存しました"
+    },
     "user_management": {
       "title": "ユーザー 一覧",
       "title_register": "ユーザー新規登録",

@@ -39,7 +39,15 @@ export const routes = [
       },
       {
         path: 'job-result',
-        component: () => import('@pages/Dashboard/JobResults.vue')
+        redirect: '/dashboard/job-result/list-job',
+        component: () => import('@pages/Dashboard/JobResults/JobLayout.vue'),
+        children: [
+          {
+            path: 'list-job',
+            name: 'ListJob',
+            component: () => import('@pages/Dashboard/JobResults/JobResults.vue')
+          }
+        ]
       },
       {
         path: 'usage-data',

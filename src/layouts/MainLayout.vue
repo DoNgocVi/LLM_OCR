@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-main">
+  <div class="h-screen bg-main overflow-hidden">
     <div class="flex items-start h-full">
       <div class="max-h-[100vh] h-full">
         <MenuBar ref="childRef" @setTitle="handleSetTitle" />

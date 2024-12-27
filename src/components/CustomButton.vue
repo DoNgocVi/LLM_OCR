@@ -83,6 +83,7 @@
         textColor: '#fff',
         border: 'none'
       }),
+      color: '#3799DC',
       waveOpacity: '0',
       colorDisabled: '#ACACAC',
       textColorDisabled: '#FFF',

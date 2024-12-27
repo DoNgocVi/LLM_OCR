@@ -203,9 +203,7 @@ export const createColumns = ({
     {
       title: '権限',
       key: 'role',
-      sorter: (row1: User, row2: User) => {
-        return row1.role - row2.role
-      }
+      sorter: (a, b) => a.role.localeCompare(b.role, 'ja')
     },
     {
       title: '編集',

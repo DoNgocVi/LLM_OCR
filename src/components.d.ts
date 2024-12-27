@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CustomButton: typeof import('./components/CustomButton.vue')['default']
+    CustomDatePicker: typeof import('./components/CustomDatePicker.vue')['default']
     CustomSelect: typeof import('./components/CustomSelect.vue')['default']
     FormResetPassword: typeof import('./components/Auth/FormResetPassword.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
@@ -15,10 +16,12 @@ declare module 'vue' {
     NButton: typeof import('naive-ui')['NButton']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NDataTable: typeof import('naive-ui')['NDataTable']
+    NDatePicker: typeof import('naive-ui')['NDatePicker']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NDropdown: typeof import('naive-ui')['NDropdown']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
+    NFromItem: typeof import('naive-ui')['NFromItem']
     NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']
     NMenu: typeof import('naive-ui')['NMenu']
@@ -28,6 +31,7 @@ declare module 'vue' {
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
     NSwitch: typeof import('naive-ui')['NSwitch']
+    NTimePicker: typeof import('naive-ui')['NTimePicker']
     NTooltip: typeof import('naive-ui')['NTooltip']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -75,7 +75,7 @@ export const generatePassword = (length = 12) => {
     lowerCase[Math.floor(Math.random() * lowerCase.length)],
     upperCase[Math.floor(Math.random() * upperCase.length)],
     numbers[Math.floor(Math.random() * numbers.length)],
-    specialChars[Math.floor(Math.random() * specialChars.length)],
+    specialChars[Math.floor(Math.random() * specialChars.length)]
   ]
 
   // Điền các ký tự còn lại vào mật khẩu
@@ -87,7 +87,7 @@ export const generatePassword = (length = 12) => {
   // Xáo trộn mật khẩu để các ký tự bắt buộc không nằm ở đầu
   for (let i = passwordArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-      ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
+    ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
   }
 
   return passwordArray.join('')

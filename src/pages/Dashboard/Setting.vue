@@ -35,8 +35,8 @@
   const message = useMessage()
   const isEdit = ref(false)
   const loading = ref(false)
-  const valueSelect = ref<string>('7day') // get value from api
-  const currentValueSelect = ref<string>('7day')
+  const valueSelect = ref<string>('1month') // get value from api
+  const currentValueSelect = ref<string>('1month')
 
   const handelSubmit = () => {
     loading.value = true

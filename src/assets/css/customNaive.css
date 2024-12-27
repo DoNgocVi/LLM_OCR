@@ -20,3 +20,58 @@
 .n-input__input-el {
   caret-color: black !important;
 }
+
+.n-date-panel {
+  border: 1px solid #d1d1d1;
+}
+
+.n-date-panel-calendar {
+  .n-date-panel-weekdays {
+    height: 0;
+    display: none;
+  }
+  .n-date-panel-month__fast-next,
+  .n-date-panel-month__fast-prev {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .n-date-panel-month__next,
+  .n-date-panel-month__prev {
+    position: relative;
+    left: 20px;
+  }
+  .n-date-panel-month__prev {
+    left: -20px;
+  }
+}
+.n-date-picker {
+  .n-input__border,
+  .n-input__state-border {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+}
+.n-time-picker {
+  .n-input__border,
+  .n-input__state-border {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-left: 0px solid #3799dc;
+  }
+  .n-input__suffix {
+    display: none;
+  }
+  .n-input-wrapper {
+    padding: 0px;
+    .n-input__input {
+      input {
+        text-align: center;
+      }
+      .n-input__placeholder {
+        span {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

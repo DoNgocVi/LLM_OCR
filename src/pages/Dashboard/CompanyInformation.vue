@@ -6,16 +6,7 @@
       </div>
       <div v-else class="w-full flex justify-end">
         <div class="max-w-[464px] w-full flex gap-6">
-          <CustomButton
-            type="default"
-            content="キャンセル"
-            @click="
-              () => {
-                isEdit = false
-                isFormInvalid = false
-              }
-            "
-          />
+          <CustomButton type="default" content="キャンセル" @click="handleExitForm" />
           <CustomButton
             type="secondary"
             content="保存"
@@ -37,22 +28,23 @@
           <div
             v-for="(field, index) in fields"
             :key="index"
-            class="flex items-center min-h[60px] border-b-1 border-b-solid border-b-grey_light"
+            class="md:flex items-center min-h[60px] border-b-1 border-b-solid border-b-grey_light"
           >
-            <div class="max-w-[300px] w-full font-bold pl-2">{{ field.label }}</div>
-            <div class="flex-1">
+            <div class="basis-[300px] w-full font-bold pl-2 shrink-1 mb-1 md:mb-0">{{ field.label }}</div>
+            <div class="shrink-2 grow-1">
               <template v-if="field.editable && isEdit">
                 <n-form-item
                   :validation-status="validationStatus(field.key)"
                   :class="{
                     'mt-3 mb-3': errors[field.key],
-                    [field.width ? field.width : 'w-[676px]']: field?.width
+                    [field.width ? field.width : 'max-w-[676px]']: field?.width
                   }"
                   :feedback="errors[field.key]"
                   :show-feedback="!!errors[field.key]"
                 >
                   <n-input
                     v-model:value="form[`${field.key}`]"
+                    class="mb-2 md:mb-0"
                     type="text"
                     size="medium"
                     :placeholder="field.placeholder"
@@ -85,13 +77,14 @@
   import { useMessage } from 'naive-ui'
   import { useI18n } from 'vue-i18n'
   import { useVuelidate } from '@vuelidate/core'
-  import { required, email, helpers, maxLength } from '@vuelidate/validators'
+  import { required, email, helpers, maxLength, requiredIf } from '@vuelidate/validators'
   import isEqual from 'lodash/isEqual'
   import { formatPhoneNumber } from '@/composables/common'
   import type { FormCompanyType } from '@/types/dashboard'
   import { useUserManagementStore } from '@/stores/userManagement'
   import { storeToRefs } from 'pinia'
   import mockData from '../../mocks/dataCompany.json'
+  import { cloneDeep } from 'lodash'
 
   const userManagementStore = useUserManagementStore()
   const { t } = useI18n()
@@ -124,7 +117,7 @@
       editable: true,
       error: '',
       placeholder: '郵便番号を入力',
-      width: 'w-[180px]'
+      width: 'max-w-[180px]'
     },
     { label: '住所', key: 'address', editable: true, error: '', placeholder: '住所を入力' },
     {
@@ -132,8 +125,8 @@
       key: 'phoneNumber',
       editable: true,
       error: '',
-      placeholder: t('placeholder.enter_phone'),
-      width: 'w-[350px]'
+      placeholder: '',
+      width: 'max-w-[350px]'
     },
     {
       label: 'ご連絡先メールアドレス',
@@ -162,7 +155,10 @@
   const rules = computed(() => {
     return {
       company: {
-        required: helpers.withMessage(t('validate.require'), required),
+        required: helpers.withMessage(
+          t('validate.require'),
+          requiredIf(() => form.value.company.length === 0)
+        ),
         noWhitespaceOnly,
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
@@ -173,7 +169,10 @@
         )
       },
       address: {
-        required: helpers.withMessage(t('validate.require'), required),
+        required: helpers.withMessage(
+          t('validate.require'),
+          requiredIf(() => form.value.address.length === 0)
+        ),
         noWhitespaceOnly,
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
@@ -188,7 +187,10 @@
         email: helpers.withMessage(t('validate.invalid_format'), email)
       },
       personName: {
-        required: helpers.withMessage(t('validate.require'), required),
+        required: helpers.withMessage(
+          t('validate.require'),
+          requiredIf(() => form.value.personName.length === 0)
+        ),
         noWhitespaceOnly,
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       }
@@ -203,16 +205,25 @@
     if (result) {
       loading.value = true
       setTimeout(() => {
-        message.success(t('dashboard.setting.msg_success'), {
+        message.success(t('dashboard.company.msg_success'), {
           render: renderMessage,
           duration: defaultDurationToast
         })
         currentValueSelect.value = valueSelect.value
         isEdit.value = false
         loading.value = false
+        initialFormState.value = cloneDeep(form.value)
       }, 1000)
     }
   }
+
+  const handleExitForm = () => {
+    isEdit.value = false
+    isFormInvalid.value = false
+    // @ts-ignore
+    form.value = cloneDeep(initialFormState.value)
+  }
+
   const validationStatus = (field: keyof FormCompanyType) => {
     if (v$.value[field].$dirty && v$.value[field].$error) {
       errors[field] = v$.value[field].$invalid ? `${v$.value[field].$errors[0].$message}` : ''
@@ -247,7 +258,7 @@
     //TODO: api get information company with axios
     const data = mockData
     setFormData(data)
-    initialFormState.value = { ...form.value }
+    initialFormState.value = cloneDeep(form.value)
   })
   onUnmounted(() => {
     isEdit.value = false

@@ -1,7 +1,7 @@
 <template>
   <div class="h-full flex flex-col justify-between">
     <div class="pt-4">
-      <div class="pl-8">
+      <div class="pl-8 z-10 bg-main">
         <MainLogo class="w-[58px] h-[28px]" />
       </div>
       <div class="mt-4">
