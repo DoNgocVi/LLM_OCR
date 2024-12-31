@@ -23,7 +23,12 @@
           <p>利用枚数</p>
         </div>
         <div class="max-w-[151px] w-full">
-          <CustomSelect v-model:value="valueOption" :options="dataUsageOption" class="w-full" />
+          <CustomSelect
+            v-model:value="valueOption"
+            :options="dataUsageOption"
+            class="w-full"
+            @update:value="updateChart"
+          />
         </div>
       </div>
     </div>
@@ -33,24 +38,89 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { use } from 'echarts/core'
   import { CanvasRenderer } from 'echarts/renderers'
   import { BarChart } from 'echarts/charts'
   import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
   import VChart, { THEME_KEY } from 'vue-echarts'
-  import { ref, provide } from 'vue'
+  import { ref, provide, onMounted } from 'vue'
   import { dataUsageOption } from '@/constants/common'
   import { max } from 'lodash'
+
   use([CanvasRenderer, BarChart, TitleComponent, TooltipComponent, GridComponent])
   provide(THEME_KEY, 'light')
-  const data = ref([120, 200, 150, 80, 70, 110, 130])
-  const maxChartHeight = max(data.value)
-  const series = [
+
+  interface SeriesItem {
+    data: number[]
+    type: string
+    barWidth: string
+    itemStyle: {
+      borderRadius: number[]
+      color: {
+        type: string
+        y: number
+        x2: number
+        y2: number
+        colorStops: { offset: number; color: string }[]
+        formatter?: (value: string, index: number) => string
+      }
+    }
+  }
+
+  interface ChartOption {
+    xAxis: {
+      type: string
+      axisLabel: {
+        rotate: number
+        color: string
+        fontSize: number
+      }
+      axisLine: {
+        show: boolean
+      }
+      data: string[]
+    }
+    yAxis: {
+      type: string
+      max: number
+      axisLabel: {
+        color: string
+        fontSize: number
+      }
+      splitLine: {
+        lineStyle: {
+          type: string
+          color: string
+          width: number
+        }
+      }
+    }
+    tooltip: {
+      trigger: string
+      axisPointer: {
+        type: string
+      }
+      formatter: (params: { value: number }[]) => string
+      backgroundColor: string
+      borderColor: string
+      borderWidth: number
+      textStyle: {
+        color: string
+        fontSize: number
+      }
+    }
+    series: SeriesItem[]
+  }
+
+  const data = ref<number[]>([120, 200, 150, 80, 70, 110, 130])
+  const maxChartHeight = max(data.value) as number
+
+  const series: SeriesItem[] = [
     {
-      data: data.value,
+      data: [],
       type: 'bar',
-      barWidth: '40px',
+      barWidth: '16px',
       itemStyle: {
         borderRadius: [15, 15, 4, 4],
         color: {
@@ -66,21 +136,46 @@
       }
     }
   ]
-  const option = ref({
+  const option = ref<ChartOption>({
     xAxis: {
       type: 'category',
       axisLabel: {
         rotate: 45,
         color: '#858D9D',
-        fontSize: 12
+        fontSize: 12,
+        formatter: (value, index) => {
+          if (option.value.series[0].data[index].value === null) {
+            return `{bold|${value}}`
+          }
+          return value
+        },
+        rich: {
+          bold: {
+            fontWeight: 'bold',
+            color: '#5B5B5B'
+          }
+        }
       },
       axisLine: {
-        show: false
+        show: false,
+        lineStyle: {
+          color: '#ccc'
+        }
       },
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      splitLine: {
+        // Thêm cấu hình đường lưới dọc
+        show: false, // Hiển thị đường lưới dọc
+        lineStyle: {
+          type: 'dashed', // Loại nét (liền hoặc đứt)
+          color: '#ccc', // Màu sắc
+          width: 1 // Độ dày
+        }
+      },
+      data: []
     },
     yAxis: {
       type: 'value',
+      max: maxChartHeight + 50,
       axisLabel: {
         color: '#858D9D',
         fontSize: 12
@@ -93,14 +188,121 @@
         }
       }
     },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'none'
+      },
+      formatter: (params: { value: number }[]) => {
+        const data = params[0]
+        return `
+        <div class="flex items-center gap-2 font-sans">
+          <div class="w-[12px] h-[12px] rounded-full bg-gradient-to-t from-[#22CAAD] to-[#2BB2FE]"></div>
+          <p>利用枚数</p>
+          <span>:</span>
+          <strong>${data.value}</strong><br/>
+        </div>
+      `
+      },
+      backgroundColor: '#5b5b5b',
+      borderColor: '#5b5b5b',
+      borderWidth: 1,
+      textStyle: {
+        color: '#fff',
+        fontSize: 12
+      }
+    },
     series: series
   })
-  const startDate = ref()
-  const endDate = ref()
-  const startDateDisable = ref(false)
-  const endDateDisable = ref(false)
-  const total = ref(400)
-  const valueOption = ref('day')
+
+  const startDate = ref<number>(Date.now())
+  const endDate = ref<number>(Date.now() + 86400000)
+  const startDateDisable = ref<boolean>(false)
+  const endDateDisable = ref<boolean>(false)
+  const total = ref<number>(400)
+  const valueOption = ref<string>('day')
+
+  const updateChart = (type: string) => {
+    if (type === 'day') {
+      // const date = new Date(startDate.value)
+      // const getDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+      option.value.xAxis.data = [
+        '2024年1',
+        '1日',
+        '2日',
+        '3日',
+        '4日',
+        '5日',
+        '6日',
+        '7日',
+        '8日',
+        '9日',
+        '10日',
+        '11日',
+        '12日',
+        '13日',
+        '14日',
+        '15日',
+        '16日',
+        '17日',
+        '18日',
+        '19日',
+        '20日',
+        '21日',
+        '22日',
+        '23日',
+        '24日',
+        '25日',
+        '26日',
+        '27日',
+        '28日',
+        '29日',
+        '30日',
+        '31日',
+        '2024年2',
+        '1日'
+      ]
+      const seriesData = [
+        0, 120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130, 120, 200,
+        150, 80, 70, 110, 130, 120, 200, 150, 0, 100
+      ]
+      option.value.series[0].data = seriesData.map((value, index) => {
+        return {
+          value: value == 0 ? null : value, // Đặt giá trị bằng maxValue cho cột đặc biệt
+          itemStyle:
+            value == 0
+              ? {
+                  borderType: 'dashed',
+                  borderWidth: 0.7,
+                  borderColor: '#000',
+                  color: 'transparent'
+                }
+              : null,
+          tooltip: value == 0 ? null : undefined // Loại bỏ tooltip cho cột đặc biệt
+        }
+      })
+    } else if (type === 'week') {
+      ;(option.value.xAxis.data = ['1週', '2週', '3週', '4週']), (option.value.series[0].data = [120, 200, 150, 80])
+    } else {
+      option.value.xAxis.data = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      option.value.series[0].data = [120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70]
+    }
+    setBarWidth(option.value.series[0].data.length)
+  }
+
+  const setBarWidth = (count: number) => {
+    if (count >= 20) {
+      option.value.series[0].barWidth = '16px'
+    } else if (count >= 10) {
+      option.value.series[0].barWidth = '30px'
+    } else {
+      option.value.series[0].barWidth = '40px'
+    }
+  }
+
+  onMounted(() => {
+    updateChart(valueOption.value)
+  })
 </script>
 
 <style scoped lang="scss">
