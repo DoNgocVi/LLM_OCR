@@ -57,7 +57,7 @@
   import { required, helpers, sameAs } from '@vuelidate/validators'
   import { renderMessage } from '@/composables/auth'
   import { useI18n } from 'vue-i18n'
-  import { defaultDurationToast } from '@/constants/common'
+  import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import Eye from '@/assets/images/icons/Eye.vue'
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
 
@@ -118,7 +118,7 @@
     if (!!props.msgToastError) {
       message.error(props.msgToastError, {
         render: renderMessage,
-        duration: defaultDurationToast
+        duration: DEFAULT_DURATION_TOAST
       })
     }
   }

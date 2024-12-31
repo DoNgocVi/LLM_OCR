@@ -26,7 +26,7 @@
 </template>
 <script lang="ts" setup>
   import { renderMessage } from '@/composables/auth'
-  import { defaultDurationToast } from '@/constants/common'
+  import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import { timeOptions } from '@/constants/dashboard'
   import { useMessage } from 'naive-ui'
   import { useI18n } from 'vue-i18n'
@@ -43,7 +43,7 @@
     setTimeout(() => {
       message.success(t('dashboard.setting.msg_success'), {
         render: renderMessage,
-        duration: defaultDurationToast
+        duration: DEFAULT_DURATION_TOAST
       })
       currentValueSelect.value = valueSelect.value
       isEdit.value = false
