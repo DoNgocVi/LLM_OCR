@@ -125,7 +125,7 @@
       key: 'phoneNumber',
       editable: true,
       error: '',
-      placeholder: t('placeholder.enter_phone'),
+      placeholder: '',
       width: 'max-w-[350px]'
     },
     {
@@ -205,7 +205,7 @@
     if (result) {
       loading.value = true
       setTimeout(() => {
-        message.success(t('dashboard.setting.msg_success'), {
+        message.success(t('dashboard.company.msg_success'), {
           render: renderMessage,
           duration: defaultDurationToast
         })
