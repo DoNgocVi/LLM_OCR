@@ -51,7 +51,7 @@
 <script lang="ts" setup>
   // import { renderMessage } from '@/composables/auth'
   // import { useMessage } from 'naive-ui'
-  // import { defaultDurationToast } from '@/constants/common'
+  // import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import AddIcon from '@/assets/images/icons/AddIcon.vue'
   import CustomButton from '@/components/CustomButton.vue'
   import { useRouter } from 'vue-router'

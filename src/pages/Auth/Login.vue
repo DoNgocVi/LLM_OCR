@@ -82,7 +82,7 @@
   import { RouterLink, useRouter } from 'vue-router'
   import { renderMessage } from '@/composables/auth'
   import { useI18n } from 'vue-i18n'
-  import { defaultDurationToast } from '@/constants/common'
+  import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import Eye from '@/assets/images/icons/Eye.vue'
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
 
@@ -124,7 +124,7 @@
   const toastErrorMessage = () => {
     message.error(t('validate.toast_reset_password'), {
       render: renderMessage,
-      duration: defaultDurationToast
+      duration: DEFAULT_DURATION_TOAST
     })
   }
 
@@ -143,7 +143,7 @@
           localStorage.setItem('token', draftToken)
           router.push('/dashboard/job-result')
           // toastErrorMessage()
-        }, defaultDurationToast)
+        }, DEFAULT_DURATION_TOAST)
       } catch (error) {
         console.log(error)
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-[20px] px-6 py-[26px] text-dark_medium">
+  <div class="bg-white rounded-[20px] px-6 py-[32px] text-dark_medium">
     <div>
       <div v-if="!isEdit" class="w-[220px] ml-a">
         <CustomButton type="primary" content="編集" @click="isEdit = true" />
@@ -20,8 +20,8 @@
 
     <div class="mt-6">
       <div v-if="isFormInvalid" class="text-red bg-[#FEECEE] box-border py-3 px-6 mb-3 rounded-[4px]">
-        <p class="">{{ $t('dashboard.job.msg_error1') }}</p>
-        <p class="mt-2">{{ $t('dashboard.job.msg_error2') }}</p>
+        <p class="leading-[17px]">{{ $t('dashboard.job.msg_error1') }}</p>
+        <p class="leading-[17px]">{{ $t('dashboard.job.msg_error2') }}</p>
       </div>
       <div class="company-info">
         <n-form novalidate label-placement="left" label-width="auto" require-mark-placement="right-hanging">
@@ -31,7 +31,7 @@
             class="md:flex items-center min-h[60px] border-b-1 border-b-solid border-b-grey_light"
           >
             <div class="basis-[300px] w-full font-bold pl-2 shrink-1 mb-1 md:mb-0">{{ field.label }}</div>
-            <div class="shrink-2 grow-1">
+            <div class="shrink-2 grow-1 ml-2 md:ml-0">
               <template v-if="field.editable && isEdit">
                 <n-form-item
                   :validation-status="validationStatus(field.key)"
@@ -62,7 +62,10 @@
                 </n-form-item>
               </template>
               <template v-else>
-                {{ form[`${field.key}`] }}
+                <div v-if="field.key === 'id'">xxxxxxxxxxx</div>
+                <div v-else>
+                  {{ form[`${field.key}`] }}
+                </div>
               </template>
             </div>
           </div>
@@ -73,7 +76,7 @@
 </template>
 <script lang="ts" setup>
   import { renderMessage } from '@/composables/auth'
-  import { defaultDurationToast } from '@/constants/common'
+  import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import { useMessage } from 'naive-ui'
   import { useI18n } from 'vue-i18n'
   import { useVuelidate } from '@vuelidate/core'
@@ -116,7 +119,7 @@
       key: 'postCode',
       editable: true,
       error: '',
-      placeholder: '郵便番号を入力',
+      placeholder: '',
       width: 'max-w-[180px]'
     },
     { label: '住所', key: 'address', editable: true, error: '', placeholder: '住所を入力' },
@@ -125,7 +128,7 @@
       key: 'phoneNumber',
       editable: true,
       error: '',
-      placeholder: '',
+      placeholder: '電話番号を入力',
       width: 'max-w-[350px]'
     },
     {
@@ -163,7 +166,11 @@
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       postCode: {
-        required: helpers.withMessage(t('validate.require'), required),
+        required: helpers.withMessage(
+          t('validate.require'),
+          requiredIf(() => form.value.postCode.length === 0)
+        ),
+        noWhitespaceOnly,
         validPhoneNumber: helpers.withMessage(t('validate.invalid_format'), (value: string) =>
           /^\+?([0-9]{3})\)?[-. ]?([0-9]{4})$/.test(value)
         )
@@ -177,13 +184,21 @@
         maxLength: helpers.withMessage(t('validate.max_length_255'), maxLength(255))
       },
       phoneNumber: {
-        required: helpers.withMessage(t('validate.require'), required),
+        required: helpers.withMessage(
+          t('validate.require'),
+          requiredIf(() => form.value.phoneNumber.length === 0)
+        ),
+        noWhitespaceOnly,
         validPhoneNumber: helpers.withMessage(t('validate.invalid_format'), (value: string) =>
           /^\+?([0-9]{2,3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(value)
         )
       },
       emailAddress: {
-        required: helpers.withMessage(t('validate.require'), required),
+        required: helpers.withMessage(
+          t('validate.require'),
+          requiredIf(() => form.value.emailAddress.length === 0)
+        ),
+        noWhitespaceOnly,
         email: helpers.withMessage(t('validate.invalid_format'), email)
       },
       personName: {
@@ -207,13 +222,18 @@
       setTimeout(() => {
         message.success(t('dashboard.company.msg_success'), {
           render: renderMessage,
-          duration: defaultDurationToast
+          duration: DEFAULT_DURATION_TOAST
         })
         currentValueSelect.value = valueSelect.value
         isEdit.value = false
         loading.value = false
         initialFormState.value = cloneDeep(form.value)
       }, 1000)
+    } else {
+      message.error(t('dashboard.company.msg_error'), {
+        render: renderMessage,
+        duration: DEFAULT_DURATION_TOAST
+      })
     }
   }
 

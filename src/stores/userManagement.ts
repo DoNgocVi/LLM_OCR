@@ -7,7 +7,7 @@ export const useUserManagementStore = defineStore('user-management', () => {
   // Tạo state reactive cho form
   let form = ref<FormCompanyType>({
     company: '',
-    id: 'xxxxxxxxxxxx',
+    id: '123456789',
     planSubscribed: 'Basic',
     postCode: '',
     address: '',

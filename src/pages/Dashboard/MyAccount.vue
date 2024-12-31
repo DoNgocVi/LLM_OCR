@@ -21,14 +21,14 @@
   import FormResetPassword from '@/components/Auth/FormResetPassword.vue'
   import { useMessage } from 'naive-ui'
   import { renderMessage } from '@/composables/auth'
-  import { defaultDurationToast } from '@/constants/common'
+  import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   // const { t } = useI18n()
   const message = useMessage()
   const handleResetPassword = (isSuccess: boolean) => {
     if (isSuccess) {
       message.success('パスワードの変更が完了しました', {
         render: renderMessage,
-        duration: defaultDurationToast
+        duration: DEFAULT_DURATION_TOAST
       })
     }
   }

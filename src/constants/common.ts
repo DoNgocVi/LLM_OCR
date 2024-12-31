@@ -67,6 +67,6 @@ export const dataUsageOption: {
     }
   ]
 
-export const defaultDurationToast: number = 2000
+export const DEFAULT_DURATION_TOAST: number = 2000
 
 export const DEFAULT_PAGE_SIZE: string = '50'

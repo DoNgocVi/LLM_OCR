@@ -51,7 +51,8 @@
       "msg_error2": "入力内容をご確認の上、再度入力してください。"
     },
     "company": {
-      "msg_success": "企業情報の変更を保存しました"
+      "msg_success": "企業情報の変更を保存しました",
+      "msg_error": "入力に誤りがあります。もう一度入力してください"
     },
     "user_management": {
       "title": "ユーザー 一覧",
