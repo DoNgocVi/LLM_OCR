@@ -26,15 +26,16 @@
     "invalid_password": "半角英数字6文字以上で設定してください",
     "same_password": "パスワードが一致しません",
     "invalid_format": "入力形式に誤りがあります",
-    "strong_password": "半角英数字6文字以上で設定してください",
+    "strong_password": "半角英数字6文字以上64文字以下で入力してください",
     "toast_reset_password": "入力に誤りがあります。もう一度入力してください。",
-    "max_length_255": "最大255文字です"
+    "max_length_255": "最大255文字です",
+    "msg_duplicate_email": "このメールアドレスはすでに使用されています"
   },
   "placeholder": {
     "enter_email": "メールアドレスを入力",
     "enter_password": "パスワードを入力",
     "enter_phone": "電話番号を入力",
-    "enter_name": "名前を入力"
+    "enter_name": "例：山田 太郎"
   },
   "title": {
     "user_setting": "パスワード再設定"
@@ -48,7 +49,15 @@
     "job": {
       "title": "フィルター",
       "msg_error1": "入力に誤りがあります。",
-      "msg_error2": "入力内容をご確認の上、再度入力してください。"
+      "msg_error2": "入力内容をご確認の上、再度入力してください。",
+      "btn_download": "結果を一括ダウンロード",
+      "btn_delete": "ジョブを一括削除",
+      "modal_label_download": "ダウンロード",
+      "modal_content_download": "ファイル出力形式を選んでください",
+      "modal_btn_download": "ダウンロード",
+      "add_job": "新規作成",
+      "name_register": "ジョブ名を記入",
+      "register_job": "設定"
     },
     "company": {
       "msg_success": "企業情報の変更を保存しました",
@@ -57,13 +66,26 @@
     "user_management": {
       "title": "ユーザー 一覧",
       "title_register": "ユーザー新規登録",
+      "title_edit_user": "ユーザー情報の編集",
       "btn_add": "ユーザー新規登録",
       "msg_empty_data": "該当データがありません",
-      "btn_set_password": "パスワード再設定",
+      "btn_reset_password": "パスワード再設定",
+      "btn_set_new_password": "パスワード設定",
       "modal_title": "パスワードを再設定",
       "modal_label_checkbox": "パスワードを自動的に生成する",
       "copy_password": "クリックしてパスワードをコピー",
-      "msg_tooltip": "パスワードをコピーしました"
+      "msg_tooltip": "パスワードをコピーしました",
+      "msg_register_success": "ユーザーを登録しました",
+      "msg_edit_success": "ユーザー情報の編集を保存しました",
+      "msg_set_password_success": "パスワードを設定しました",
+      "msg_reset_password_success": "パスワードを再設定しました",
+      "msg_delete": "削除したら復元できません。本当に削除しますか？",
+      "title_set_new_password": "パスワードを設定してください",
+      "msg_error_validate": "入力に誤りがあります。もう一度内容を確認してください",
+      "msg_delete_success": "ユーザーを削除しました",
+      "required_set_password": "パスワードが設定されていません",
+      "enter_email": "例：sample@sample.com",
+      "btn_reset": "再設定"
     }
   }
 }

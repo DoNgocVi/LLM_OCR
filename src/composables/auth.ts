@@ -11,11 +11,11 @@ const typeStyles = {
     icon: InfoIcon
   },
   default: {
-    backgroundColor: '#FFFFFF', // Default màu khác nếu cần
+    backgroundColor: '#FFFFFF', 
     icon: null
   },
   loading: {
-    backgroundColor: '#FFFFFF', // Default màu khác nếu cần
+    backgroundColor: '#FFFFFF',
     icon: null
   }
 }

@@ -111,7 +111,7 @@
       width?: string
     }[]
   >([
-    { label: '企業名', key: 'company', editable: true, error: '', placeholder: '企業名を入力' },
+    { label: '企業名', key: 'company', editable: true, error: '', placeholder: '例：株式会社xxxx' },
     { label: '企業ID', key: 'id', editable: false },
     { label: 'ご契約中のプラン', key: 'planSubscribed', editable: false },
     {
@@ -119,16 +119,16 @@
       key: 'postCode',
       editable: true,
       error: '',
-      placeholder: '',
+      placeholder: '例：163-8001',
       width: 'max-w-[180px]'
     },
-    { label: '住所', key: 'address', editable: true, error: '', placeholder: '住所を入力' },
+    { label: '住所', key: 'address', editable: true, error: '', placeholder: '例：東京都新宿区西新宿2-8-1' },
     {
       label: '電話番号',
       key: 'phoneNumber',
       editable: true,
       error: '',
-      placeholder: '電話番号を入力',
+      placeholder: '例：03-1234-5678',
       width: 'max-w-[350px]'
     },
     {
@@ -136,9 +136,9 @@
       key: 'emailAddress',
       editable: true,
       error: '',
-      placeholder: 'メールアドレスを入力'
+      placeholder: '例：abc@sample.com'
     },
-    { label: 'ご連絡先担当者名', key: 'personName', editable: true, error: '', placeholder: '担当者名を入力' }
+    { label: 'ご連絡先担当者名', key: 'personName', editable: true, error: '', placeholder: '例：山田 太郎' }
   ])
 
   const errors = reactive<Partial<Record<keyof FormCompanyType, string | undefined>>>({

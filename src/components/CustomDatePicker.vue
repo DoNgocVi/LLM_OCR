@@ -37,6 +37,14 @@
     dateDisable: {
       type: [Number, Boolean]
     },
+    disableBefore: {
+      type: Number,
+      required: false
+    },
+    disableAfter: {
+      type: Number,
+      required: false
+    },
     isStartDate: {
       type: Boolean
     },
@@ -74,9 +82,13 @@
     console.log(value)
     emit('update:timestamp', value)
   }
+
   const dateDisabled = (ts: number) => {
-    if (props.dateDisable && typeof props.dateDisable === 'number') {
-      return props.isStartDate ? ts >= props.dateDisable : ts <= props.dateDisable
+    if (props.disableBefore && ts <= props.disableBefore) {
+      return true
+    }
+    if (props.disableAfter && ts >= props.disableAfter) {
+      return true
     } else {
       return false
     }

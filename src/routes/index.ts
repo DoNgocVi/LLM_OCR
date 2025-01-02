@@ -46,6 +46,11 @@ export const routes = [
             path: 'list-job',
             name: 'ListJob',
             component: () => import('@pages/Dashboard/JobResults/JobResults.vue')
+          },
+          {
+            path: 'register-job',
+            name: 'RegisterJob',
+            component: () => import('@pages/Dashboard/JobResults/RegisterJob.vue')
           }
         ]
       },
@@ -84,6 +89,11 @@ export const routes = [
     path: '/policy',
     name: 'Policy',
     component: () => import('@pages/Policy.vue')
+  },
+  {
+    path: '/preview',
+    name: 'Preview',
+    component: () => import('@pages/Dashboard/JobResults/JobPreview.vue')
   },
   {
     path: '/:pathMatch(.*)*',

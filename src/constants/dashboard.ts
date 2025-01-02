@@ -6,6 +6,7 @@ import PencilIcon from '@/assets/images/icons/PencilIcon.vue'
 import SettingIcon from '@/assets/images/icons/SettingIcon.vue'
 import TrashIcon from '@/assets/images/icons/TrashIcon.vue'
 import { User } from '@/types/dashboard'
+import { time } from 'echarts'
 import { DataTableColumns, MenuOption, NButton, NIcon } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 
@@ -208,7 +209,7 @@ export const createColumns = ({
     {
       title: '編集',
       key: 'edit',
-      width: 120,
+      width: 90,
       render(row) {
         return h(
           NButton,
@@ -241,7 +242,7 @@ export const createColumns = ({
     {
       title: '削除',
       key: 'deleteRow',
-      width: 120,
+      width: 90,
       render(row) {
         return h(
           NButton,
@@ -273,3 +274,42 @@ export const createColumns = ({
     }
   ]
 }
+
+export const jobStatus = {
+  pending: {
+    text: '読込中...',
+    color: '#858D9D'
+  },
+  created: {
+    text: 'ジョブ作成済み',
+    color: '#5B5B5B'
+  },
+  updated: {
+    text: '編集済み',
+    color: '#2296A0'
+  },
+  readingCompleted: {
+    text: '読取完了',
+    color: '#1175BA'
+  },
+  loadingError: {
+    text: '読込エラー',
+    color: '#D8392F'
+  },
+  timeoutError: {
+    text: 'タイムアウト',
+    color: '#D8392F'
+  }
+}
+
+export const optionsDownload = [
+  { label: 'CSV', value: 'csv' },
+  { label: 'JSON', value: 'json' }
+]
+
+export const optionDocumentType = [
+  { label: '請求書（Invoice）', value: 'invoice' },
+  { label: '包装明細書（Packing List）', value: 'packingList' },
+  { label: '貨物到着案内（Arrival Notice）', value: 'arrivalNotice' },
+  { label: '船荷証券（Bill of Lading）', value: 'billLading' }
+]

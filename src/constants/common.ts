@@ -70,3 +70,6 @@ export const dataUsageOption: {
 export const DEFAULT_DURATION_TOAST: number = 2000
 
 export const DEFAULT_PAGE_SIZE: string = '50'
+
+export const ALLOWED_FORMATS = '.pdf,.jpg,.png,.zip'
+export const MAX_SIZE = 100 * 1024 * 1024 // 100MB

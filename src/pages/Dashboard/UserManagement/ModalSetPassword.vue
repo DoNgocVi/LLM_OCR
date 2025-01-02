@@ -19,11 +19,7 @@
         <p class="font-bold text-[20px] mt-3">{{ $t('dashboard.user_management.modal_title') }}</p>
         <div
           class="pos-absolute -top-[70px] -right-[38px] rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all"
-          @click="
-            () => {
-              $emit('update:show', false)
-            }
-          "
+          @click="handleCloseModal"
         >
           <n-icon size="18" :component="Close"></n-icon>
         </div>
@@ -31,8 +27,10 @@
     </template>
     <template #default>
       <div class="flex gap-4 items-center">
-        <n-switch v-model:value="autoSetPassword" size="small" />
-        <p>{{ $t('dashboard.user_management.modal_label_checkbox') }}</p>
+        <n-switch v-model:value="autoSetPassword" size="small"></n-switch>
+        <p class="cursor-pointer" @click="autoSetPassword = !autoSetPassword">
+          {{ $t('dashboard.user_management.modal_label_checkbox') }}
+        </p>
       </div>
       <div class="mt-6">
         <div
@@ -48,6 +46,9 @@
                   :validation-status="props.error ? 'error' : 'success'"
                   :feedback="props.error"
                   :show-feedback="!!props.error"
+                  :theme-overrides="{
+                    feedbackTextColorError: '#ED584F'
+                  }"
                 >
                   <n-input
                     v-model:value="props.password"
@@ -75,7 +76,7 @@
             </div>
             <div v-else key="password" class="h-[36px] mt-[6pz]">
               <div v-if="showPassword" class="flex gap-4">
-                <div class="max-w-[120px] min-w-[100px]">{{ props.password }}</div>
+                <div class="min-w-[125px] text-black">{{ props.password }}</div>
                 <n-icon
                   class="text-gray_light cursor-pointer"
                   :size="24"
@@ -88,8 +89,8 @@
                 />
               </div>
               <div v-else class="flex items-center gap-4">
-                <div class="-mt-1 max-w-[120px] min-w-[100px]">
-                  <span v-for="i in 6" class="text-grey_dark px-[2px] text-lg">●</span>
+                <div class="-mt-1 min-w-[125px]">
+                  <span v-for="i in 6" :key="i" class="text-grey_dark px-[2px] text-lg">●</span>
                 </div>
                 <n-icon
                   class="text-gray_light cursor-pointer"
@@ -117,7 +118,7 @@
             @update:show="handleUpdateShow"
           >
             <template #trigger>
-              <p :class="`text-primary cursor-pointer inline-block`">
+              <p :class="`text-primary cursor-pointer inline-block`" @click="copyPassword">
                 {{ $t('dashboard.user_management.copy_password') }}
               </p>
             </template>
@@ -127,27 +128,14 @@
       </div>
     </template>
     <template #footer>
-      <div class="flex items-center mt-1 gap-6 font-sans">
-        <CustomButton
-          type="primary"
-          content="キャンセル"
-          :theme-overrides="{
-            border: '1px solid #D1D1D1',
-            borderHover: '1px solid #D1D1D1',
-            borderFocus: '1px solid #D1D1D1',
-            borderPressed: '1px solid #D1D1D1'
-          }"
-          @click="handleCloseModal"
-        />
+      <div class="flex items-center justify-end my-1 gap-6 font-sans">
+        <CustomButton type="default" class="max-w-[118px]" content="キャンセル" @click="handleCloseModal" />
         <CustomButton
           type="secondary"
-          content="再設定"
-          :loading="false"
-          @click="
-            () => {
-              $emit('update:show', false)
-            }
-          "
+          class="max-w-[118px]"
+          :content="props.userId ? t('dashboard.user_management.btn_reset') : t('common.setting')"
+          :loading="loading"
+          @click="setPassword"
         />
       </div>
     </template>
@@ -157,7 +145,11 @@
   import Eye from '@/assets/images/icons/Eye.vue'
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
   import { Close } from '@vicons/ionicons5'
-  import { generatePassword } from '@/composables/auth'
+  import { generatePassword, renderMessage } from '@/composables/auth'
+  import { useMessage } from 'naive-ui'
+  import { DEFAULT_DURATION_TOAST } from '@/constants/common'
+  import { useI18n } from 'vue-i18n'
+
   const props = defineProps({
     show: {
       type: Boolean,
@@ -167,39 +159,91 @@
       type: String,
       default: ''
     },
+    userId: {
+      type: String
+    },
     error: {
       type: String,
       default: ''
     }
   })
+  const { t } = useI18n()
+  const message = useMessage()
 
-  const emit = defineEmits(['update:show', 'update:password'])
+  const emit = defineEmits(['update:show', 'update:password', 'onRegisterPassword'])
 
   const autoSetPassword = ref<boolean>(false)
-  const showPassword = ref<boolean>(true)
+  const showPassword = ref<boolean>(false)
+  const loading = ref<boolean>(false)
+  const isValidPassword = ref<boolean>(false)
+  const currentValuePasswordValid = ref<string>('')
+
   const showModalRegister = computed(() => {
     return props.show
   })
+
+  const handleCloseModal = () => {
+    console.log('function close modal')
+    autoSetPassword.value = false
+    showPassword.value === false
+    //delete password
+    setTimeout(() => {
+      if (isValidPassword.value) {
+        emit('update:password', currentValuePasswordValid.value)
+      } else {
+        emit('update:password', '')
+      }
+      emit('update:show', false)
+    })
+  }
+  const handleUpdateShow = (show: boolean) => {
+    console.log(show, 'show')
+  }
+  const setPassword = async () => {
+    await emit('onRegisterPassword')
+    if (props.error) {
+      isValidPassword.value = false
+      return
+    }
+    loading.value = true
+    isValidPassword.value = true
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        loading.value = false
+        if (props.userId) {
+          message.success(t('dashboard.user_management.msg_reset_password_success'), {
+            render: renderMessage,
+            duration: DEFAULT_DURATION_TOAST
+          })
+        }
+
+        resolve(true)
+      }, 200)
+    })
+    currentValuePasswordValid.value = props.password
+    emit('update:show', false)
+  }
+
+  const copyPassword = () => {
+    navigator.clipboard.writeText(props.password)
+  }
 
   watch(autoSetPassword, (value: boolean) => {
     if (value) {
       emit('update:password', '')
       const newPassword = generatePassword()
-      console.log(newPassword)
       emit('update:password', newPassword)
     } else {
       emit('update:password', '')
     }
   })
-  const handleCloseModal = () => {
-    //delete password
-    emit('update:password', '')
-    //close modal
-    emit('update:show', false)
-  }
-  const handleUpdateShow = (show: boolean) => {
-    console.log(show, 'show')
-  }
+  onMounted(async () => {
+    await nextTick()
+    if (props.password) {
+      currentValuePasswordValid.value = props.password
+      isValidPassword.value = true
+    }
+  })
 </script>
 <style scope lang="scss">
   .transition-container {

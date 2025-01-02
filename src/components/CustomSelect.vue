@@ -7,6 +7,7 @@
       'no-click': !props.isEdit
     }"
     :options="props.options"
+    :disabled="props.disabled"
     :theme-overrides="{
       peers: {
         InternalSelection: {
@@ -31,8 +32,12 @@
     <template #arrow>
       <transition name="slide-left">
         <template v-if="props.isEdit">
-          <CaretUpOutline v-if="show" />
-          <CaretDownOutline v-else />
+          <n-icon v-if="show" color="#858D9D">
+            <CaretUpOutline />
+          </n-icon>
+          <n-icon v-else color="#858D9D">
+            <CaretDownOutline />
+          </n-icon>
         </template>
       </transition>
     </template>
@@ -58,7 +63,11 @@
       default: ''
     },
     value: String,
-    size: String
+    size: String,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   })
 
   const valueSelect = ref<string | undefined>(props.value)

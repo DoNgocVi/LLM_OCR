@@ -57,6 +57,8 @@
   })
   const sizeClass = computed(() => {
     switch (props.size) {
+      case 'xs':
+        return 'h-[36px] text-sm'
       case 'small':
         return 'h-[52px] text-sm'
       case 'large':
@@ -75,7 +77,8 @@
         border: '1px solid #D1D1D1',
         waveOpacity: '0'
       }),
-      color: '#fff'
+      color: '#fff',
+      borderDisabled: 'none'
     },
     secondary: {
       ...generateThemeOverrides({
@@ -87,7 +90,7 @@
       waveOpacity: '0',
       colorDisabled: '#ACACAC',
       textColorDisabled: '#FFF',
-      borderDisabled: 'none '
+      borderDisabled: 'none'
     },
     primary: {
       fontWeight: 'bold',
@@ -108,6 +111,28 @@
       }),
       waveOpacity: '0',
       color: '#ED584F'
+    },
+    delete: {
+      fontWeight: 'bold',
+      ...generateThemeOverrides({
+        color: '#F5F5F5',
+        textColor: '#ED584F',
+        border: '1px solid #D1D1D1'
+      }),
+      waveOpacity: '0',
+      color: '#FFF'
+    },
+    tertiary: {
+      ...generateThemeOverrides({
+        color: '#2A2A2A',
+        textColor: '#fff',
+        border: 'none'
+      }),
+      color: '#4F4F4F',
+      waveOpacity: '0',
+      colorDisabled: '#ACACAC',
+      textColorDisabled: '#FFF',
+      borderDisabled: 'none'
     }
   }
   const styleButton = computed(() => buttonStyles[props.type] || buttonStyles.default)

@@ -1,0 +1,65 @@
+[
+  {
+    "name": "発行日",
+    "key": "issueDate",
+    "type": "date",
+    "value": "2024年4月1日"
+  },
+  {
+    "name": "書類番号",
+    "key": "documentNumber",
+    "type": "text",
+    "value": "A123"
+  },
+  {
+    "name": "会社名",
+    "key": "companyName",
+    "type": "text",
+    "value": "株式会社abc"
+  },
+  {
+    "key": "postalCode",
+    "type": "text",
+    "value": "123-456"
+  },
+  {
+    "key": "address",
+    "type": "text",
+    "value": "東京都豊島区"
+  },
+  {
+    "key": "totalAmount",
+    "type": "text",
+    "value": "1,110,800"
+  },
+  {
+    "key": "content",
+    "type": "text",
+    "value": "商品AAA"
+  },
+  {
+    "key": "quantity",
+    "type": "text",
+    "value": 1
+  },
+  {
+    "key": "unitPrice",
+    "type": "text",
+    "value": "¥500,000"
+  },
+  {
+    "key": "taxRate",
+    "type": "text",
+    "value": "10%"
+  },
+  {
+    "key": "amountExcludingTax",
+    "type": "text",
+    "value": "¥500,000"
+  },
+  {
+    "key": "amountIncludingTax",
+    "type": "text",
+    "value": "¥550,000"
+  }
+]
