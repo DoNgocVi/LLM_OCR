@@ -46,6 +46,11 @@ export const routes = [
             path: 'list-job',
             name: 'ListJob',
             component: () => import('@pages/Dashboard/JobResults/JobResults.vue')
+          },
+          {
+            path: 'register-job',
+            name: 'RegisterJob',
+            component: () => import('@pages/Dashboard/JobResults/RegisterJob.vue')
           }
         ]
       },

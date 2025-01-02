@@ -49,7 +49,8 @@
 
   const route = useRoute()
   const defaultExpandedKeys = ['parent-user-management']
-  const valueAfterDashboard = route.path.split('/dashboard/')[1]
+  const valueAfterDashboard = route.path.split('/dashboard/')[1]?.split('/')[0]
+  console.log(valueAfterDashboard)
   const emit = defineEmits(['setTitle'])
   const menuActive = ref<string>(valueAfterDashboard ? valueAfterDashboard : 'job-result')
   const handleUpdateValue = (key: string, item: MenuOption) => {

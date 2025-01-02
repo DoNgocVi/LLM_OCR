@@ -5,7 +5,11 @@
       <div class="w-[105px]">
         <CustomSelect v-model:value="pageSize" :options="pageOptions" @update:value="onUpdatePageSize" />
       </div>
-      <div>{{ `${(currentPage - 1) * +pageSize + 1} - ${currentPage * +pageSize} / ${itemCount}` }}</div>
+      <div>
+        {{
+          `${(currentPage - 1) * +pageSize + 1} - ${currentPage * +pageSize > itemCount ? itemCount : currentPage * +pageSize} / ${itemCount}`
+        }}
+      </div>
     </div>
     <CustomButton class="max-w-220px" type="secondary" :loading="loading" @click="handleRegisterUser">
       <template #icon>
@@ -64,20 +68,23 @@
   import { showModalDeleteRow } from '@/composables/common'
   import { useI18n } from 'vue-i18n'
   import { useUserManagementStore } from '@/stores/userManagement'
+  import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
 
+  // const loadingDelete = ref<boolean>(false)
   // const message = useMessage()
   const userManagementStore = useUserManagementStore()
+  const commonStore = useCommonStore()
+  const { loadingDelete } = storeToRefs(commonStore)
   const { t } = useI18n()
   const router = useRouter()
   const modal = useModal()
   const loading = ref<boolean>(false)
-  // const loadingDelete = ref<boolean>(false)
   const isLoading = ref<boolean>(false)
   const pageSize = ref<string>(DEFAULT_PAGE_SIZE)
   const currentPage = ref<number>(1)
-  const itemCount = ref<number>()
-  const { listUser, loadingDelete } = storeToRefs(userManagementStore)
+  const itemCount = ref<number>(0)
+  const { listUser } = storeToRefs(userManagementStore)
   const { setListUser, deleteUser } = userManagementStore
 
   const pagination = ref({
@@ -86,7 +93,7 @@
       currentPage.value = page
     },
     prev: (props: PaginationInfo) => {
-      itemCount.value = props.itemCount
+      // remove when handle api
       return h(CustomButton, {
         type: 'default',
         size: 'pagination',
@@ -113,16 +120,6 @@
     setTimeout(() => {
       isLoading.value = false
     }, 200)
-  }
-
-  function createData() {
-    return Array.from({ length: 100 }).map((_, index) => ({
-      id: index,
-      name: `david-${index}`,
-      email: `example${index}@email.com`,
-      role: Math.floor(Math.random() * 20) % 2 === 1 ? '管理者' : 'ユーザー',
-      address: `New York name. ${index} Lake Park`
-    })) as User[]
   }
 
   const onUpdatePageSize = (pageSize: number) => {
@@ -163,6 +160,16 @@
     })
   )
 
+  function createData() {
+    return Array.from({ length: 100 }).map((_, index) => ({
+      id: index,
+      name: `david-${index}`,
+      email: `example${index}@email.com`,
+      role: Math.floor(Math.random() * 20) % 2 === 1 ? '管理者' : 'ユーザー',
+      address: `New York name. ${index} Lake Park`
+    })) as User[]
+  }
+
   onMounted(() => {
     isLoading.value = true
     setTimeout(() => {
@@ -172,6 +179,7 @@
     // Mock data
     if (listUser.value.length) return
     const data = createData()
+    itemCount.value = data.length
     setListUser(data)
   })
 </script>

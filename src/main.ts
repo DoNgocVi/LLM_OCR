@@ -29,3 +29,5 @@ app.use(naive)
 app.use(i18n)
 app.use(pinia)
 app.mount('#app')
+
+export { i18n }

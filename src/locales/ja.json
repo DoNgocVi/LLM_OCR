@@ -48,7 +48,14 @@
     "job": {
       "title": "フィルター",
       "msg_error1": "入力に誤りがあります。",
-      "msg_error2": "入力内容をご確認の上、再度入力してください。"
+      "msg_error2": "入力内容をご確認の上、再度入力してください。",
+      "btn_download": "結果を一括ダウンロード",
+      "btn_delete": "ジョブを一括削除",
+      "modal_label_download": "ダウンロード",
+      "modal_content_download": "ファイル出力形式を選んでください",
+      "modal_btn_download": "ダウンロード",
+      "add_job": "新規作成",
+      "name_register": "ジョブ名を記入"
     },
     "company": {
       "msg_success": "企業情報の変更を保存しました",

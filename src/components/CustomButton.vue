@@ -57,6 +57,8 @@
   })
   const sizeClass = computed(() => {
     switch (props.size) {
+      case 'xs':
+        return 'h-[36px] text-sm'
       case 'small':
         return 'h-[52px] text-sm'
       case 'large':
@@ -108,6 +110,16 @@
       }),
       waveOpacity: '0',
       color: '#ED584F'
+    },
+    delete: {
+      fontWeight: 'bold',
+      ...generateThemeOverrides({
+        color: '#F5F5F5',
+        textColor: '#ED584F',
+        border: '1px solid #D1D1D1'
+      }),
+      waveOpacity: '0',
+      color: '#FFF'
     }
   }
   const styleButton = computed(() => buttonStyles[props.type] || buttonStyles.default)
