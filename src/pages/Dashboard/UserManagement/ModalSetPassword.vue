@@ -16,7 +16,13 @@
   >
     <template #header>
       <div class="pos-relative font-sans">
-        <p class="font-bold text-[20px] mt-3">{{ $t('dashboard.user_management.modal_title') }}</p>
+        <p class="font-bold text-[20px] mt-3">
+          {{
+            props.userId
+              ? $t('dashboard.user_management.modal_title_reset')
+              : $t('dashboard.user_management.modal_title_register')
+          }}
+        </p>
         <div
           class="pos-absolute -top-[70px] -right-[38px] rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all"
           @click="handleCloseModal"
