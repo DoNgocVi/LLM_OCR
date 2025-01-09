@@ -42,7 +42,7 @@ export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: 
       ])
     },
     content: () => {
-      return h('div', { class: 'mt-2 flex items-center justify-center gap-2', style: 'margin-top: -12px; padding-bottom: 4px' }, [
+      return h('div', { class: 'flex items-center justify-center gap-2', style: 'margin-top: -12px; padding-bottom: 4px' }, [
         h('div', { class: 'text-sm text-[#5B5B5B]' }, setting.content)
       ])
     },
@@ -52,9 +52,12 @@ export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: 
     autoFocus: false,
     transformOrigin: 'center',
     style: {
-      width: '400px',
+      width: '402px',
       paddingBlockEnd: '12px',
       borderRadius: '10px',
+      paddingTop: '13px',
+      paddingLeft: '16px',
+      paddingRight: '16px',
     },
     headerExtra: () =>
       h('div', { class: 'flex items-center pos-relative' }, [
@@ -63,14 +66,14 @@ export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: 
           {
             class:
               'pos-absolute rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all',
-            style: 'right: -26px; top: -74px',
+            style: 'right: -40px; top: -88px',
             onClick: () => m.destroy()
           },
           [h(Close, { class: 'text-green', style: 'width: 18px' })]
         )
       ]),
     footer: () =>
-      h('div', { class: 'flex justify-end gap-2' }, [
+      h('div', { class: 'flex justify-end gap-3' }, [
         h(CustomButton, { type: 'default', content: 'キャンセル', onClick: () => m.destroy() }),
         h(CustomButton, {
           loading: loadingDelete.value,
