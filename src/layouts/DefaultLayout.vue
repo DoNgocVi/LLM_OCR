@@ -62,9 +62,9 @@
       endDatePlaceholder: '終了日付',
       startDatetimePlaceholder: '開始日時',
       endDatetimePlaceholder: '終了日時',
-      weekPlaceholder: '123',
-      startMonthPlaceholder: '123',
-      endMonthPlaceholder: '123'
+      weekPlaceholder: 'sample',
+      startMonthPlaceholder: 'sample',
+      endMonthPlaceholder: 'sample'
     },
     TimePicker: {
       placeholder: '時間を選択してください',
