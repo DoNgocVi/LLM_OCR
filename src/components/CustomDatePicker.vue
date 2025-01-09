@@ -6,7 +6,10 @@
     :input-readonly="true"
     :is-date-disabled="dateDisabled"
     :format="customFormat"
-    :theme-overrides="themeOverrides"
+    :size="props.size"
+    :theme-overrides="{
+      ...themeOverrides
+    }"
     @update:value="selectDate"
   >
     <template #next-month>
@@ -20,7 +23,7 @@
       </n-icon>
     </template>
     <template #date-icon>
-      <n-icon size="14" class="mt-[2px]">
+      <n-icon size="16" class="mt-[2px]">
         <Calendar />
       </n-icon>
     </template>
@@ -32,7 +35,8 @@
   import { merge } from 'lodash'
   const props = defineProps({
     timestamp: {
-      type: Number
+      type: Number,
+      default: Date.now()
     },
     dateDisable: {
       type: [Number, Boolean]
@@ -51,6 +55,10 @@
     customFormat: {
       type: String,
       default: 'yyyy/MM/dd'
+    },
+    size: {
+      type: String as PropType<'medium' | 'small' | 'large'>,
+      default: 'medium'
     },
     themeOverrides: {
       type: Object,
@@ -77,7 +85,7 @@
     )
   )
 
-  const timestamp = ref<number>(props.timestamp as number)
+  const timestamp = ref<number>(props.timestamp)
   const selectDate = (value: number) => {
     console.log(value)
     emit('update:timestamp', value)
@@ -93,4 +101,10 @@
       return false
     }
   }
+  watch(
+    () => props.timestamp,
+    (value) => {
+      timestamp.value = value
+    }
+  )
 </script>

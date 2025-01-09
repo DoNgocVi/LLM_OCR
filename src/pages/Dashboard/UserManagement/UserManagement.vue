@@ -188,7 +188,7 @@
   })
   // Todo: remove when implement api
   function createData() {
-    return Array.from({ length: 500 }).map((_, index) => ({
+    return Array.from({ length: 10 }).map((_, index) => ({
       id: index,
       name: `david-${index}`,
       email: `example${index}@email.com`,

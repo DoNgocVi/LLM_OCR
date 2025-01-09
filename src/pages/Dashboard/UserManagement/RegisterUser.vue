@@ -229,6 +229,7 @@
   import Eye from '@/assets/images/icons/Eye.vue'
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
   import { storeToRefs } from 'pinia'
+  import { cloneDeep } from 'lodash'
   const message = useMessage()
   const userManagementStore = useUserManagementStore()
   const { t } = useI18n()
@@ -247,6 +248,8 @@
     role: 'admin',
     password: ''
   })
+
+  let initFormEdit = reactive<FormRegisterUserType>(cloneDeep(form))
 
   const errors = reactive<Omit<FormRegisterUserType, 'id'>>({
     name: '',
@@ -285,6 +288,8 @@
         noWhitespaceOnly,
         email: helpers.withMessage(t('validate.invalid_format'), email),
         duplicateMail: helpers.withMessage(t('validate.msg_duplicate_email'), (value: string) => {
+          console.log(initFormEdit.email, 'init', value, 'validate duplicate mail')
+          if (initFormEdit.email === value) return true
           const result = listUser.value.some((item) => {
             return item.email === value
           })
@@ -359,11 +364,19 @@
       v$.value.password.$reset()
     }
   }
+  // recheck rule email
+  watch(
+    () => initFormEdit.email,
+    (newValue) => {
+      form.email = newValue
+    }
+  )
 
   onMounted(() => {
     if (route.query.id !== undefined) {
       // remove when integrating api
       initializeForm()
+      initFormEdit = cloneDeep(form)
       isEditUser.value = true
     } else {
       isEditUser.value = false

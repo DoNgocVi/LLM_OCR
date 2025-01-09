@@ -16,7 +16,7 @@
           border: props.isEdit ? '1px solid #D1D1D1' : 'none',
           borderHover: props.isEdit ? '1px solid #D1D1D1' : 'none',
           borderFocus: props.isEdit ? '1px solid #D1D1D1' : 'none',
-          borderActive: props.isEdit ? '1px solid #D1D1D1' : 'none',
+          borderActive: props.isEdit ? '1px solid #3799DC' : 'none',
           boxShadowActive: props.isEdit ? '0 0 4px rgba(0, 0, 0, 0.25)' : 'none',
           boxShadowFocus: props.isEdit ? '0 0 4px rgba(0, 0, 0, 0.25)' : 'none'
         },

@@ -135,6 +135,8 @@
         // Handle call api
         const draftToken =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiJuaHMzMTA4IiwiZXhwIjoxNTU4MDYzODM3fQ449KVmOFWcpOUjnYGm'
+        const loginDate = Date.now()
+        localStorage.setItem('loginDate', `${loginDate}`)
         loading.value = true
         setTimeout(() => {
           // Todo: handle invalid account
