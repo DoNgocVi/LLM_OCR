@@ -91,7 +91,7 @@ export const routes = [
     component: () => import('@pages/Policy.vue')
   },
   {
-    path: '/preview',
+    path: '/preview-job',
     name: 'Preview',
     component: () => import('@pages/Dashboard/JobResults/JobPreview.vue')
   },

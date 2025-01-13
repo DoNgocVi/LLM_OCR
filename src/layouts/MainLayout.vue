@@ -6,7 +6,7 @@
       </div>
       <div class="flex-1 px-8 h-full overflow-auto">
         <Header @setTitle="handleSetTitleFromHeader" />
-        <p class="title font-bold text-2xl color-black">{{ headerName }}</p>
+        <p class="title font-bold text-2xl color-black">{{ dashboardTitle }}</p>
         <div v-if="isShowResetPassword">
           <MyAccount />
         </div>
@@ -21,18 +21,21 @@
 <script setup lang="ts">
   import Header from './Header.vue'
   import MyAccount from '@/pages/Dashboard/MyAccount.vue'
-  const headerName = ref<string>('ジョブ結果')
+  import { useCommonStore } from '@/stores/commonStore'
+  import { storeToRefs } from 'pinia'
+
+  const commonStore = useCommonStore()
+  const { dashboardTitle } = storeToRefs(commonStore)
   const childRef = ref()
   const isShowResetPassword = ref(false)
 
   const handleSetTitle = (title: string) => {
     isShowResetPassword.value = false
-    headerName.value = title
+    dashboardTitle.value = title
   }
   const handleSetTitleFromHeader = (title: string) => {
-    console.log(title)
     isShowResetPassword.value = true
-    headerName.value = title
+    dashboardTitle.value = title
     childRef.value.handleUpdateValue(null, { key: null })
   }
 </script>

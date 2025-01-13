@@ -17,10 +17,12 @@ export type SettingModalType = {
   content?: string
   title: string
   type: 'error' | 'default' | 'secondary'
-  onDelete?: () => void,
-  onDownload?: (typeDownload: string) => void,
+  width?: string,
+  textSubmit?: string,
+  onSubmit?: () => void
+  onDownload?: (typeDownload: string) => void
 }
-const { loadingDelete, loadingDownload } = storeToRefs(commonStore)
+const { loadingSubmit, loadingDownload } = storeToRefs(commonStore)
 export const generateThemeOverrides = (baseProperties: Record<string, string>): Record<string, string> => {
   const states = ['Hover', 'Focus', 'Pressed']
   const overrides: Record<string, string> = { ...baseProperties }
@@ -34,17 +36,23 @@ export const generateThemeOverrides = (baseProperties: Record<string, string>): 
   return overrides
 }
 
-export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: SettingModalType) => {
+export const showModalInfo = (modal: ReturnType<typeof useModal>, setting: SettingModalType) => {
   const m = modal.create({
     title: () => {
-      return h('div', { class: 'flex items-center justify-center gap-2' }, [
+      return h('div', { class: 'flex items-center justify-center gap-2 mt-4' }, [
         h('div', { class: 'text-black font-bold text-[20px]' }, setting.title)
       ])
     },
     content: () => {
-      return h('div', { class: 'flex items-center justify-center gap-2', style: 'margin-top: -12px; padding-bottom: 4px' }, [
-        h('div', { class: 'text-sm text-[#5B5B5B]' }, setting.content)
-      ])
+      if (setting.content) {
+        return h(
+          'div',
+          { class: 'flex items-center justify-center gap-2 mt-2' },
+          [h('div', { class: 'text-sm text-[#5B5B5B]' }, setting.content)]
+        )
+      } else {
+        return null
+      }
     },
     preset: 'card',
     maskClosable: false,
@@ -52,12 +60,19 @@ export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: 
     autoFocus: false,
     transformOrigin: 'center',
     style: {
-      width: '402px',
+      width: setting.width ?? '402px',
       paddingBlockEnd: '12px',
       borderRadius: '10px',
       paddingTop: '13px',
       paddingLeft: '16px',
-      paddingRight: '16px',
+      paddingRight: '16px'
+    },
+    themeOverrides: {
+      peers: {
+        Card: {
+          paddingMedium: '0px 24px'
+        }
+      }
     },
     headerExtra: () =>
       h('div', { class: 'flex items-center pos-relative' }, [
@@ -66,22 +81,22 @@ export const showModalDeleteRow = (modal: ReturnType<typeof useModal>, setting: 
           {
             class:
               'pos-absolute rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all',
-            style: 'right: -40px; top: -88px',
+            style: 'right: -40px; top: -76px',
             onClick: () => m.destroy()
           },
           [h(Close, { class: 'text-green', style: 'width: 18px' })]
         )
       ]),
     footer: () =>
-      h('div', { class: 'flex justify-end gap-3' }, [
+      h('div', { class: 'mt-6 mb-4 flex justify-end gap-3' }, [
         h(CustomButton, { type: 'default', content: 'キャンセル', onClick: () => m.destroy() }),
         h(CustomButton, {
-          loading: loadingDelete.value,
+          loading: loadingSubmit.value,
           type: setting.type,
-          content: '削除する',
+          content: setting.textSubmit ?? '削除する',
           onClick: async () => {
-            if (setting?.onDelete) {
-              await setting?.onDelete()
+            if (setting?.onSubmit) {
+              await setting?.onSubmit()
             }
             m.destroy()
           }
@@ -98,9 +113,10 @@ export const showModalDownloadCSV = (modal: ReturnType<typeof useModal>, setting
       ])
     },
     content: () => {
-      return h('div', { class: 'mt-2 flex flex-col', style: 'margin-top: -12px; padding-bottom: 4px;' }, [
-        h('div', { class: 'text-sm text-[#5B5B5B]', style: 'padding-bottom: 24px;' }, setting.content),
+      return h('div', { class: 'mt-2 flex flex-col mt-2' }, [
+        h('div', { class: 'text-sm text-[#5B5B5B]' }, setting.content),
         h(CustomSelect, {
+          class: 'mt-6',
           options: optionsDownload,
           style: 'width: 170px',
           value: typeDownload.value,
@@ -118,7 +134,18 @@ export const showModalDownloadCSV = (modal: ReturnType<typeof useModal>, setting
     style: {
       width: '400px',
       paddingBlockEnd: '28px',
-      borderRadius: '10px'
+      borderRadius: '10px',
+      paddingTop: '32px',
+      paddingLeft: '40px',
+      paddingRight: '40px',
+      paddingBottom: '48px'
+    },
+    themeOverrides: {
+      peers: {
+        Card: {
+          paddingMedium: '0px'
+        }
+      }
     },
     headerExtra: () =>
       h('div', { class: 'flex items-center pos-relative' }, [
@@ -127,14 +154,14 @@ export const showModalDownloadCSV = (modal: ReturnType<typeof useModal>, setting
           {
             class:
               'pos-absolute rounded-full bg-[#D1D1D1] hover:bg-gray_dark w-[32px] h-[32px] flex items-center justify-center cursor-pointer transition-all',
-            style: 'right: -26px; top: -74px',
+            style: 'right: -40px; top: -86px',
             onClick: () => m.destroy()
           },
           [h(Close, { class: 'text-green', style: 'width: 18px' })]
         )
       ]),
     footer: () =>
-      h('div', { class: 'flex justify-end gap-2' }, [
+      h('div', { class: 'flex justify-end gap-2 mt-6' }, [
         h(CustomButton, { type: 'default', content: t('common.cancel'), onClick: () => m.destroy() }),
         h(CustomButton, {
           loading: loadingDownload.value,

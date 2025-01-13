@@ -1,3 +1,4 @@
+import type { UploadFileInfo } from 'naive-ui'
 export type User = {
   id: number
   name: string
@@ -21,20 +22,63 @@ export type FormRegisterUserType = {
   name: string
   email: string
   role: string
-  password: string,
+  password: string
 }
 
-export type ListJobType = {
-  id: number,
-  jobName: string,
-  status: "pending" | "created" | "updated" | "readingCompleted" | "loadingError" | "timeoutError";
-  owner: string,
-  createDate: string,
-  updateDate: string,
-  result: boolean
+type FileDetail = {
+  id: number
+  name: string
+  type: 'pdf'
+  url: string
+  data: detailJobType[]
 }
+
+export type FileDetailsList = FileDetail[]
 
 export type FormRegisterJobType = {
-  name: string,
-  documentType: string
+  name: string
+  documentType: string,
+  files: Array<UploadFileInfo>
+}
+
+export type detailJobType = {
+  name: string
+  key: string
+  type: 'date' | 'text' | 'text-area'
+  value: string
+  isChange: boolean
+  required: boolean
+}
+
+export type FormFilterJob = {
+  keyword: string;
+  status: string;
+  startDate: {
+    date: number | null;
+    time: number | null | undefined;
+  };
+  endDate: {
+    date: number | null;
+    time: number | null | undefined;
+  };
+  startDate2: {
+    date: number | null;
+    time: number | null | undefined;
+  };
+  endDate2: {
+    date: number | null;
+    time: number | null | undefined;
+  };
+};
+
+export type Status = 'created' | 'updated' | 'readingCompleted' | 'loadingError' | 'timeoutError';
+
+export type JobType = {
+  id: number;
+  jobName: string;
+  status: Status;
+  owner: string;
+  createDate: number;
+  updateDate: string;
+  result: boolean;
 }

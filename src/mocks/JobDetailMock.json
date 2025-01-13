@@ -1,65 +1,282 @@
 [
   {
-    "name": "発行日",
-    "key": "issueDate",
-    "type": "date",
-    "value": "2024年4月1日"
+    "id": 1,
+    "name": "【ご請求書】.pdf_ページ1",
+    "type": "pdf",
+    "url": "https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf",
+    "data": [
+      {
+        "name": "発行日",
+        "key": "issueDate",
+        "type": "date",
+        "value": "1736734626471",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "書類番号",
+        "key": "documentNumber",
+        "type": "text",
+        "value": "A123",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "会社名",
+        "key": "companyName",
+        "type": "text",
+        "value": "株式会社abc",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "郵便番号",
+        "key": "postalCode",
+        "type": "text",
+        "value": "123-456",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "住所",
+        "key": "address",
+        "type": "text-area",
+        "value": "東京都豊島区",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "合計金額",
+        "key": "totalAmount",
+        "type": "text",
+        "value": "1,110,800",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "内容",
+        "key": "content",
+        "type": "text",
+        "value": "商品AAA",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "数量",
+        "key": "quantity",
+        "type": "text",
+        "value": 1,
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "単価",
+        "key": "unitPrice",
+        "type": "text",
+        "value": "¥500,000",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "税率",
+        "key": "taxRate",
+        "type": "text",
+        "value": "10%",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "税抜金額",
+        "key": "amountExcludingTax",
+        "type": "text",
+        "value": "¥500,000",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "税込金額",
+        "key": "amountIncludingTax",
+        "type": "text",
+        "value": "¥550,000",
+        "isChange": false,
+        "required": true
+      }
+    ]
   },
   {
-    "name": "書類番号",
-    "key": "documentNumber",
-    "type": "text",
-    "value": "A123"
+    "id": 2,
+    "name": "【ご請求書】.pdf_ページ2",
+    "type": "pdf",
+    "url": "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
+    "data": [
+      {
+        "name": "発行日",
+        "key": "issueDate",
+        "type": "date",
+        "value": "1736734626471",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "書類番号",
+        "key": "documentNumber",
+        "type": "text",
+        "value": "new value",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "会社名",
+        "key": "companyName",
+        "type": "text",
+        "value": "株式会社abc",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "郵便番号",
+        "key": "postalCode",
+        "type": "text",
+        "value": "123-456",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "住所",
+        "key": "address",
+        "type": "text-area",
+        "value": "東京都豊島区",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "合計金額",
+        "key": "totalAmount",
+        "type": "text",
+        "value": "1,110,800",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "内容",
+        "key": "content",
+        "type": "text",
+        "value": "商品AAA",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "数量",
+        "key": "quantity",
+        "type": "text",
+        "value": 1,
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "単価",
+        "key": "unitPrice",
+        "type": "text",
+        "value": "¥500,000",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "税率",
+        "key": "taxRate",
+        "type": "text",
+        "value": "10%",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "税抜金額",
+        "key": "amountExcludingTax",
+        "type": "text",
+        "value": "¥500,000",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "税込金額",
+        "key": "amountIncludingTax",
+        "type": "text",
+        "value": "¥550,000",
+        "isChange": false,
+        "required": true
+      }
+    ]
   },
   {
-    "name": "会社名",
-    "key": "companyName",
-    "type": "text",
-    "value": "株式会社abc"
-  },
-  {
-    "key": "postalCode",
-    "type": "text",
-    "value": "123-456"
-  },
-  {
-    "key": "address",
-    "type": "text",
-    "value": "東京都豊島区"
-  },
-  {
-    "key": "totalAmount",
-    "type": "text",
-    "value": "1,110,800"
-  },
-  {
-    "key": "content",
-    "type": "text",
-    "value": "商品AAA"
-  },
-  {
-    "key": "quantity",
-    "type": "text",
-    "value": 1
-  },
-  {
-    "key": "unitPrice",
-    "type": "text",
-    "value": "¥500,000"
-  },
-  {
-    "key": "taxRate",
-    "type": "text",
-    "value": "10%"
-  },
-  {
-    "key": "amountExcludingTax",
-    "type": "text",
-    "value": "¥500,000"
-  },
-  {
-    "key": "amountIncludingTax",
-    "type": "text",
-    "value": "¥550,000"
+    "id": 3,
+    "name": "demo.png",
+    "type": "image",
+    "url": "/demo.png",
+    "data": [
+      {
+        "name": "発行日",
+        "key": "issueDate",
+        "type": "date",
+        "value": "1736734626471",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "書類番号",
+        "key": "documentNumber",
+        "type": "text",
+        "value": "new value",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "会社名",
+        "key": "companyName",
+        "type": "text",
+        "value": "株式会社abc",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "郵便番号",
+        "key": "postalCode",
+        "type": "text",
+        "value": "123-456",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "住所",
+        "key": "address",
+        "type": "text-area",
+        "value": "東京都豊島区",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "合計金額",
+        "key": "totalAmount",
+        "type": "text",
+        "value": "1,110,800",
+        "isChange": false,
+        "required": true
+      },
+      {
+        "name": "内容",
+        "key": "content",
+        "type": "text",
+        "value": "商品AAA",
+        "isChange": false,
+        "required": false
+      },
+      {
+        "name": "数量",
+        "key": "quantity",
+        "type": "text",
+        "value": 1,
+        "isChange": false,
+        "required": true
+      }
+    ]
   }
 ]

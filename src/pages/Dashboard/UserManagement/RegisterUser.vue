@@ -223,6 +223,7 @@
   import { email, helpers, requiredIf } from '@vuelidate/validators'
   import { InformationCircleOutline } from '@vicons/ionicons5'
   import { useUserManagementStore } from '@/stores/userManagement'
+  import { useCommonStore } from '@/stores/commonStore'
   import { useMessage } from 'naive-ui'
   import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import { renderMessage } from '@/composables/auth'
@@ -240,6 +241,9 @@
   const isModalVisible = ref<boolean>(false)
   const isEditUser = ref<boolean>(false)
   const showPassword = ref<boolean>(false)
+
+  const commonStore = useCommonStore()
+  const { dashboardTitle } = storeToRefs(commonStore)
 
   const form = reactive<FormRegisterUserType>({
     id: '',
@@ -293,7 +297,6 @@
           const result = listUser.value.some((item) => {
             return item.email === value
           })
-          console.log(result)
           return !result
         })
       },
@@ -381,5 +384,8 @@
     } else {
       isEditUser.value = false
     }
+    dashboardTitle.value = isEditUser.value
+      ? t('dashboard.user_management.edit_user_title')
+      : t('dashboard.user_management.register_user_title')
   })
 </script>
