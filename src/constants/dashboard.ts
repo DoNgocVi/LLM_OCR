@@ -313,3 +313,30 @@ export const optionDocumentType = [
   { label: '貨物到着案内（Arrival Notice）', value: 'arrivalNotice' },
   { label: '船荷証券（Bill of Lading）', value: 'billLading' }
 ]
+
+export const statusOption = [
+  {
+    label: '全て',
+    value: 'all'
+  },
+  {
+    label: 'ジョブ作成済み',
+    value: 'job_created'
+  },
+  {
+    label: '読取完了',
+    value: 'read_complete'
+  },
+  {
+    label: '編集済み',
+    value: 'edited'
+  },
+  {
+    label: '読込エラー',
+    value: 'read_error'
+  },
+  {
+    label: 'タイムアウト',
+    value: 'timeout'
+  }
+];

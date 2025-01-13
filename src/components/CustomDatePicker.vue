@@ -35,18 +35,18 @@
   import { merge } from 'lodash'
   const props = defineProps({
     timestamp: {
-      type: Number,
+      type: [Number, null],
       default: Date.now()
     },
     dateDisable: {
       type: [Number, Boolean]
     },
     disableBefore: {
-      type: Number,
+      type: [Number, null],
       required: false
     },
     disableAfter: {
-      type: Number,
+      type: [Number, null],
       required: false
     },
     isStartDate: {
@@ -77,7 +77,10 @@
             border: '1px solid #D1D1D1',
             borderFocus: '1px solid #3799DC',
             borderHover: '1px solid #3799DC',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            colorDisabled: '#F5F5F5',
+            textColorDisabled: '#5B5B5B',
+            placeholderColor: '#ACACAC'
           }
         }
       },
@@ -85,7 +88,7 @@
     )
   )
 
-  const timestamp = ref<number>(props.timestamp)
+  const timestamp = ref<number | null>(props.timestamp)
   const selectDate = (value: number) => {
     console.log(value)
     emit('update:timestamp', value)

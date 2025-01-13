@@ -293,7 +293,6 @@
           const result = listUser.value.some((item) => {
             return item.email === value
           })
-          console.log(result)
           return !result
         })
       },

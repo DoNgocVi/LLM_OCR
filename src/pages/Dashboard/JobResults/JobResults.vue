@@ -1,21 +1,23 @@
 <template>
   <div class="">
     <div class="mt-3 bg-white rounded-[20px] px-6 py-6">
-      <div class="flex items-center">
-        <n-icon size="13" color="#858D9D">
+      <div class="flex items-center gap-2">
+        <n-icon size="16" color="#858D9D">
           <FilterIcon />
         </n-icon>
-        <p>{{ $t('dashboard.job.title') }}</p>
+        <p class="text-black">{{ $t('dashboard.job.title') }}</p>
       </div>
       <n-form label-placement="left">
         <div class="flex gap-4 mt-2 flex-wrap">
           <div class="max-w-[280px] w-full">
             <n-input
+              v-model:value="formFilter.keyword"
               placeholder="キーワード検索"
               class="w-full"
               :theme-overrides="{
                 iconColor: '#858D9D',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                placeholderColor: '#ACACAC'
               }"
             >
               <template #prefix>
@@ -24,15 +26,19 @@
             </n-input>
           </div>
           <n-form-item label="ステータス" :show-feedback="false">
-            <n-select v-model:value="value1" class="w-[180px]" :options="defaultOptionSelect" />
+            <CustomSelect v-model:value="formFilter.status" class="w-[180px]" :options="statusOption" />
           </n-form-item>
           <n-form-item label="作成日時" :show-feedback="false">
             <div class="flex items-center gap-2 min-w-[226px]">
               <div class="flex">
-                <CustomDatePicker v-model:timestamp="startDate.date" :disable-after="startDateDisable" />
+                <CustomDatePicker
+                  v-model:timestamp="formFilter.startDate.date"
+                  class="max-w-[150px]"
+                  :disable-after="startDateDisable"
+                />
                 <n-time-picker
-                  default-formatted-value="11:00"
                   format="HH:mm"
+                  placeholder="時間"
                   :actions="null"
                   :theme-overrides="{
                     borderRadius: '10px',
@@ -43,7 +49,8 @@
                         border: '1px solid #D1D1D1',
                         borderFocus: '1px solid #3799DC',
                         borderHover: '1px solid #3799DC',
-                        borderRadius: '8px'
+                        borderRadius: '8px',
+                        placeholderColor: '#ACACAC'
                       },
                       Scrollbar: {
                         borderRadius: '20px'
@@ -55,10 +62,14 @@
               </div>
               <p>〜</p>
               <div class="flex">
-                <CustomDatePicker v-model:timestamp="endDate.date" :disable-before="endDateDisable" />
+                <CustomDatePicker
+                  v-model:timestamp="formFilter.endDate.date"
+                  class="max-w-[150px]"
+                  :disable-before="endDateDisable"
+                />
                 <n-time-picker
-                  default-formatted-value="11:00"
                   format="HH:mm"
+                  placeholder="時間"
                   :actions="null"
                   :theme-overrides="{
                     borderRadius: '10px',
@@ -69,7 +80,8 @@
                         border: '1px solid #D1D1D1',
                         borderFocus: '1px solid #3799DC',
                         borderHover: '1px solid #3799DC',
-                        borderRadius: '8px'
+                        borderRadius: '8px',
+                        placeholderColor: '#ACACAC'
                       },
                       Scrollbar: {
                         borderRadius: '20px'
@@ -84,9 +96,13 @@
           <n-form-item label="更新日時" :show-feedback="false">
             <div class="flex items-center gap-2 min-w-[226px]">
               <div class="flex">
-                <CustomDatePicker v-model:timestamp="startDate.date" :disable-after="startDateDisable" />
+                <CustomDatePicker
+                  v-model:timestamp="formFilter.startDate2.date"
+                  class="max-w-[150px]"
+                  :disable-after="startDateDisable2"
+                />
                 <n-time-picker
-                  default-formatted-value="11:00"
+                  class="custom-time-picker"
                   placeholder="時間"
                   format="HH:mm"
                   :actions="null"
@@ -99,7 +115,8 @@
                         border: '1px solid #D1D1D1',
                         borderFocus: '1px solid #3799DC',
                         borderHover: '1px solid #3799DC',
-                        borderRadius: '8px'
+                        borderRadius: '8px',
+                        placeholderColor: '#ACACAC'
                       },
                       Scrollbar: {
                         borderRadius: '20px'
@@ -107,13 +124,21 @@
                     }
                   }"
                   @confirm="() => {}"
-                />
+                >
+                  <template #icon>
+                    <n-icon :component="TimeIcon" />
+                  </template>
+                </n-time-picker>
               </div>
               <p>〜</p>
               <div class="flex">
-                <CustomDatePicker v-model:timestamp="endDate.date" :disable-before="endDateDisable" />
+                <CustomDatePicker
+                  v-model:timestamp="formFilter.endDate2.date"
+                  class="max-w-[150px]"
+                  :disable-before="endDateDisable2"
+                />
                 <n-time-picker
-                  default-formatted-value="11:00"
+                  class="custom-time-picker"
                   placeholder="時間"
                   format="HH:mm"
                   :actions="null"
@@ -126,7 +151,8 @@
                         border: '1px solid #D1D1D1',
                         borderFocus: '1px solid #3799DC',
                         borderHover: '1px solid #3799DC',
-                        borderRadius: '8px'
+                        borderRadius: '8px',
+                        placeholderColor: '#ACACAC'
                       },
                       Scrollbar: {
                         borderRadius: '20px'
@@ -134,13 +160,21 @@
                     }
                   }"
                   @confirm="() => {}"
-                />
+                >
+                  <template #icon>
+                    <n-icon :component="TimeIcon" />
+                  </template>
+                </n-time-picker>
               </div>
             </div>
           </n-form-item>
-          <p>
-            <a class="text-blue mt-1 inline-block ml-4" href="">条件をクリア</a>
-          </p>
+          <button
+            class="text-blue mt-1 inline-block ml-4 bg-white border-none text-sm cursor-pointer"
+            href=""
+            @click="clearConditions"
+          >
+            {{ t('common.clear_conditions') }}
+          </button>
         </div>
       </n-form>
     </div>
@@ -157,17 +191,11 @@
           <CustomButton
             class="max-w-220px"
             type="delete"
+            :content="$t('dashboard.job.btn_delete')"
             :loading="loading"
             :disabled="isDisabledBtnDelete"
             @click="deleteMultipleJob"
-          >
-            <template #icon>
-              <n-icon size="10" class="pr-3">
-                <AddIcon />
-              </n-icon>
-            </template>
-            {{ $t('dashboard.job.btn_delete') }}
-          </CustomButton>
+          ></CustomButton>
           <CustomButton
             class="max-w-220px"
             type="primary"
@@ -203,30 +231,36 @@
           :row-key="rowKey"
           :columns="columns"
           :data="listJob"
+          :row-class-name="rowClassName"
           :pagination="pagination"
-          :bordered="false"
+          :bordered="true"
           :on-update:page="handlePageChange"
           :loading="isLoading"
           :themeOverrides="{
+            borderColor: '#D1D1D1',
             borderRadius: '10px',
             thTextColor: '#4A4C56',
             thColor: '#F0F5F8',
             thPaddingMedium: '8.3px 12px',
-            tdPaddingMedium: '15.3px 8.3px',
+            tdPaddingMedium: '6.5px 8.3px',
+            tdTextColor: '#181818',
             peers: {
               Pagination: {
-                itemColorActive: '#5B5B5B',
-                itemColorActiveHover: '#2A2A2A',
+                itemColorActive: !itemCount ? '#F5F5F5' : '#5B5B5B',
+                itemColorActiveHover: !itemCount ? '#F5F5F5' : '#5B5B5B',
+                itemColorHover: '#F5F5F5',
                 itemTextColor: '#4F4F4F',
                 itemTextColorHover: '#4F4F4F',
-                itemTextColorActive: '#FFF',
+                itemTextColorActive: !itemCount ? '#ACACAC' : '#FFF',
                 itemBorder: '1px solid #D1D1D1',
                 itemBorderHover: '1px solid #D1D1D1',
-                itemBorderActive: '1px solid #5B5B5B',
-                itemSizeMedium: '32px'
+                itemBorderActive: !itemCount ? '1px solid transparent' : '1px solid #5B5B5B',
+                itemSizeMedium: '32px',
+                itemFontSizeMedium: '12px'
               }
             }
           }"
+          :resizable="true"
           @update:checked-row-keys="handleCheck"
         >
           <template #empty>
@@ -262,29 +296,28 @@
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
   import { Search } from '@vicons/ionicons5'
-  import { DEFAULT_PAGE_SIZE, defaultOptionSelect } from '@/constants/common'
+  import { DEFAULT_PAGE_SIZE } from '@/constants/common'
   import CustomDatePicker from '@/components/CustomDatePicker.vue'
-  import FilterIcon from '@/assets/images/icons/FilterIcon.vue'
-  import { pageOptions } from '@/constants/dashboard'
+  import { pageOptions, statusOption } from '@/constants/dashboard'
   import CustomButton from '@/components/CustomButton.vue'
   import { useJobManagementStore } from '@/stores/listJobStore'
-  import { ListJobType } from '@/types/dashboard'
-  import { showModalDeleteRow, showModalDownloadCSV } from '@/composables/common'
+  import { JobType } from '@/types/dashboard'
+  import { showModalInfo, showModalDownloadCSV } from '@/composables/common'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { createColumnsJob } from '@/composables/dashboard'
-  import AddIcon from '@/assets/images/icons/AddIcon.vue'
-  import DownloadIcon from '@/assets/images/icons/DownloadIcon.vue'
+  import { TimeIcon, DownloadIcon, AddIcon, FilterIcon } from '@/assets/images/icons'
+  import type { FormFilterJob } from '@/types/dashboard'
+  import { cloneDeep } from 'lodash'
 
+  const { t } = useI18n()
   const router = useRouter()
   const modal = useModal()
-  const { t } = useI18n()
   const jobManagementStore = useJobManagementStore()
   const { setListJob, deleteJob } = jobManagementStore
   const commonStore = useCommonStore()
-  const { loadingDelete, loadingDownload } = storeToRefs(commonStore)
+  const { loadingSubmit, loadingDownload } = storeToRefs(commonStore)
   const { listJob } = storeToRefs(jobManagementStore)
-  const value1 = ref()
   const pageSize = ref<string>(DEFAULT_PAGE_SIZE)
   const currentPage = ref<number>(1)
   const loading = ref<boolean>(false)
@@ -296,17 +329,34 @@
   const message = useMessage()
   const showModal = ref(false)
   const showModalRef = ref(false)
-  const startDateDisable = ref<number>()
-  const endDateDisable = ref<number>()
-  const startDate = reactive<{ date: number; time: string }>({
-    date: Date.now(),
-    time: '11:11'
-  })
-  const endDate = reactive<{ date: number; time: string }>({
-    date: Date.now() + 86400000,
-    time: '11:11'
-  })
-  const tableData = ref<[]>([])
+  const startDateDisable = ref<number | null>()
+  const endDateDisable = ref<number | null>()
+  const startDateDisable2 = ref<number | null>()
+  const endDateDisable2 = ref<number | null>()
+
+  // const tableData = ref<[]>([])
+
+  const formFilterInit: FormFilterJob = {
+    keyword: '',
+    status: 'all',
+    startDate: {
+      date: null,
+      time: null
+    },
+    endDate: {
+      date: null,
+      time: null
+    },
+    startDate2: {
+      date: null,
+      time: null
+    },
+    endDate2: {
+      date: null,
+      time: null
+    }
+  }
+  const formFilter = reactive<FormFilterJob>(cloneDeep(formFilterInit))
 
   const pagination = ref({
     pageSize: +pageSize.value,
@@ -351,14 +401,14 @@
           }
         })
       },
-      deleteRow(row: ListJobType) {
-        showModalDeleteRow(modal, {
+      deleteRow(row: JobType) {
+        showModalInfo(modal, {
           title: t('common.msg_delete'),
           content: t('common.content_msg_delete'),
           type: 'error',
-          // loading: loadingDelete,
-          onDelete: async () => {
-            loadingDelete.value = true
+          // loading: loadingSubmit,
+          onSubmit: async () => {
+            loadingSubmit.value = true
             // Simulate the API call as a Promise
             await new Promise((resolve) => {
               setTimeout(() => {
@@ -366,8 +416,14 @@
                 resolve(true)
               }, 2000)
             })
-            loadingDelete.value = false
+            loadingSubmit.value = false
           }
+        })
+      },
+      viewDetail(row: JobType) {
+        console.log(row.id)
+        router.push({
+          name: 'Preview'
         })
       }
     })
@@ -382,14 +438,17 @@
     const end = Math.min(currentPage.value * size, totalItems)
     return `${start}-${end}&nbsp;&nbsp/&nbsp;&nbsp${totalItems}`
   })
-  const rowKey = (row: ListJobType) => row.id
+  const rowKey = (row: JobType) => row.id
   const handleCheck = (rowKeys: DataTableRowKey[]) => {
     const isDisable = !(rowKeys.length > 0)
     isDisabledBtnDelete.value = isDisable
     isDisabledBtnDownload.value = isDisable
     checkedRowKeysRef.value = rowKeys
   }
-
+  const rowClassName = (row: JobType) => {
+    console.log(checkedRowKeysRef.value)
+    return checkedRowKeysRef.value.includes(row.id) ? 'selected-row' : ''
+  }
   const onPositiveClick = () => {
     message.success('Submit')
     showModalRef.value = false
@@ -405,6 +464,7 @@
   }
 
   const handlePageChange = (page: number) => {
+    console.log(page)
     setTimeout(() => {
       isLoading.value = false
     }, 200)
@@ -430,12 +490,12 @@
   }
 
   const deleteMultipleJob = () => {
-    showModalDeleteRow(modal, {
+    showModalInfo(modal, {
       title: t('common.msg_delete'),
       content: t('common.content_msg_delete'),
       type: 'error',
-      onDelete: async () => {
-        loadingDelete.value = true
+      onSubmit: async () => {
+        loadingSubmit.value = true
         // Simulate the API call as a Promise
         await new Promise((resolve) => {
           setTimeout(() => {
@@ -443,36 +503,37 @@
             resolve(true)
           }, 2000)
         })
-        loadingDelete.value = false
+        loadingSubmit.value = false
       }
     })
   }
 
+  const clearConditions = () => {
+    Object.assign(formFilter, cloneDeep(formFilterInit))
+  }
+
   function createData() {
     const statuses = ['created', 'updated', 'readingCompleted', 'loadingError', 'timeoutError']
-    return Array.from({ length: 100 }).map((_, index) => ({
+    return Array.from({ length: 20 }).map((_, index) => ({
       id: index,
       jobName: `Job-${index}`,
       status: statuses[Math.floor(Math.random() * statuses.length)],
       owner: '江戸川コナン',
-      createDate: '2024/12/05 12:50',
-      updateDate: '2024/12/12 16:50',
+      createDate: '',
+      updateDate: '',
       result: Math.floor(Math.random() * 10) === 0
-    })) as ListJobType[]
+    }))
   }
+
   watch(
-    () => startDate.date,
-    (value) => {
-      endDateDisable.value = value
+    [formFilter.startDate, formFilter.endDate, formFilter.startDate2, formFilter.endDate2],
+    ([newEndDate, newStartDate, newEndDate2, newStartDate2]) => {
+      endDateDisable.value = newEndDate.date
+      startDateDisable.value = newStartDate.date
+      endDateDisable2.value = newEndDate2.date
+      startDateDisable2.value = newStartDate2.date
     },
-    { immediate: true, deep: true }
-  )
-  watch(
-    () => endDate.date,
-    (value) => {
-      startDateDisable.value = value
-    },
-    { immediate: true, deep: true }
+    { immediate: true }
   )
 
   watch(
@@ -497,11 +558,14 @@
       isLoading.value = false
     }, 500)
     //TODO: call api
-    // Mock data
-    if (tableData.value.length) return
-    const data = createData()
-    itemCount.value = data.length
-    setListJob(data)
+    if (listJob.value.length) {
+      itemCount.value = listJob.value.length
+      return
+    }
+    // const data = createData()
+    // itemCount.value = data.length
+    // console.log('format list')
+    setListJob([])
   })
 </script>
 <style lang="scss" scoped>
@@ -514,8 +578,9 @@
       flex: none !important;
     }
     .n-data-table-base-table-body {
-      border: 1px solid #d1d1d1;
-      border-radius: 10px;
+      // border: 1px solid #d1d1d1;
+      // border-bottom: none;
+      // border-radius: 10px;
       .n-data-table-thead {
         tr > th:first-child {
           padding-left: 24px;
@@ -529,24 +594,14 @@
       .n-button {
         padding: 0 6px;
       }
-      .n-data-table-td.n-data-table-td--last-row {
-        border-bottom: none;
-      }
     }
     .n-pagination-item:not(.n-pagination-item--clickable) {
       border: none !important;
       padding: 0;
       border-radius: 7px;
     }
-    .n-data-table-empty {
-      border-left: 1px solid #d1d1d1;
-      border-right: 1px solid #d1d1d1;
-      border-bottom: 1px solid #d1d1d1;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      padding: 20px 0;
-    }
     .n-pagination-item {
+      border-radius: 4px;
       font-weight: 600;
     }
     .n-pagination-item--disabled {
@@ -556,6 +611,59 @@
       border-bottom-right-radius: 0px;
       border-bottom-left-radius: 0px;
       border-bottom: none;
+    }
+    .n-data-table-th:nth-child(7),
+    .n-data-table-th:nth-child(8),
+    .n-data-table-th:nth-child(9) {
+      .n-data-table-th__title-wrapper {
+        display: block !important;
+      }
+    }
+    .selected-row {
+      position: relative;
+      z-index: 9999;
+      margin-left: -20px;
+      margin-right: -20px;
+      box-shadow: 0 0 0 1px #2196f3;
+    }
+
+    .selected-row > .n-data-table-td {
+      background-color: #eaf8ff;
+      box-sizing: border-box;
+    }
+    .n-data-table-tr > .n-data-table-td:last-child {
+      border-right: 1px solid transparent;
+    }
+    .n-data-table-tr > .n-data-table-td:first-child {
+      border-left: 1px solid transparent;
+    }
+    .selected-row > .n-data-table-td:last-child {
+      border-right-color: #3799dc;
+    }
+    .selected-row > .n-data-table-td:first-child {
+      border-left-color: #3799dc;
+    }
+    .n-data-table-td.n-data-table-td--last-row {
+      border-bottom: 1px solid transparent;
+    }
+    .selected-row > .n-data-table-td.n-data-table-td--last-row {
+      border-bottom: 1px solid #3799dc;
+    }
+    .selected-row > .n-data-table-td.n-data-table-td--last-row:last-child {
+      border-bottom-right-radius: 10px;
+    }
+    .selected-row > .n-data-table-td.n-data-table-td--last-row:first-child {
+      border-bottom-left-radius: 10px;
+    }
+  }
+  :deep(.custom-time-picker) {
+    .n-input__suffix {
+      display: flex;
+      align-items: center;
+      .n-base-icon {
+        position: relative;
+        left: -6px;
+      }
     }
   }
 </style>

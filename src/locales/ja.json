@@ -15,7 +15,10 @@
     "title_forgot_success": "パスワードの設定が完了しました",
     "msg_logout": "ログアウトしますか？",
     "msg_delete": "このユーザーを削除します",
-    "content_msg_delete": "この操作は取り消せません。本当に削除しますか？"
+    "content_msg_delete": "この操作は取り消せません。本当に削除しますか？",
+    "keep_value": "保存",
+    "download": "ダウンロード",
+    "clear_conditions": "条件をクリア"
   },
   "validate": {
     "require": "入力してください",
@@ -57,7 +60,10 @@
       "modal_btn_download": "ダウンロード",
       "add_job": "新規作成",
       "name_register": "ジョブ名を記入",
-      "register_job": "設定"
+      "register_job": "設定",
+      "title_back_list": "ジョブ結果一覧に移動します",
+      "msg_confirm_back": "編集した内容は保存されません。本当に移動しますか？",
+      "title_save_job": "変更内容を保存しますか？"
     },
     "company": {
       "msg_success": "企業情報の変更を保存しました",
