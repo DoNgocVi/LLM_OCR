@@ -2,12 +2,8 @@ import BuildingIcon from '@/assets/images/icons/BuildingIcon.vue'
 import ChartIcon from '@/assets/images/icons/ChartIcon.vue'
 import CheckListIcon from '@/assets/images/icons/CheckListIcon.vue'
 import DocumentIcon from '@/assets/images/icons/DocumentIcon.vue'
-import PencilIcon from '@/assets/images/icons/PencilIcon.vue'
 import SettingIcon from '@/assets/images/icons/SettingIcon.vue'
-import TrashIcon from '@/assets/images/icons/TrashIcon.vue'
-import { User } from '@/types/dashboard'
-import { time } from 'echarts'
-import { DataTableColumns, MenuOption, NButton, NIcon } from 'naive-ui'
+import { MenuOption, NIcon } from 'naive-ui'
 import { RouterLink } from 'vue-router'
 
 export const timeOptions = [
@@ -183,98 +179,6 @@ export const menuOptions: MenuOption[] = [
   }
 ]
 
-export const createColumns = ({
-  edit,
-  deleteRow
-}: {
-  edit: (row: User) => void
-  deleteRow: (row: User) => void
-}): DataTableColumns<User> => {
-  return [
-    {
-      title: '名前 ',
-      key: 'name',
-      sorter: (a, b) => a.name.localeCompare(b.name, 'ja')
-    },
-    {
-      title: 'メールアドレス ',
-      titleAlign: 'center',
-      key: 'email'
-    },
-    {
-      title: '権限',
-      key: 'role',
-      sorter: (a, b) => a.role.localeCompare(b.role, 'ja')
-    },
-    {
-      title: '編集',
-      key: 'edit',
-      width: 90,
-      render(row) {
-        return h(
-          NButton,
-          {
-            size: 'small',
-            themeOverrides: {
-              color: 'transparent',
-              waveOpacity: '0',
-              border: 'none',
-              borderFocus: 'none',
-              borderHover: 'none',
-              borderPressed: 'none',
-              textColor: '#858D9D',
-              textColorHover: '#56637F',
-              textColorFocus: '#56637F',
-              textColorPressed: '#56637F'
-            },
-            class: 'btn-dropdown',
-            onClick: () => edit(row)
-          },
-          {
-            icon: () =>
-              h(PencilIcon, {
-                style: { fontSize: '24px', marginTop: '1px' }
-              })
-          }
-        )
-      }
-    },
-    {
-      title: '削除',
-      key: 'deleteRow',
-      width: 90,
-      render(row) {
-        return h(
-          NButton,
-          {
-            size: 'small',
-            themeOverrides: {
-              color: 'transparent',
-              waveOpacity: '0',
-              border: 'none',
-              borderFocus: 'none',
-              borderHover: 'none',
-              borderPressed: 'none',
-              textColor: '#858D9D',
-              textColorHover: '#56637F',
-              textColorFocus: '#56637F',
-              textColorPressed: '#56637F'
-            },
-            class: 'btn-dropdown',
-            onClick: () => deleteRow(row)
-          },
-          {
-            icon: () =>
-              h(TrashIcon, {
-                style: { fontSize: '24px', marginTop: '1px' }
-              })
-          }
-        )
-      }
-    }
-  ]
-}
-
 export const jobStatus = {
   pending: {
     text: '読込中...',
@@ -313,3 +217,30 @@ export const optionDocumentType = [
   { label: '貨物到着案内（Arrival Notice）', value: 'arrivalNotice' },
   { label: '船荷証券（Bill of Lading）', value: 'billLading' }
 ]
+
+export const statusOption = [
+  {
+    label: '全て',
+    value: 'all'
+  },
+  {
+    label: 'ジョブ作成済み',
+    value: 'job_created'
+  },
+  {
+    label: '読取完了',
+    value: 'read_complete'
+  },
+  {
+    label: '編集済み',
+    value: 'edited'
+  },
+  {
+    label: '読込エラー',
+    value: 'read_error'
+  },
+  {
+    label: 'タイムアウト',
+    value: 'timeout'
+  }
+];

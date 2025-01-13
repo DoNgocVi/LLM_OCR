@@ -71,19 +71,19 @@
   import { pageOptions } from '@/constants/dashboard'
   import { PaginationInfo } from 'naive-ui'
   import { DEFAULT_DURATION_TOAST, DEFAULT_PAGE_SIZE } from '@/constants/common'
-  import { createColumns } from '@/constants/dashboard'
-  import { showModalDeleteRow } from '@/composables/common'
+  import { createColumnsUser } from '@/composables/dashboard'
+  import { showModalInfo } from '@/composables/common'
   import { useI18n } from 'vue-i18n'
   import { useUserManagementStore } from '@/stores/userManagement'
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
   import { renderMessage } from '@/composables/auth'
 
-  // const loadingDelete = ref<boolean>(false)
+  // const loadingSubmit = ref<boolean>(false)
   const message = useMessage()
   const userManagementStore = useUserManagementStore()
   const commonStore = useCommonStore()
-  const { loadingDelete } = storeToRefs(commonStore)
+  const { loadingSubmit, dashboardTitle } = storeToRefs(commonStore)
   const { listUser } = storeToRefs(userManagementStore)
   const { setListUser, deleteUser } = userManagementStore
   const { t } = useI18n()
@@ -129,6 +129,7 @@
   }
 
   const handlePageChange = (page: number) => {
+    console.log(page)
     setTimeout(() => {
       isLoading.value = false
     }, 200)
@@ -139,7 +140,7 @@
   }
 
   const columns = ref(
-    createColumns({
+    createColumnsUser({
       edit(row: User) {
         router.push({
           name: 'RegisterUser',
@@ -152,12 +153,12 @@
         })
       },
       deleteRow(row: User) {
-        showModalDeleteRow(modal, {
+        showModalInfo(modal, {
           title: t('common.msg_delete'),
           content: t('dashboard.user_management.msg_delete'),
           type: 'error',
-          onDelete: async () => {
-            loadingDelete.value = true
+          onSubmit: async () => {
+            loadingSubmit.value = true
             // Simulate the API call as a Promise
             await new Promise((resolve) => {
               setTimeout(() => {
@@ -169,7 +170,7 @@
               render: renderMessage,
               duration: DEFAULT_DURATION_TOAST
             })
-            loadingDelete.value = false
+            loadingSubmit.value = false
           }
         })
       }
@@ -187,15 +188,15 @@
     return `${start}-${end}&nbsp;&nbsp/&nbsp;&nbsp${totalItems}`
   })
   // Todo: remove when implement api
-  function createData() {
-    return Array.from({ length: 10 }).map((_, index) => ({
-      id: index,
-      name: `david-${index}`,
-      email: `example${index}@email.com`,
-      role: Math.floor(Math.random() * 20) % 2 === 1 ? '管理者' : 'ユーザー',
-      address: `New York name. ${index} Lake Park`
-    })) as User[]
-  }
+  // function createData() {
+  //   return Array.from({ length: 10 }).map((_, index) => ({
+  //     id: index,
+  //     name: `david-${index}`,
+  //     email: `example${index}@email.com`,
+  //     role: Math.floor(Math.random() * 20) % 2 === 1 ? '管理者' : 'ユーザー',
+  //     address: `New York name. ${index} Lake Park`
+  //   })) as User[]
+  // }
 
   watch(
     () => itemCount.value,
@@ -214,6 +215,7 @@
   )
 
   onMounted(() => {
+    dashboardTitle.value = t('dashboard.user_management.user_management_title')
     isLoading.value = true
     setTimeout(() => {
       isLoading.value = false
@@ -233,7 +235,7 @@
   :deep(.n-data-table) {
     .n-data-table__pagination {
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 16px;
     }
     .n-data-table-th__title {
       flex: none !important;

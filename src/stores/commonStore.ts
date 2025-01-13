@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 export const useCommonStore = defineStore('common', () => {
-  const loadingDelete = ref<boolean>(false)
+  const loadingSubmit = ref<boolean>(false)
   const loadingDownload = ref<boolean>(false)
+  const dashboardTitle = ref<string>('ジョブ結果')
   return {
-    loadingDelete,
-    loadingDownload
+    loadingSubmit,
+    loadingDownload,
+    dashboardTitle
   }
 })

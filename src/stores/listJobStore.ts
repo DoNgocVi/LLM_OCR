@@ -1,14 +1,19 @@
+import type { JobType, FormRegisterJobType, FileDetailsList, detailJobType } from '@/types/dashboard'
 import { FormCompanyType, User } from '@/types/dashboard'
 import { cloneDeep, merge, remove } from 'lodash'
 import { defineStore } from 'pinia'
-import type { ListJobType, FormRegisterJobType } from '@/types/dashboard'
 
 export const useJobManagementStore = defineStore('job-management', () => {
-  const listJob = ref<ListJobType[]>([])
-  const loadingDelete = ref<boolean>(false)
-
+  const listJob = ref<JobType[]>([])
+  const loadingSubmit = ref<boolean>(false)
+  const listDetailJob = ref<FileDetailsList>([])
   // action
-  const setListJob = (data: ListJobType[]) => {
+
+  const setListDetailJob = (data: FileDetailsList) => {
+    listDetailJob.value = cloneDeep(data)
+  }
+
+  const setListJob = (data: JobType[]) => {
     listJob.value = cloneDeep(data)
   }
 
@@ -16,23 +21,17 @@ export const useJobManagementStore = defineStore('job-management', () => {
     remove(listJob.value, (job) => id.includes(job.id))
   }
 
-  const createJob = async (data: FormRegisterJobType) => {
-    const newData = {
-      id: listJob.value.length + 1,
-      jobName: data.name || '',
-      status: 'created' as 'created',
-      owner: '江戸川コナン',
-      createDate: '2024/12/05 12:50',
-      updateDate: '2024/12/12 16:50',
-      result: true,
-    }
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        listJob.value = [newData, ...listJob.value]
-        resolve(true)
-      }, 2000)
-    })
+  const createJob = async (data: JobType) => {
+    console.log(data, 'list')
+    listJob.value = [data, ...listJob.value]
   }
+
+  const saveDetailJob = async (id: number, data: detailJobType[]) => {
+    const jobIndex = listDetailJob.value.findIndex((item) => item.id === id);
+    if (jobIndex !== -1) {
+      listDetailJob.value[jobIndex] = { ...listDetailJob.value[jobIndex], data: data };
+    }
+  };
 
   // const editUser = async (data: FormRegisterUserType) => {
   //   const index = listUser.value.findIndex((user) => user.id === Number(data.id))
@@ -50,5 +49,5 @@ export const useJobManagementStore = defineStore('job-management', () => {
   //   })
   // }
 
-  return { listJob, loadingDelete, setListJob, deleteJob, createJob }
+  return { listJob, listDetailJob, loadingSubmit, setListJob, deleteJob, createJob, setListDetailJob, saveDetailJob }
 })

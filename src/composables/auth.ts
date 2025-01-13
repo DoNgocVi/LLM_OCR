@@ -11,7 +11,7 @@ const typeStyles = {
     icon: InfoIcon
   },
   default: {
-    backgroundColor: '#FFFFFF', 
+    backgroundColor: '#FFFFFF',
     icon: null
   },
   loading: {

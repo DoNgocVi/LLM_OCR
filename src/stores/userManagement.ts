@@ -17,7 +17,7 @@ export const useUserManagementStore = defineStore('user-management', () => {
   })
 
   const listUser = ref<User[]>([])
-  const loadingDelete = ref<boolean>(false)
+  const loadingSubmit = ref<boolean>(false)
   // actions
   const setFormData = (data: Record<string, string>) => {
     form.value = merge({}, form.value, data)
@@ -64,5 +64,5 @@ export const useUserManagementStore = defineStore('user-management', () => {
     })
   }
 
-  return { form, listUser, loadingDelete, setFormData, setListUser, deleteUser, createUser, editUser }
+  return { form, listUser, loadingSubmit, setFormData, setListUser, deleteUser, createUser, editUser }
 })

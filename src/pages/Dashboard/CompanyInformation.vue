@@ -80,7 +80,7 @@
   import { useMessage } from 'naive-ui'
   import { useI18n } from 'vue-i18n'
   import { useVuelidate } from '@vuelidate/core'
-  import { required, email, helpers, maxLength, requiredIf } from '@vuelidate/validators'
+  import { email, helpers, maxLength, requiredIf } from '@vuelidate/validators'
   import isEqual from 'lodash/isEqual'
   import { formatPhoneNumber } from '@/composables/common'
   import type { FormCompanyType } from '@/types/dashboard'
