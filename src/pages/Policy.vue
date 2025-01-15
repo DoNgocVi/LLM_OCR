@@ -1,9 +1,9 @@
 <template>
   <div class="bg-main">
     <div class="bg-white h-[80px] border-b-1 border-b-solid border-b-grey_light pos-sticky top-0 left-0">
-      <div class="header mx-a max-w-[1180px] h-full flex items-center justify-between">
+      <div class="header mx-a max-w-[1282px] h-full flex items-center justify-between">
         <div>
-          <MainLogo class="w-[81px] h-[28px]" />
+          <MainLogo class="w-auto h-[40px]" />
         </div>
         <RouterLink to="/auth/login" class="flex items-center gap-2 cursor-pointer">
           <p class="text-dark_medium text-lg font-bold">ログイン</p>
@@ -11,48 +11,66 @@
         </RouterLink>
       </div>
     </div>
-    <div v class="max-w-[1180px] mx-a">
-      <div class="mt-10 bg-white px-5 py-8 rounded-md border-1 border-solid border-grey_light">
-        <div class="policy-page">
-          <h1 class="text-2xl line-height-[36px] font-bold mb-4">{{ policyData.title }}</h1>
-          <p class="text-sm">{{ policyData.mainContent }}</p>
-          <div v-for="section in policyData.sections" :key="section.id">
-            <h2 class="text-lg font-semibold my-6">{{ section.title }}</h2>
-            <p v-if="!!section.content" class="text-sm leading-[21px]">{{ section.content }}</p>
-            <ol type="1">
-              <template v-for="subsection in section.subsections" :key="subsection.id">
-                <li type="decimal" class="text-sm leading-[21px] mx-4">
-                  {{ subsection.content }}
-                  <template v-if="subsection?.children">
-                    <ol type="a">
-                      <li v-for="child of subsection.children" class="text-sm leading-[21px] mx-4">
-                        {{ child.content }}
-                      </li>
-                    </ol>
+    <div class="flex justify-center policy-wrapper">
+      <div class="flex flex-col items-end mx-8 max-w-[1282px]">
+        <div class="mt-10 bg-white px-8 pb-12 rounded-md border-1 border-solid border-grey_light">
+          <div class="policy-page">
+            <div v-for="(policyData, index) in policyDataArray" :key="index" class="mt-12">
+              <h2 class="text-2xl line-height-[36px] font-bold mb-4">{{ policyData.title }}</h2>
+              <p class="text-sm leading-[21px]">{{ policyData.mainContent }}</p>
+              <div v-for="section in policyData.sections" :key="section.id">
+                <h3 class="text-lg font-semibold my-6">{{ section.title }}</h3>
+                <p v-if="!!section.content" class="text-sm leading-[21px] mb-2">{{ section.content }}</p>
+                <ol
+                  type="1"
+                  :class="{
+                    'list-none': index === 1
+                  }"
+                >
+                  <template v-for="subsection in section.subsections" :key="subsection.id">
+                    <li
+                      type="decimal"
+                      :class="[
+                        'text-sm',
+                        'leading-[21px]',
+                        !!section.content ? 'mb-0' : 'mb-2',
+                        index === 1 ? 'mx-0' : !!section.content ? 'mx-8' : 'mx-4'
+                      ]"
+                    >
+                      {{ subsection.content }}
+                      <template v-if="subsection?.children">
+                        <ol type="1">
+                          <li v-for="child of subsection.children" class="text-sm leading-[21px] mx-4">
+                            {{ child.content }}
+                          </li>
+                        </ol>
+                      </template>
+                    </li>
                   </template>
-                </li>
-              </template>
-            </ol>
+                </ol>
+              </div>
+              <p v-if="!!policyData.subContent" class="mt-6 text-sm">{{ policyData.subContent }}</p>
+            </div>
           </div>
         </div>
+        <div class="mt-5 pb-5 flex flex-wrap gap-6">
+          <p class="copyright text-xs"></p>
+          <ul class="list-none flex gap-6 text-grey">
+            <li v-for="item of menuFooterItems">
+              <template v-if="item.link !== '#'">
+                <a
+                  class="font-400 text-blue hover:text-dark_blue transition-all"
+                  :href="item.link || ''"
+                  :target="item.link === '/policy' ? '_self' : '_blank'"
+                  rel="noopener"
+                >
+                  {{ item.text }}
+                </a>
+              </template>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="mx-a max-w-[1180px] mt-5 pb-5 flex items-center justify-end">
-      <p class="copyright text-xs"></p>
-      <ul class="list-none flex gap-6 text-grey ps-6">
-        <li v-for="item of menuFooterItems">
-          <template v-if="item.link !== '#'">
-            <a
-              class="font-400 text-blue hover:text-dark_blue transition-all"
-              :href="item.link || ''"
-              target="_blank"
-              rel="noopener"
-            >
-              {{ item.text }}
-            </a>
-          </template>
-        </li>
-      </ul>
     </div>
   </div>
 </template>
@@ -61,7 +79,7 @@
   import { menuFooterItems } from '@/constants/common'
   import MainLogo from '@assets/images/main-logo.vue'
   import policyDataJson from '@assets/data/policy.json'
-  const policyData = ref(policyDataJson)
+  const policyDataArray = ref(policyDataJson)
 </script>
 <style lang="css" scoped>
   .copyright::after {
@@ -70,5 +88,9 @@
     display: block;
     color: #4a4c56;
     line-height: 24px;
+  }
+  .policy-wrapper {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
   }
 </style>
