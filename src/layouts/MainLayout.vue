@@ -10,7 +10,7 @@
         <div v-if="isShowResetPassword">
           <MyAccount />
         </div>
-        <div v-else class="mt-6">
+        <div v-else class="mt-6 pb-10">
           <router-view />
         </div>
       </div>
