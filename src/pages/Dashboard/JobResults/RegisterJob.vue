@@ -7,8 +7,8 @@
       label-align="left"
       require-mark-placement="right-hanging"
     >
-      <div class="mt-3 bg-white rounded-[20px] px-6 py-6">
-        <div class="w-full flex justify-between mt-6 items-end">
+      <div class="mt-3 bg-white rounded-[20px] px-6 py-8">
+        <div class="w-full flex justify-between items-end">
           <p class="text-base">{{ $t('dashboard.job.register_job') }}</p>
           <div class="max-w-[464px] w-full flex gap-6">
             <CustomButton type="default" content="キャンセル" @click="backToList" />
@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-3 bg-white rounded-[20px] px-6 py-6">
+      <div class="mt-3 bg-white rounded-[20px] px-6 py-8">
         <p class="text-base leading-[24px]">ファイルアップロード</p>
         <div class="mt-4 flex gap-4 items-start flex-wrap">
           <div class="py-8 px-6 bg-[#F5F5F5] rounded-[20px]">
@@ -60,19 +60,22 @@
                 }"
               >
                 <n-upload
-                  class=""
+                  class="custom-upload"
                   directory-dnd
                   :multiple="true"
                   :show-file-list="false"
                   :accept="ALLOWED_FORMATS"
                   :theme-overrides="{
                     draggerBorder: '1px dashed #d1d1d1',
-                    draggerBorderHover: '1px dashed #d1d1d1'
+                    draggerBorderHover: '1px dashed #d1d1d1',
+                    draggerColor: '#F5F5F5'
                   }"
                   @before-upload="validateFile"
                   @change="handleUploadFile"
+                  @dragover="handleDragEnter"
+                  @dragleave="handleDragLeave"
                 >
-                  <n-upload-dragger>
+                  <n-upload-dragger :class="{ dragging: isDragging }">
                     <div class="flex flex-wrap items-center justify-center gap-2">
                       <CustomButton class="max-w-[226px]" type="primary" content="" size="default">
                         <template #icon>
@@ -135,7 +138,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import type { UploadFileInfo } from 'naive-ui'
+  import { useMessage, type UploadFileInfo } from 'naive-ui'
   import { useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
   import { ref, reactive } from 'vue'
@@ -144,12 +147,14 @@
   import { optionDocumentType } from '@/constants/dashboard'
   import type { FormRegisterJobType, JobType, Status } from '@/types/dashboard'
   import DownloadIcon from '@/assets/images/icons/DownloadIcon.vue'
-  import { ALLOWED_FORMATS, MAX_SIZE } from '@/constants/common'
+  import { ALLOWED_FORMATS, DEFAULT_DURATION_TOAST, MAX_SIZE } from '@/constants/common'
   import { remove } from 'lodash'
   import { Close } from '@vicons/ionicons5'
   import { useJobApi } from '@/composables/useJobApi'
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
+  import { renderMessage } from '@/composables/auth'
+  const message = useMessage()
 
   const commonStore = useCommonStore()
   const { dashboardTitle } = storeToRefs(commonStore)
@@ -161,6 +166,15 @@
   }
   const loading = ref(false)
   const isEditUser = ref(false)
+  const isDragging = ref(false)
+
+  const handleDragEnter = () => {
+    isDragging.value = true
+  }
+
+  const handleDragLeave = () => {
+    isDragging.value = false
+  }
 
   const form = reactive<FormRegisterJobType>({
     name: '',
@@ -215,6 +229,10 @@
           result: Math.floor(Math.random() * 1) === 0 && status !== 'loadingError' && status !== 'timeoutError'
         }
         await createJobApi(dataPayload)
+        message.success(t('dashboard.job.message_register_job_success'), {
+          render: renderMessage,
+          duration: DEFAULT_DURATION_TOAST
+        })
         loading.value = false
         backToList()
         return
@@ -277,3 +295,11 @@
     dashboardTitle.value = t('dashboard.job.register_job_title')
   })
 </script>
+<style lang="scss" scoped>
+  :deep(.n-upload-dragger) {
+    padding: 8px 16px;
+  }
+  .custom-upload .n-upload-dragger.dragging {
+    border: 1px dashed #1175ba !important; /* Màu viền khi kéo file vào */
+  }
+</style>

@@ -109,14 +109,15 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token')
-
-  if (isAuthenticated && ['Login', 'ForgotPassword', 'ResetPassword'].includes(String(to.name))) {
+  if (to.path === '/') {
+    next({ name: 'Login' })
+  }
+  if (isAuthenticated && ['Login', 'ForgotPassword', 'ResetPassword',].includes(String(to.name))) {
     next('/dashboard/job-result')
   } else if (to.meta.requiresAuth && !isAuthenticated) {
     next({ name: 'Login' })
-  } else {
-    next()
   }
+  next()
 })
 
 export default router

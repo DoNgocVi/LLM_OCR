@@ -53,6 +53,7 @@
     },
     "job": {
       "title": "フィルター",
+      "table_title": "ジョブ結果一覧",
       "msg_error1": "入力に誤りがあります。",
       "msg_error2": "入力内容をご確認の上、再度入力してください。",
       "btn_download": "結果を一括ダウンロード",
@@ -72,7 +73,8 @@
       "msg_job_result_error01": "エラーが発生したため、ファイルを読み込めませんでした。",
       "msg_job_result_error02": "新規作成より、もう一度行ってください。",
       "msg_delete_job": "このジョブを削除します",
-      "msg_delete_multiple_job": "このジョブを一括削除します"
+      "msg_delete_multiple_job": "ジョブを一括削除します",
+      "message_register_job_success": "ジョブを作成しました"
     },
     "company": {
       "msg_success": "企業情報の変更を保存しました",

@@ -235,7 +235,7 @@
   :deep(.n-data-table) {
     .n-data-table__pagination {
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 16px;
     }
     .n-data-table-th__title {
       flex: none !important;

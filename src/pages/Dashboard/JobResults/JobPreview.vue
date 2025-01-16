@@ -58,48 +58,50 @@
       </div>
     </div>
   </header>
-  <section class="preview-container bg-main flex gap-4 h-full pos-relative">
-    <div class="top-2 left-6 z-10 flex items-center gap-[14px] pos-absolute">
+  <section class="preview-container bg-main flex gap-[24px] h-full pos-relative">
+    <div class="top-6 left-6 z-10 flex items-center gap-[14px] pos-absolute">
       <div
-        class="py-[6px] px-[14px] bg-dark_medium flex flex-col items-center cursor-pointer rounded-[8px]"
+        class="py-[6px] px-[14px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="() => handleScale('scale-up')"
       >
         <n-icon :component="ZoomOutIcon"></n-icon>
         <span class="text-white mt-1 text-[10px]">拡大</span>
       </div>
       <div
-        class="py-[6px] px-[14px] bg-dark_medium flex flex-col items-center cursor-pointer rounded-[8px]"
+        class="py-[6px] px-[14px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="() => handleScale('scale-down')"
       >
         <n-icon :component="ZoomInIcon"></n-icon>
         <span class="text-white mt-1 text-[10px]">縮小</span>
       </div>
       <div
-        class="py-[6px] px-[14px] bg-dark_medium flex flex-col items-center cursor-pointer rounded-[8px]"
+        class="py-[6px] px-[14px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="rotate"
       >
         <n-icon :component="RotateIcon"></n-icon>
         <span class="text-white mt-1 text-[10px]">回転</span>
       </div>
       <div
-        class="py-[6px] px-[8px] bg-dark_medium flex flex-col items-center cursor-pointer rounded-[8px]"
+        class="py-[6px] px-[8px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="fitToScreen"
       >
         <n-icon :component="ScaleFullScreenIcon"></n-icon>
         <span class="text-white mt-1 text-[10px]">最適サイズ</span>
       </div>
     </div>
-    <div ref="pdfContainer" class="pdf-container bg-white pos-relative" :style="{ width: `${minWidthContainer}px` }">
-      <div v-if="isFilePdf" id="wrapper-pdf" class="transform-origin-center w-full">
-        <VuePDF
-          ref="vuePDFRef"
-          :pdf="pdf"
-          :page="page"
-          :scale="scale"
-          :rotation="currentRotation"
-          :fit-parent="isFitParent"
-          @loaded="onLoaded"
-        />
+    <div ref="pdfContainer" class="container flex-1 flex-basis-2/5 overflow-auto pos-relative">
+      <div v-if="isFilePdf" id="wrapper-pdf" ref="wrapper" class="mx-a">
+        <div ref="box" class="box">
+          <VuePDF
+            ref="vuePDFRef"
+            :pdf="pdf"
+            :page="page"
+            :scale="scale"
+            :rotation="currentRotation"
+            :fit-parent="isFitParent"
+            @loaded="onLoaded"
+          />
+        </div>
       </div>
       <div v-else-if="fileSource" class="image-wrapper h-full w-full">
         <div class="playground">
@@ -122,23 +124,13 @@
               <template #canvas>
                 <img :src="fileSource" style="width: 1536px; height: 2048px" />
               </template>
-              <!-- <template #matrix="{ compose }">
-                <svg xmlns="http://www.w3.org/2000/svg" @click="handleClickOnLayer">
-                  <circle
-                    :cx="compose(1536 / 2, 2048 / 2)[0]"
-                    :cy="compose(1536 / 2, 2048 / 2)[1]"
-                    r="5"
-                    style="fill: #f00"
-                  />
-                </svg>
-              </template> -->
             </zoompinch>
           </div>
         </div>
       </div>
-      <div v-if="loadingFile" class="loader pos-absolute bg-"></div>
+      <div v-if="loadingFile" class="loader pos-absolute mt-[200px]"></div>
     </div>
-    <div class="detail-job col-span-3 flex-1 flex flex-col">
+    <div class="detail-job col-span-3 flex flex-col flex-1 flex-basis-3/5">
       <p class="text-[#5B5B5B] text-2xl font-bold leading-[36px]">読み取り項目</p>
       <div class="bg-white p-6 flex-1 mt-3 rounded-[20px] overflow-auto">
         <n-data-table
@@ -197,8 +189,10 @@
   const { pdf, pages } = usePDF(fileSource)
 
   const pdfContainer = ref<HTMLElement>()
+  const wrapper = ref(null)
+  const box = ref(null)
+
   const vuePDFRef = ref()
-  const minWidthContainer = ref<number>(550)
   const scale = ref(1)
   const scaleFit = ref(1)
   const currentRotation = ref(0)
@@ -206,7 +200,7 @@
   const currentFile = ref()
   const listFile = ref<{ label: string; value: number }[]>([])
   const detailJob = ref<detailJobType[]>([])
-  const isFilePdf = ref<boolean>(false)
+  const isFilePdf = ref<boolean>(true)
   const loadingTable = ref<boolean>(false)
   const loadingFile = ref<boolean>(false)
 
@@ -223,24 +217,64 @@
 
   const columns = ref(createColumnsPreviewJob())
 
+  const originalWidth = ref<number>(552)
+  const originalHeight = ref<number>(780)
+
+  const scaler = async (factor: number) => {
+    const newWidth = originalWidth.value * factor
+    const newHeight = originalHeight.value * factor
+
+    const $wrap = wrapper.value as unknown as HTMLElement
+    $wrap.style.width = `${newWidth}px`
+    $wrap.style.height = `${newHeight}px`
+
+    if (factor > 1) {
+      $wrap.style.left = '0'
+      $wrap.style.top = '0'
+      $wrap.style.transform = 'translate(0, 0)'
+      $wrap.style.position = ''
+      await nextTick()
+      setScroll()
+    } else {
+      $wrap.style.left = '50%'
+      $wrap.style.top = '50%'
+      $wrap.style.transform = 'translate(-50%, -50%)'
+      $wrap.style.position = 'absolute'
+    }
+  }
+
+  const setScroll = () => {
+    const $container = pdfContainer.value as unknown as HTMLElement
+    const $wrap = wrapper.value as unknown as HTMLElement
+
+    const horizontal = ($wrap.offsetWidth - $container.offsetWidth) / 2
+    const vertical = ($wrap.offsetHeight - $container.offsetHeight) / 2
+
+    $container.scrollTo({
+      top: vertical,
+      left: horizontal
+    })
+  }
+
   const fitToScreen = () => {
     if (isFilePdf.value) {
       scale.value = scaleFit.value - 0.01
+      if (scale.value !== scaleFit.value) {
+        scale.value = scaleFit.value
+        scaler(scale.value + (1 - scaleFit.value))
+      }
     } else {
       fitImage()
     }
   }
 
   const onLoaded = (value: LoadedEventPayload) => {
-    document.querySelector('.pdf-container')?.classList.add('overflow-auto')
     loadingFile.value = false
     if (currentRotation.value !== 0) return
     scale.value = value.scale
     const isPageLetter = value.height / value.width > 1.4
     if (isPageLetter && pdfContainer.value?.offsetHeight) {
-      minWidthContainer.value = pdfContainer.value?.offsetHeight / 1.414
     } else if (pdfContainer.value?.offsetHeight) {
-      minWidthContainer.value = pdfContainer.value?.offsetHeight / 1.3
     }
     if (isFitParent.value) {
       scaleFit.value = value.scale
@@ -248,7 +282,6 @@
   }
 
   const changeFile = (value: number) => {
-    document.getElementById('wrapper-pdf')?.classList.add('w-full')
     currentRotation.value = 0
     isFitParent.value = true
     page.value = 1
@@ -258,6 +291,9 @@
     data?.type === 'pdf' ? (isFilePdf.value = true) : (isFilePdf.value = false)
     detailJob.value = data?.data as unknown as detailJobType[]
     fileSource.value = data?.url as string
+    setTimeout(() => {
+      calculateWidthWrapper()
+    })
   }
 
   const backToListJob = () => {
@@ -312,11 +348,15 @@
   }
 
   const handleScale = (type: string) => {
-    document.getElementById('wrapper-pdf')?.classList.remove('w-full')
+    const wrapperPdf = document.getElementById('wrapper-pdf')
+    if (wrapperPdf) {
+      wrapperPdf.style.width = ''
+    }
     if (type === 'scale-up') {
       if (isFilePdf.value) {
         isFitParent.value = false
         scale.value = scale.value < 2 ? scale.value + 0.1 : scale.value
+        scaler(scale.value + (1 - scaleFit.value))
       } else {
         transform.value.scale = transform.value.scale + 0.2
       }
@@ -324,6 +364,7 @@
       if (isFilePdf.value) {
         isFitParent.value = false
         scale.value = scale.value > 0.1 ? scale.value - 0.1 : scale.value
+        scaler(scale.value + (1 - scaleFit.value))
       } else {
         transform.value.scale = transform.value.scale - 0.2
       }
@@ -335,6 +376,17 @@
       currentRotation.value = currentRotation.value - 90
     } else {
       transform.value.rotate = transform.value.rotate - 90
+    }
+  }
+
+  const calculateWidthWrapper = () => {
+    const maxWidthPdf = pdfContainer.value ? `${pdfContainer.value.offsetHeight / 1.4 - 40}` : '0'
+    originalWidth.value = +maxWidthPdf
+    originalHeight.value = pdfContainer.value ? pdfContainer.value.offsetHeight : 0
+    const $wrap = wrapper.value as unknown as HTMLElement
+    if ($wrap) {
+      $wrap.style.width = `${maxWidthPdf}px`
+      $wrap.style.height = `${originalHeight.value}px`
     }
   }
 
@@ -364,12 +416,6 @@
 
   watch(fileSource, () => {
     isFitParent.value = true
-
-    setTimeout(() => {
-      if (isFilePdf) {
-        vuePDFRef?.value?.reload()
-      }
-    })
   })
 
   watch(bounds, (newValue) => {
@@ -393,6 +439,7 @@
   )
 
   onMounted(async () => {
+    calculateWidthWrapper()
     setTimeout(() => fitImage())
     await nextTick()
     // TODO: handle call api
@@ -405,16 +452,10 @@
   }
   .preview-container {
     height: calc(100vh - 118px);
-    padding-left: 64px;
     padding-right: 24px;
-    padding-top: 48px;
-    padding-bottom: 24px;
+    padding-top: 24px;
   }
   :deep(.n-data-table) {
-    .n-data-table__pagination {
-      justify-content: center;
-      margin-top: 30px;
-    }
     .n-data-table-th__title {
       flex: none !important;
     }
@@ -470,13 +511,9 @@
         border-bottom-right-radius: 8px;
       }
     }
-    .n-data-table-th.n-data-table-th--last {
-      display: flex;
-      justify-content: center;
-    }
   }
   .detail-job {
-    height: calc(100vh - 192px);
+    height: calc(100vh - 158px);
   }
   .custom-icon:hover {
     color: #ff5e3a;
@@ -503,13 +540,6 @@
   :deep(.n-date-picker .n-input__input-el) {
     height: 36px;
   }
-  .pdf-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 24px;
-  }
   /* HTML: <div class="loader"></div> */
   .loader {
     width: 40px;
@@ -528,5 +558,9 @@
     to {
       transform: rotate(1turn);
     }
+  }
+  :deep(.centered-textarea .n-input__textarea) {
+    // text-align: center;
+    line-height: 1.5;
   }
 </style>

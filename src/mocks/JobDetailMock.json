@@ -3,7 +3,7 @@
     "id": 1,
     "name": "【ご請求書】.pdf_ページ1",
     "type": "pdf",
-    "url": "https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf",
+    "url": "/pdf-sample.pdf",
     "data": [
       {
         "name": "発行日",
@@ -107,7 +107,7 @@
     "id": 2,
     "name": "【ご請求書】.pdf_ページ2",
     "type": "pdf",
-    "url": "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
+    "url": "/pdf_sample1.pdf",
     "data": [
       {
         "name": "発行日",

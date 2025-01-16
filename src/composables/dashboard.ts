@@ -27,7 +27,8 @@ export const createColumnsJob = ({
     {
       title: 'ジョブ名 ',
       key: 'jobName',
-      width: '20%'
+      width: '20%',
+      minWidth: '160px'
     },
     {
       title: 'ステータス ',
@@ -46,7 +47,8 @@ export const createColumnsJob = ({
               fontSize: '14px',
               fontWeight: '700',
               display: 'inline-block',
-              textAlign: 'center'
+              textAlign: 'center',
+              whiteSpace: 'nowrap'
             }
           },
           a.text
@@ -56,20 +58,32 @@ export const createColumnsJob = ({
     {
       title: '作成者',
       key: 'owner',
-      width: '15%'
+      width: '15%',
+      render: (row) => {
+        return h('div', {
+          style: {
+            whiteSpace: 'nowrap'
+          }
+        }, row.owner)
+      }
     },
     {
       title: '作成日時',
       maxWidth: '12%',
       key: 'createDate',
       render: (row) => {
-        return convertTimeStampToString(row.createDate)
+        return h('div', {
+          style: {
+            whiteSpace: 'nowrap'
+          }
+        }, convertTimeStampToString(row.createDate))
       },
       sorter: (a, b) => String(a.createDate).localeCompare(String(b.createDate), 'ja')
     },
     {
       title: '更新日時',
       maxWidth: '12%',
+      minWidth: '110px',
       key: 'updateDate',
       sorter: (a, b) => a.updateDate.localeCompare(b.updateDate, 'ja')
     },
@@ -218,6 +232,7 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
     },
     {
       title: '読み取り結果/編集',
+      align: 'left',
       key: 'value',
       render(row) {
         if (row.type === 'text') {
@@ -258,10 +273,11 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
           return h(NInput, {
             value: row.value,
             type: 'textarea',
+            class: 'centered-textarea',
             size: 'large',
             autosize: {
-              minRows: 3,
-              maxRows: 5
+              minRows: 1,
+              maxRows: 3
             },
             style: 'width: 100%;',
             themeOverrides: {

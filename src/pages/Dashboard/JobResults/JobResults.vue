@@ -26,10 +26,10 @@
               </template>
             </n-input>
           </n-form-item>
-          <n-form-item label="ステータス" :show-feedback="false">
+          <n-form-item label="ステータス" :show-feedback="false" style="--n-label-padding: 0 24px 0 0">
             <CustomSelect v-model:value="formFilter.status" class="w-[180px]" :options="statusOption" />
           </n-form-item>
-          <n-form-item label="作成日時" :show-feedback="false">
+          <n-form-item label="作成日時" :show-feedback="false" style="--n-label-padding: 0 24px 0 0">
             <div class="flex items-center gap-2 min-w-[226px]">
               <div class="flex">
                 <CustomDatePicker
@@ -106,7 +106,7 @@
               </div>
             </div>
           </n-form-item>
-          <n-form-item label="更新日時" :show-feedback="false">
+          <n-form-item label="更新日時" :show-feedback="false" style="--n-label-padding: 0 24px 0 0">
             <div class="flex items-center gap-2 min-w-[226px]">
               <div class="flex">
                 <CustomDatePicker
@@ -193,9 +193,9 @@
         </div>
       </n-form>
     </div>
-    <div class="mt-3 bg-white rounded-[20px] px-6 py-6">
-      <p class="text-black text-base">ョブ結果一覧</p>
-      <div class="flex mt-3 justify-between items-end">
+    <div class="mt-3 bg-white rounded-[20px] px-6 py-6 overflow-auto">
+      <p class="text-black text-base">{{ $t('dashboard.job.table_title') }}</p>
+      <div class="flex gap-3 mt-3 justify-between items-start">
         <div flex gap-3 class="items-center">
           <div class="w-[105px]">
             <CustomSelect
@@ -207,7 +207,7 @@
           </div>
           <div v-html="renderRangePage" class="text-black"></div>
         </div>
-        <div class="flex-1 flex items-center justify-end gap-6">
+        <div class="flex-1 flex flex-wrap items-center justify-end gap-col-6 gap-row-2">
           <CustomButton
             class="max-w-220px"
             type="delete"
@@ -234,7 +234,7 @@
             </template>
             <span>{{ $t('dashboard.job.btn_download') }}</span>
           </CustomButton>
-          <CustomButton class="max-w-220px" type="secondary" @click="$router.push('register-job')">
+          <CustomButton class="max-w-220px self-start" type="secondary" @click="$router.push('register-job')">
             <template #icon>
               <n-icon size="10" class="pr-3">
                 <AddIcon />
@@ -495,7 +495,7 @@
   const deleteMultipleJob = () => {
     showModalInfo(modal, {
       title: t('dashboard.job.msg_delete_multiple_job'),
-      content: t('common.content_msg_delete'),
+      content: t('dashboard.user_management.modal_content_msg_delete'),
       type: 'error',
       onSubmit: async () => {
         // Simulate the API call as a Promise
@@ -584,7 +584,7 @@
   :deep(.n-data-table) {
     .n-data-table__pagination {
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 16px;
     }
     .n-data-table-th__title {
       flex: none !important;
@@ -674,7 +674,7 @@
       align-items: center;
       .n-base-icon {
         position: relative;
-        left: -6px;
+        left: -16px;
       }
     }
   }
@@ -684,6 +684,9 @@
   :deep(.n-time-picker) {
     .n-input__input-el {
       height: 36px;
+    }
+    .n-input-wrapper {
+      width: 93px;
     }
   }
 </style>
