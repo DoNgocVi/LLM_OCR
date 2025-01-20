@@ -65,28 +65,28 @@
         @click="() => handleScale('scale-up')"
       >
         <n-icon :component="ZoomOutIcon"></n-icon>
-        <span class="text-white mt-1 text-[10px]">拡大</span>
+        <span class="prevent-select text-white mt-1 text-[10px]">拡大</span>
       </div>
       <div
         class="py-[6px] px-[14px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="() => handleScale('scale-down')"
       >
         <n-icon :component="ZoomInIcon"></n-icon>
-        <span class="text-white mt-1 text-[10px]">縮小</span>
+        <span class="prevent-select text-white mt-1 text-[10px]">縮小</span>
       </div>
       <div
         class="py-[6px] px-[14px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="rotate"
       >
         <n-icon :component="RotateIcon"></n-icon>
-        <span class="text-white mt-1 text-[10px]">回転</span>
+        <span class="prevent-select text-white mt-1 text-[10px]">回転</span>
       </div>
       <div
         class="py-[6px] px-[8px] bg-dark_medium hover:bg-[#2A2A2A] flex flex-col items-center cursor-pointer rounded-[8px] transition-all"
         @click="fitToScreen"
       >
         <n-icon :component="ScaleFullScreenIcon"></n-icon>
-        <span class="text-white mt-1 text-[10px]">最適サイズ</span>
+        <span class="prevent-select text-white mt-1 text-[10px]">最適サイズ</span>
       </div>
     </div>
     <div ref="pdfContainer" class="container flex-1 flex-basis-2/5 overflow-auto pos-relative">
@@ -128,7 +128,7 @@
           </div>
         </div>
       </div>
-      <div v-if="loadingFile" class="loader pos-absolute mt-[200px]"></div>
+      <!-- <div v-if="loadingFile" class="loader pos-absolute mt-[200px] ml-200px"></div> -->
     </div>
     <div class="detail-job col-span-3 flex flex-col flex-1 flex-basis-3/5">
       <p class="text-[#5B5B5B] text-2xl font-bold leading-[36px]">読み取り項目</p>
@@ -189,8 +189,8 @@
   const { pdf, pages } = usePDF(fileSource)
 
   const pdfContainer = ref<HTMLElement>()
-  const wrapper = ref(null)
-  const box = ref(null)
+  const wrapper = ref<HTMLElement | null>()
+  const box = ref<HTMLElement | null>()
 
   const vuePDFRef = ref()
   const scale = ref(1)
@@ -224,36 +224,38 @@
     const newWidth = originalWidth.value * factor
     const newHeight = originalHeight.value * factor
 
-    const $wrap = wrapper.value as unknown as HTMLElement
-    $wrap.style.width = `${newWidth}px`
-    $wrap.style.height = `${newHeight}px`
+    const $wrap = wrapper.value
+    if ($wrap) {
+      $wrap.style.width = `${newWidth}px`
+      $wrap.style.height = `${newHeight}px`
 
-    if (factor > 1) {
-      $wrap.style.left = '0'
-      $wrap.style.top = '0'
-      $wrap.style.transform = 'translate(0, 0)'
-      $wrap.style.position = ''
-      await nextTick()
-      setScroll()
-    } else {
-      $wrap.style.left = '50%'
-      $wrap.style.top = '50%'
-      $wrap.style.transform = 'translate(-50%, -50%)'
-      $wrap.style.position = 'absolute'
+      if (factor > 1) {
+        $wrap.style.left = '0'
+        $wrap.style.top = '0'
+        $wrap.style.transform = 'translate(0, 0)'
+        $wrap.style.position = ''
+        await nextTick()
+        setScroll()
+      } else {
+        $wrap.style.left = '50%'
+        $wrap.style.top = '50%'
+        $wrap.style.transform = 'translate(-50%, -50%)'
+        $wrap.style.position = 'absolute'
+      }
     }
   }
 
   const setScroll = () => {
-    const $container = pdfContainer.value as unknown as HTMLElement
-    const $wrap = wrapper.value as unknown as HTMLElement
-
-    const horizontal = ($wrap.offsetWidth - $container.offsetWidth) / 2
-    const vertical = ($wrap.offsetHeight - $container.offsetHeight) / 2
-
-    $container.scrollTo({
-      top: vertical,
-      left: horizontal
-    })
+    const $container = pdfContainer.value
+    const $wrap = wrapper.value
+    if ($container && $wrap) {
+      const horizontal = ($wrap.offsetWidth - $container.offsetWidth) / 2
+      const vertical = ($wrap.offsetHeight - $container.offsetHeight) / 2
+      $container.scrollTo({
+        top: vertical,
+        left: horizontal
+      })
+    }
   }
 
   const fitToScreen = () => {
@@ -289,8 +291,8 @@
       return value === item.id
     })
     data?.type === 'pdf' ? (isFilePdf.value = true) : (isFilePdf.value = false)
-    detailJob.value = data?.data as unknown as detailJobType[]
-    fileSource.value = data?.url as string
+    detailJob.value = data?.data || []
+    fileSource.value = data?.url || ''
     setTimeout(() => {
       calculateWidthWrapper()
     })
@@ -347,7 +349,7 @@
     transform.value = { x: 0, y: 0, scale: 1, rotate: 0 }
   }
 
-  const handleScale = (type: string) => {
+  const handleScale = (type: 'scale-up' | 'scale-down') => {
     const wrapperPdf = document.getElementById('wrapper-pdf')
     if (wrapperPdf) {
       wrapperPdf.style.width = ''
@@ -382,11 +384,15 @@
   const calculateWidthWrapper = () => {
     const maxWidthPdf = pdfContainer.value ? `${pdfContainer.value.offsetHeight / 1.4 - 40}` : '0'
     originalWidth.value = +maxWidthPdf
-    originalHeight.value = pdfContainer.value ? pdfContainer.value.offsetHeight : 0
-    const $wrap = wrapper.value as unknown as HTMLElement
+    originalHeight.value = pdfContainer.value ? pdfContainer.value.offsetHeight - 40 * 1.4 : 0
+    const $wrap = wrapper.value
     if ($wrap) {
       $wrap.style.width = `${maxWidthPdf}px`
       $wrap.style.height = `${originalHeight.value}px`
+      $wrap.style.left = '50%'
+      $wrap.style.top = '50%'
+      $wrap.style.transform = 'translate(-50%, calc(-50% - 14px))'
+      $wrap.style.position = 'absolute'
     }
   }
 
@@ -408,8 +414,8 @@
       }
     })
     currentFile.value = listFile.value[0].value
-    detailJob.value = listDetailJob.value[0].data as unknown as detailJobType[]
-    fileSource.value = listDetailJob.value[0].url as string
+    detailJob.value = listDetailJob.value[0].data
+    fileSource.value = listDetailJob.value[0].url
     listDetailJob.value[0].type === 'pdf' ? (isFilePdf.value = true) : (isFilePdf.value = true)
     loadingTable.value = false
   }
@@ -453,7 +459,7 @@
   .preview-container {
     height: calc(100vh - 118px);
     padding-right: 24px;
-    padding-top: 24px;
+    padding-top: 12px;
   }
   :deep(.n-data-table) {
     .n-data-table-th__title {
@@ -563,4 +569,15 @@
     // text-align: center;
     line-height: 1.5;
   }
+  .prevent-select {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  // #wrapper-pdf {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform: translate(-50%, calc(-50% - 14px));
+  // }
 </style>

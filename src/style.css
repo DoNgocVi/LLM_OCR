@@ -87,3 +87,7 @@ p {
 ::-webkit-scrollbar-track {
   background: transparent; /* Nền của vùng cuộn */
 }
+
+::-webkit-scrollbar-corner {
+  background: transparent; /* Làm thanh giao trong suốt */
+}
