@@ -74,18 +74,18 @@
   import { createColumnsUser } from '@/composables/dashboard'
   import { showModalInfo } from '@/composables/common'
   import { useI18n } from 'vue-i18n'
-  import { useUserManagementStore } from '@/stores/userManagement'
+  import { useUserManagementStore } from '@/stores/userManagementStore'
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
   import { renderMessage } from '@/composables/auth'
+  import { useUserApi } from '@/composables/useUserApi'
 
-  // const loadingSubmit = ref<boolean>(false)
   const message = useMessage()
   const userManagementStore = useUserManagementStore()
   const commonStore = useCommonStore()
+  const { getListUser, deleteUserApi } = useUserApi()
   const { loadingSubmit, dashboardTitle } = storeToRefs(commonStore)
   const { listUser } = storeToRefs(userManagementStore)
-  const { setListUser, deleteUser } = userManagementStore
   const { t } = useI18n()
   const router = useRouter()
   const modal = useModal()
@@ -155,17 +155,12 @@
       deleteRow(row: User) {
         showModalInfo(modal, {
           title: t('common.msg_delete'),
-          content: t('dashboard.user_management.msg_delete'),
+          content: t('dashboard.user_management.modal_content_msg_delete'),
           type: 'error',
           onSubmit: async () => {
             loadingSubmit.value = true
             // Simulate the API call as a Promise
-            await new Promise((resolve) => {
-              setTimeout(() => {
-                deleteUser(row.id)
-                resolve(true)
-              }, 2000)
-            })
+            await deleteUserApi(row.id)
             message.success(t('dashboard.user_management.msg_delete_success'), {
               render: renderMessage,
               duration: DEFAULT_DURATION_TOAST
@@ -214,21 +209,19 @@
     }
   )
 
-  onMounted(() => {
+  onMounted(async () => {
     dashboardTitle.value = t('dashboard.user_management.user_management_title')
-    isLoading.value = true
-    setTimeout(() => {
-      isLoading.value = false
-    }, 400)
-    //TODO: call api
-    // Mock data
     if (listUser.value.length) {
       itemCount.value = listUser.value.length
       return
     }
+    isLoading.value = true
+    //TODO: call api
+    await getListUser()
+    isLoading.value = false
     // const data = createData()
     // itemCount.value = data.length
-    setListUser([])
+    // setListUser([])
   })
 </script>
 <style lang="scss" scoped>

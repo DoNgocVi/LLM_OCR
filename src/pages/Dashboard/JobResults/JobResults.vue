@@ -318,7 +318,7 @@
   import CustomDatePicker from '@/components/CustomDatePicker.vue'
   import { pageOptions, statusOption } from '@/constants/dashboard'
   import CustomButton from '@/components/CustomButton.vue'
-  import { useJobManagementStore } from '@/stores/listJobStore'
+  import { useJobManagementStore } from '@/stores/jobManagementStore'
   import { JobType } from '@/types/dashboard'
   import { showModalInfo, showModalDownloadCSV } from '@/composables/common'
   import { useRouter } from 'vue-router'

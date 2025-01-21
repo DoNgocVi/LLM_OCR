@@ -5,8 +5,9 @@ import DocumentIcon from '@/assets/images/icons/DocumentIcon.vue'
 import SettingIcon from '@/assets/images/icons/SettingIcon.vue'
 import { MenuOption, NIcon } from 'naive-ui'
 import { RouterLink } from 'vue-router'
+import type { SelectOptions } from '@/types'
 
-export const timeOptions = [
+export const timeOptions: SelectOptions = [
   {
     label: '7日',
     value: '7day'
@@ -39,7 +40,7 @@ export const timeOptions = [
   }
 ]
 
-export const pageOptions = [
+export const pageOptions: SelectOptions = [
   {
     label: '50件',
     value: '50'
@@ -58,7 +59,7 @@ export const pageOptions = [
   }
 ]
 
-export const roleOption = [
+export const roleOption: SelectOptions = [
   {
     label: '管理者',
     value: 'admin'
@@ -179,7 +180,7 @@ export const menuOptions: MenuOption[] = [
   }
 ]
 
-export const jobStatus = {
+export const jobStatus: Record<string, { text: string, color: string }> = {
   pending: {
     text: '読込中...',
     color: '#858D9D'
@@ -206,19 +207,19 @@ export const jobStatus = {
   }
 }
 
-export const optionsDownload = [
+export const optionsDownload: SelectOptions = [
   { label: 'CSV', value: 'csv' },
   { label: 'JSON', value: 'json' }
 ]
 
-export const optionDocumentType = [
+export const optionDocumentType: SelectOptions = [
   { label: '請求書（Invoice）', value: 'invoice' },
   { label: '包装明細書（Packing List）', value: 'packingList' },
   { label: '貨物到着案内（Arrival Notice）', value: 'arrivalNotice' },
   { label: '船荷証券（Bill of Lading）', value: 'billLading' }
 ]
 
-export const statusOption = [
+export const statusOption: SelectOptions = [
   {
     label: '全て',
     value: 'all'

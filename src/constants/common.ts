@@ -1,4 +1,6 @@
-export const optionsLanguage = [
+import type { SelectOptions } from '@/types'
+
+export const optionsLanguage: SelectOptions = [
   {
     value: 'en',
     label: 'English'
@@ -9,10 +11,7 @@ export const optionsLanguage = [
   }
 ]
 
-export const defaultOptionSelect: {
-  label: string
-  value: string
-}[] = [
+export const defaultOptionSelect: SelectOptions = [
   {
     label: "Everybody's Got Something to Hide Except Me and My Monkey",
     value: 'song0'
@@ -27,32 +26,29 @@ export const menuFooterItems: {
   text: string
   link: string
 }[] = [
-  { text: '利用規約', link: '/policy' },
-  { text: '運用会社', link: 'https://itso.co.jp/company/' },
-  { text: 'お問い合わせ', link: 'https://itso.co.jp/contact/' }
-]
+    { text: '利用規約', link: '/policy' },
+    { text: '運用会社', link: 'https://itso.co.jp/company/' },
+    { text: 'お問い合わせ', link: 'https://itso.co.jp/contact/' }
+  ]
 
 export const accountOption: {
   label: string
   key: string
-  link: string | null
+  link: string
 }[] = [
-  {
-    label: 'パスワード再設定',
-    key: 'my-account',
-    link: '#'
-  },
-  {
-    label: 'ログアウト',
-    key: 'logout',
-    link: '#'
-  }
-]
+    {
+      label: 'パスワード再設定',
+      key: 'my-account',
+      link: '#'
+    },
+    {
+      label: 'ログアウト',
+      key: 'logout',
+      link: '#'
+    }
+  ]
 
-export const dataUsageOption: {
-  label: string
-  value: string
-}[] = [
+export const dataUsageOption: SelectOptions = [
   {
     label: '日',
     value: 'day'
@@ -68,8 +64,6 @@ export const dataUsageOption: {
 ]
 
 export const DEFAULT_DURATION_TOAST: number = 2000
-
 export const DEFAULT_PAGE_SIZE: string = '50'
-
 export const ALLOWED_FORMATS = '.pdf,.jpg,.png,.zip'
 export const MAX_SIZE = 100 * 1024 * 1024 // 100MB

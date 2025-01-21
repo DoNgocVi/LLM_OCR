@@ -49,11 +49,11 @@
       <div class="flex gap-12 items-center">
         <p>
           <span>ジョブ名：</span>
-          <span>{{ jobName }}</span>
+          <span class="pl-2">{{ jobName }}</span>
         </p>
         <p>
-          <span>ジョブ名：</span>
-          <span>{{ documentType }}</span>
+          <span>読み取り文書タイプ：</span>
+          <span class="pl-2">{{ documentType }}</span>
         </p>
       </div>
     </div>
@@ -130,7 +130,7 @@
       </div>
       <!-- <div v-if="loadingFile" class="loader pos-absolute mt-[200px] ml-200px"></div> -->
     </div>
-    <div class="detail-job col-span-3 flex flex-col flex-1 flex-basis-3/5">
+    <div class="detail-job col-span-3 flex flex-col flex-1 flex-basis-3/5 pt3">
       <p class="text-[#5B5B5B] text-2xl font-bold leading-[36px]">読み取り項目</p>
       <div class="bg-white p-6 flex-1 mt-3 rounded-[20px] overflow-auto">
         <n-data-table
@@ -163,7 +163,7 @@
   import { Zoompinch } from 'zoompinch'
   import { VuePDF, usePDF } from '@tato30/vue-pdf'
   import { createColumnsPreviewJob } from '@/composables/dashboard'
-  import { useJobManagementStore } from '@/stores/listJobStore'
+  import { useJobManagementStore } from '@/stores/jobManagementStore'
   import { storeToRefs } from 'pinia'
   import { useRouter } from 'vue-router'
   import { showModalDownloadCSV, showModalInfo } from '@/composables/common'
@@ -171,7 +171,6 @@
   import { useI18n } from 'vue-i18n'
   import { useJobApi } from '@/composables/useJobApi'
   import { ZoomOutIcon, ZoomInIcon, RotateIcon, ScaleFullScreenIcon, CaretIcon } from '@/assets/images/icons'
-  import { getJobDetail } from '@/composables/useJobApi'
   import { useRoute } from 'vue-router'
 
   const modal = useModal()
@@ -180,7 +179,7 @@
   const jobManagementStore = useJobManagementStore()
   const { t } = useI18n()
   const { listDetailJob } = storeToRefs(jobManagementStore)
-  const { saveDetailJobApi, downloadCsvApi } = useJobApi()
+  const { saveDetailJobApi, downloadCsvApi, getJobDetail } = useJobApi()
 
   const page = ref(1)
   const fileSource = ref('')
@@ -193,6 +192,7 @@
   const box = ref<HTMLElement | null>()
 
   const vuePDFRef = ref()
+  const pdfRatio = ref<number>(1.3)
   const scale = ref(1)
   const scaleFit = ref(1)
   const currentRotation = ref(0)
@@ -221,6 +221,7 @@
   const originalHeight = ref<number>(780)
 
   const scaler = async (factor: number) => {
+    console.log(factor)
     const newWidth = originalWidth.value * factor
     const newHeight = originalHeight.value * factor
 
@@ -260,7 +261,6 @@
 
   const fitToScreen = () => {
     if (isFilePdf.value) {
-      scale.value = scaleFit.value - 0.01
       if (scale.value !== scaleFit.value) {
         scale.value = scaleFit.value
         scaler(scale.value + (1 - scaleFit.value))
@@ -281,6 +281,7 @@
     if (isFitParent.value) {
       scaleFit.value = value.scale
     }
+    pdfRatio.value = +(value.height / value.width).toFixed(3)
   }
 
   const changeFile = (value: number) => {
@@ -294,7 +295,7 @@
     detailJob.value = data?.data || []
     fileSource.value = data?.url || ''
     setTimeout(() => {
-      calculateWidthWrapper()
+      calculateWidthWrapper(pdfRatio.value)
     })
   }
 
@@ -381,13 +382,14 @@
     }
   }
 
-  const calculateWidthWrapper = () => {
-    const maxWidthPdf = pdfContainer.value ? `${pdfContainer.value.offsetHeight / 1.4 - 40}` : '0'
-    originalWidth.value = +maxWidthPdf
-    originalHeight.value = pdfContainer.value ? pdfContainer.value.offsetHeight - 40 * 1.4 : 0
+  const calculateWidthWrapper = (ratio: number) => {
+    console.log(ratio)
+    originalWidth.value = pdfContainer.value ? pdfContainer.value.offsetHeight / ratio - 40 : 0
+    console.log(originalWidth.value)
+    originalHeight.value = pdfContainer.value ? pdfContainer.value.offsetHeight - 40 * ratio : 0
     const $wrap = wrapper.value
     if ($wrap) {
-      $wrap.style.width = `${maxWidthPdf}px`
+      $wrap.style.width = `${originalWidth.value}px`
       $wrap.style.height = `${originalHeight.value}px`
       $wrap.style.left = '50%'
       $wrap.style.top = '50%'
@@ -444,8 +446,15 @@
     }
   )
 
+  watch(pdfRatio, async (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+      calculateWidthWrapper(newValue)
+      vuePDFRef.value.reload()
+    }
+  })
+
   onMounted(async () => {
-    calculateWidthWrapper()
+    // calculateWidthWrapper()
     setTimeout(() => fitImage())
     await nextTick()
     // TODO: handle call api
@@ -459,7 +468,6 @@
   .preview-container {
     height: calc(100vh - 118px);
     padding-right: 24px;
-    padding-top: 12px;
   }
   :deep(.n-data-table) {
     .n-data-table-th__title {

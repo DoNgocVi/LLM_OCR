@@ -222,8 +222,9 @@
   import { ref, reactive, onMounted } from 'vue'
   import { email, helpers, requiredIf } from '@vuelidate/validators'
   import { InformationCircleOutline } from '@vicons/ionicons5'
-  import { useUserManagementStore } from '@/stores/userManagement'
+  import { useUserManagementStore } from '@/stores/userManagementStore'
   import { useCommonStore } from '@/stores/commonStore'
+  import { useUserApi } from '@/composables/useUserApi'
   import { useMessage } from 'naive-ui'
   import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import { renderMessage } from '@/composables/auth'
@@ -231,8 +232,10 @@
   import EyeOff from '@/assets/images/icons/EyeOff.vue'
   import { storeToRefs } from 'pinia'
   import { cloneDeep } from 'lodash'
+
   const message = useMessage()
   const userManagementStore = useUserManagementStore()
+  const { createUserApi, editUserApi } = useUserApi()
   const { t } = useI18n()
   const router = useRouter()
   const route = useRoute()
@@ -263,10 +266,10 @@
   })
 
   const initializeForm = () => {
-    form.id = (route.query.id as string) || ''
-    form.name = (route.query.name as string) || ''
-    form.email = (route.query.email as string) || ''
-    form.role = (route.query.role as string) || 'admin'
+    form.id = `${route.query.id}` || ''
+    form.name = `${route.query.name}` || ''
+    form.email = `${route.query.email}` || ''
+    form.role = `${route.query.role}` || 'admin'
     form.password = 'u!xH&j2t2LQX'
   }
 
@@ -292,7 +295,6 @@
         noWhitespaceOnly,
         email: helpers.withMessage(t('validate.invalid_format'), email),
         duplicateMail: helpers.withMessage(t('validate.msg_duplicate_email'), (value: string) => {
-          console.log(initFormEdit.email, 'init', value, 'validate duplicate mail')
           if (initFormEdit.email === value) return true
           const result = listUser.value.some((item) => {
             return item.email === value
@@ -319,20 +321,20 @@
     if (result) {
       loading.value = true
       if (isEditUser.value) {
-        await userManagementStore.editUser(form)
+        await editUserApi(form)
+        loading.value = false
         message.success(t('dashboard.user_management.msg_edit_success'), {
           render: renderMessage,
           duration: DEFAULT_DURATION_TOAST
         })
-        loading.value = false
         backToList()
       } else {
-        await userManagementStore.createUser(form)
+        await createUserApi(form)
+        loading.value = false
         message.success(t('dashboard.user_management.msg_register_success'), {
           render: renderMessage,
           duration: DEFAULT_DURATION_TOAST
         })
-        loading.value = false
         backToList()
       }
     } else {

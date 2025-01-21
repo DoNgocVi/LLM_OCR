@@ -84,7 +84,7 @@
   import isEqual from 'lodash/isEqual'
   import { formatPhoneNumber } from '@/composables/common'
   import type { FormCompanyType } from '@/types/dashboard'
-  import { useUserManagementStore } from '@/stores/userManagement'
+  import { useUserManagementStore } from '@/stores/userManagementStore'
   import { storeToRefs } from 'pinia'
   import mockData from '../../mocks/dataCompany.json'
   import { cloneDeep } from 'lodash'

@@ -1,6 +1,6 @@
 import type { UploadFileInfo } from 'naive-ui'
 export type User = {
-  id: number
+  id: string
   name: string
   email: string
   role: string

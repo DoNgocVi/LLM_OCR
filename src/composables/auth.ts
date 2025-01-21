@@ -1,10 +1,12 @@
-import { MessageRenderMessage, NAlert } from 'naive-ui'
+import { MessageRenderMessage, MessageType, NAlert } from 'naive-ui'
 import InfoIcon from '@/assets/images/icons/InfoIcon.vue'
 import SuccessIcon from '@/assets/images/icons/SuccessIcon.vue'
-const typeStyles = {
+import { Component } from 'vue'
+
+const typeStyles: Record<MessageType, { backgroundColor: string, icon: Component | null }> = {
   success: {
     backgroundColor: '#11A572',
-    icon: SuccessIcon
+    icon: SuccessIcon 
   },
   error: {
     backgroundColor: '#D8392F',
@@ -17,10 +19,17 @@ const typeStyles = {
   loading: {
     backgroundColor: '#FFFFFF',
     icon: null
+  },
+  info:{
+    backgroundColor: '#FFFFFF',
+    icon: null
+  }, warning:{
+    backgroundColor: '#FFFFFF',
+    icon: null
   }
 }
 export const renderMessage: MessageRenderMessage = (props) => {
-  const { type = 'default' } = props as { type: keyof typeof typeStyles }
+  const { type = 'default' } = props
   const style = {
     marginTop: '20px',
     boxShadow: 'var(--n-box-shadow)',
@@ -67,10 +76,10 @@ export const generatePassword = (length = 12) => {
   const allChars = lowerCase + upperCase + numbers + specialChars
 
   if (length < 4) {
-    throw new Error('Password length must be at least 4 to include all required character types.')
+    console.error('Password length must be at least 4 to include all required character types.')
   }
 
-  // Đảm bảo mỗi loại ký tự bắt buộc xuất hiện ít nhất một lần
+  // Make sure each required character type appears at least once
   const passwordArray = [
     lowerCase[Math.floor(Math.random() * lowerCase.length)],
     upperCase[Math.floor(Math.random() * upperCase.length)],
@@ -78,16 +87,16 @@ export const generatePassword = (length = 12) => {
     specialChars[Math.floor(Math.random() * specialChars.length)]
   ]
 
-  // Điền các ký tự còn lại vào mật khẩu
+  // Fill in the remaining characters in the password
   for (let i = 4; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * allChars.length)
     passwordArray.push(allChars[randomIndex])
   }
 
-  // Xáo trộn mật khẩu để các ký tự bắt buộc không nằm ở đầu
+  // Scramble the password so that required characters are not at the beginning
   for (let i = passwordArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
+      ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
   }
 
   return passwordArray.join('')

@@ -20,7 +20,6 @@ export const useJobManagementStore = defineStore('job-management', () => {
   const deleteJob = (id: number[]) => {
     remove(listJob.value, (job) => id.includes(job.id))
   }
-
   const createJob = async (data: JobType) => {
     console.log(data, 'list')
     listJob.value = [data, ...listJob.value]

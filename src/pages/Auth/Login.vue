@@ -133,8 +133,7 @@
     if (result) {
       try {
         // Handle call api
-        const draftToken =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiJuaHMzMTA4IiwiZXhwIjoxNTU4MDYzODM3fQ449KVmOFWcpOUjnYGm'
+        const draftToken = import.meta.env.VITE_TOKEN_KEY
         const loginDate = Date.now()
         localStorage.setItem('loginDate', `${loginDate}`)
         loading.value = true

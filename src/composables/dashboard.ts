@@ -9,7 +9,37 @@ import CustomDatePicker from '@/components/CustomDatePicker.vue'
 import { User } from '@/types/dashboard'
 import PencilIcon from '@/assets/images/icons/PencilIcon.vue'
 import { i18n } from '@/main'
-const t = i18n.global.t
+import { DefineComponent } from 'vue'
+
+const createButton = (action: () => void, icon: DefineComponent<{}, {}, any>) => {
+  console.trace()
+  return h(
+    NButton,
+    {
+      size: 'small',
+      themeOverrides: {
+        color: 'transparent',
+        waveOpacity: '0',
+        border: 'none',
+        borderFocus: 'none',
+        borderHover: 'none',
+        borderPressed: 'none',
+        textColor: '#858D9D',
+        textColorHover: '#56637F',
+        textColorFocus: '#56637F',
+        textColorPressed: '#56637F'
+      },
+      class: 'btn-dropdown',
+      onClick: action
+    },
+    {
+      icon: () =>
+        h(icon, {
+          style: { fontSize: '24px', marginTop: '1px' }
+        })
+    }
+  )
+}
 
 export const createColumnsJob = ({
   download,
@@ -20,6 +50,7 @@ export const createColumnsJob = ({
   deleteRow: (row: JobType) => void
   viewDetail: (row: JobType) => void
 }): DataTableColumns<JobType> => {
+  const t = i18n.global.t
   return [
     {
       type: 'selection'
@@ -78,14 +109,14 @@ export const createColumnsJob = ({
           }
         }, convertTimeStampToString(row.createDate))
       },
-      sorter: (a, b) => String(a.createDate).localeCompare(String(b.createDate), 'ja')
+      sorter: (a, b) => a.createDate - b.createDate
     },
     {
       title: '更新日時',
       maxWidth: '12%',
       minWidth: '110px',
       key: 'updateDate',
-      sorter: (a, b) => a.updateDate.localeCompare(b.updateDate, 'ja')
+      sorter: (a, b) => a.createDate - b.createDate
     },
     {
       title: '結果',
@@ -125,34 +156,9 @@ export const createColumnsJob = ({
       width: 140,
       render(row) {
         if (row.status !== 'loadingError' && row.status !== 'timeoutError') {
-          return h(
-            NButton,
-            {
-              size: 'small',
-              themeOverrides: {
-                color: 'transparent',
-                waveOpacity: '0',
-                border: 'none',
-                borderFocus: 'none',
-                borderHover: 'none',
-                borderPressed: 'none',
-                textColor: '#858D9D',
-                textColorHover: '#56637F',
-                textColorFocus: '#56637F',
-                textColorPressed: '#56637F'
-              },
-              class: 'btn-dropdown',
-              onClick: () => {
-                download(row)
-              }
-            },
-            {
-              icon: () =>
-                h(DownloadIcon, {
-                  style: { fontSize: '24px', marginTop: '1px' }
-                })
-            }
-          )
+          return createButton(() => {
+            download(row)
+          }, DownloadIcon)
         } else {
           return h(
             NTooltip,
@@ -191,32 +197,9 @@ export const createColumnsJob = ({
       align: 'center',
       width: 80,
       render(row) {
-        return h(
-          NButton,
-          {
-            size: 'small',
-            themeOverrides: {
-              color: 'transparent',
-              waveOpacity: '0',
-              border: 'none',
-              borderFocus: 'none',
-              borderHover: 'none',
-              borderPressed: 'none',
-              textColor: '#858D9D',
-              textColorHover: '#56637F',
-              textColorFocus: '#56637F',
-              textColorPressed: '#56637F'
-            },
-            class: 'btn-dropdown',
-            onClick: () => deleteRow(row)
-          },
-          {
-            icon: () =>
-              h(TrashIcon, {
-                style: { fontSize: '24px', marginTop: '1px' }
-              })
-          }
-        )
+        return createButton(() => {
+          deleteRow(row)
+        }, TrashIcon)
       }
     }
   ]
@@ -253,7 +236,6 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
             'onUpdate:value': (newValue) => {
               ; (row.value = newValue, row.isChange = true)
             },
-            // onInput: (value) => updateField({ ...row, value })
           })
         } else if (row.type === 'date') {
           return h(CustomDatePicker, {
@@ -292,7 +274,6 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
             'onUpdate:value': (newValue) => {
               ; (row.value = newValue, row.isChange = true)
             },
-            // onInput: (value) => updateField({ ...row, value })
           })
         }
       }
@@ -328,32 +309,9 @@ export const createColumnsUser = ({
       key: 'edit',
       width: 90,
       render(row) {
-        return h(
-          NButton,
-          {
-            size: 'small',
-            themeOverrides: {
-              color: 'transparent',
-              waveOpacity: '0',
-              border: 'none',
-              borderFocus: 'none',
-              borderHover: 'none',
-              borderPressed: 'none',
-              textColor: '#858D9D',
-              textColorHover: '#56637F',
-              textColorFocus: '#56637F',
-              textColorPressed: '#56637F'
-            },
-            class: 'btn-dropdown',
-            onClick: () => edit(row)
-          },
-          {
-            icon: () =>
-              h(PencilIcon, {
-                style: { fontSize: '24px', marginTop: '1px' }
-              })
-          }
-        )
+        return createButton(() => {
+          edit(row)
+        }, PencilIcon)
       }
     },
     {
@@ -361,32 +319,9 @@ export const createColumnsUser = ({
       key: 'deleteRow',
       width: 90,
       render(row) {
-        return h(
-          NButton,
-          {
-            size: 'small',
-            themeOverrides: {
-              color: 'transparent',
-              waveOpacity: '0',
-              border: 'none',
-              borderFocus: 'none',
-              borderHover: 'none',
-              borderPressed: 'none',
-              textColor: '#858D9D',
-              textColorHover: '#56637F',
-              textColorFocus: '#56637F',
-              textColorPressed: '#56637F'
-            },
-            class: 'btn-dropdown',
-            onClick: () => deleteRow(row)
-          },
-          {
-            icon: () =>
-              h(TrashIcon, {
-                style: { fontSize: '24px', marginTop: '1px' }
-              })
-          }
-        )
+        return createButton(() => {
+          deleteRow(row)
+        }, TrashIcon)
       }
     }
   ]
@@ -400,6 +335,6 @@ export const convertTimeStampToString = (timestamp: number) => {
   const year = time.getFullYear()
   const hours = String(time.getHours()).padStart(2, '0');
   const minutes = String(time.getMinutes()).padStart(2, '0');
-  var formattedTime = `${date}/${month}/${year} ${hours}:${minutes.substr(-2)}`;
+  var formattedTime = `${year}/${month}/${date} ${hours}:${minutes.substr(-2)}`;
   return formattedTime
 }

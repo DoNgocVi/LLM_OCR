@@ -1,4 +1,4 @@
-# arbo-web-scene
+# LLM-OCR
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -29,7 +29,7 @@ yarn dev
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-yarn build build
+yarn build
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
