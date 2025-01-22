@@ -1,10 +1,10 @@
-export { default as ZoomOutIcon } from './ZoomOutIcon.vue';
-export { default as ZoomInIcon } from './ZoomInIcon.vue';
-export { default as RotateIcon } from './RotateIcon.vue';
-export { default as ScaleFullScreenIcon } from './ScaleFullScreenIcon.vue';
-export { default as UploadIcon } from './UploadIcon.vue';
-export { default as CaretIcon } from './CaretIcon.vue';
-export { default as LockIcon } from './LockIcon.vue';
+export { default as ZoomOutIcon } from './ZoomOutIcon.vue'
+export { default as ZoomInIcon } from './ZoomInIcon.vue'
+export { default as RotateIcon } from './RotateIcon.vue'
+export { default as ScaleFullScreenIcon } from './ScaleFullScreenIcon.vue'
+export { default as UploadIcon } from './UploadIcon.vue'
+export { default as CaretIcon } from './CaretIcon.vue'
+export { default as LockIcon } from './LockIcon.vue'
 export { default as TimeIcon } from './TimeIcon.vue'
 export { default as DownloadIcon } from './DownloadIcon.vue'
 export { default as AddIcon } from './AddIcon.vue'

@@ -1,5 +1,5 @@
 <template>
-  <header class="py-[14px] px-12 border-none border-b-1 border-b-solid border-grey_light h-[118px]">
+  <header class="py-[14px] px-12 border-none border-b-1 border-b-solid border-grey_light">
     <div class="flex justify-between">
       <div w-220px>
         <CustomButton type="default" content="ジョブ結果一覧に戻る" @click="backToListJob"></CustomButton>
@@ -19,12 +19,12 @@
         ></CustomButton>
       </div>
     </div>
-    <div class="flex mt-3">
+    <div class="flex gap-row-3 mt-3 flex-wrap">
       <div class="flex gap-12 flex-1">
-        <p class="text-black text-2xl font-bold leading-[36px]">読み取り結果</p>
+        <p class="text-black text-2xl font-bold leading-[36px] whitespace-nowrap">読み取り結果</p>
         <CustomSelect
           v-model:value="currentFile"
-          class="max-w-[250px]"
+          class="max-w-[250px] min-w-[120px]"
           :options="listFile"
           @change="changeFile"
         ></CustomSelect>
@@ -36,7 +36,7 @@
           >
             <n-icon class="color-gray_light hover:color-grey_dark" :component="CaretIcon"></n-icon>
           </button>
-          <span class="text-base">{{ page }} / {{ isFilePdf ? pages : 1 }}ページ</span>
+          <span class="text-base whitespace-nowrap">{{ page }} / {{ isFilePdf ? pages : 1 }}ページ</span>
           <button
             class="pagination-btn cursor-pointer bg-transparent outline-none border-none flex items-center"
             :disabled="page === pages || !isFilePdf"
@@ -49,11 +49,11 @@
       <div class="flex gap-12 items-center">
         <p>
           <span>ジョブ名：</span>
-          <span class="pl-2">{{ jobName }}</span>
+          <span class="pl-2">{{ infoDetailJob.jobName }}</span>
         </p>
         <p>
           <span>読み取り文書タイプ：</span>
-          <span class="pl-2">{{ documentType }}</span>
+          <span class="pl-2">{{ jobType }}</span>
         </p>
       </div>
     </div>
@@ -160,6 +160,7 @@
   import 'zoompinch/style.css'
   import type { detailJobType } from '@/types/dashboard'
   import type { LoadedEventPayload } from '@tato30/vue-pdf/dist/types'
+  import { optionDocumentType } from '@/constants/dashboard'
   import { Zoompinch } from 'zoompinch'
   import { VuePDF, usePDF } from '@tato30/vue-pdf'
   import { createColumnsPreviewJob } from '@/composables/dashboard'
@@ -172,19 +173,18 @@
   import { useJobApi } from '@/composables/useJobApi'
   import { ZoomOutIcon, ZoomInIcon, RotateIcon, ScaleFullScreenIcon, CaretIcon } from '@/assets/images/icons'
   import { useRoute } from 'vue-router'
-
   const modal = useModal()
   const router = useRouter()
   const route = useRoute()
   const jobManagementStore = useJobManagementStore()
   const { t } = useI18n()
-  const { listDetailJob } = storeToRefs(jobManagementStore)
+  const { listDetailJob, infoDetailJob } = storeToRefs(jobManagementStore)
   const { saveDetailJobApi, downloadCsvApi, getJobDetail } = useJobApi()
 
   const page = ref(1)
   const fileSource = ref('')
-  const jobName = ref<string>('')
-  const documentType = ref<string>('')
+  // const jobName = ref<string>('')
+  // const documentType = ref<string>('')
   const { pdf, pages } = usePDF(fileSource)
 
   const pdfContainer = ref<HTMLElement>()
@@ -220,8 +220,12 @@
   const originalWidth = ref<number>(552)
   const originalHeight = ref<number>(780)
 
+  const jobType = computed<string>(() => {
+    const type = infoDetailJob.value.documentType
+    return optionDocumentType.find((option) => option.value === type)?.label || ''
+  })
+
   const scaler = async (factor: number) => {
-    console.log(factor)
     const newWidth = originalWidth.value * factor
     const newHeight = originalHeight.value * factor
 
@@ -383,9 +387,7 @@
   }
 
   const calculateWidthWrapper = (ratio: number) => {
-    console.log(ratio)
     originalWidth.value = pdfContainer.value ? pdfContainer.value.offsetHeight / ratio - 40 : 0
-    console.log(originalWidth.value)
     originalHeight.value = pdfContainer.value ? pdfContainer.value.offsetHeight - 40 * ratio : 0
     const $wrap = wrapper.value
     if ($wrap) {
@@ -405,8 +407,8 @@
     if (!listDetailJob.value.length) {
       const data = await getJobDetail(String(jobId))
       if (data) {
-        jobName.value = data.jobName
-        documentType.value = data.documentType
+        // jobName.value = data.jobName
+        // documentType.value = data.documentType
       }
     }
     listFile.value = listDetailJob.value.map((item) => {

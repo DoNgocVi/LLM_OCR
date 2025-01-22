@@ -26,27 +26,27 @@ export const menuFooterItems: {
   text: string
   link: string
 }[] = [
-    { text: '利用規約', link: '/policy' },
-    { text: '運用会社', link: 'https://itso.co.jp/company/' },
-    { text: 'お問い合わせ', link: 'https://itso.co.jp/contact/' }
-  ]
+  { text: '利用規約', link: '/policy' },
+  { text: '運用会社', link: 'https://itso.co.jp/company/' },
+  { text: 'お問い合わせ', link: 'https://itso.co.jp/contact/' }
+]
 
 export const accountOption: {
   label: string
   key: string
   link: string
 }[] = [
-    {
-      label: 'パスワード再設定',
-      key: 'my-account',
-      link: '#'
-    },
-    {
-      label: 'ログアウト',
-      key: 'logout',
-      link: '#'
-    }
-  ]
+  {
+    label: 'パスワード再設定',
+    key: 'my-account',
+    link: '#'
+  },
+  {
+    label: 'ログアウト',
+    key: 'logout',
+    link: '#'
+  }
+]
 
 export const dataUsageOption: SelectOptions = [
   {

@@ -35,11 +35,10 @@
 </template>
 
 <script setup lang="ts">
-  import { useRouter, useRoute } from 'vue-router'
+  import { useRouter } from 'vue-router'
   import FormResetPassword from '@/components/Auth/FormResetPassword.vue'
 
   const router = useRouter()
-  const route = useRoute()
   const isSuccess = ref(false)
 
   const goBackLogin = () => {
@@ -48,8 +47,5 @@
   const handleResetPassword = () => {
     isSuccess.value = true
   }
-  onMounted(() => {
-    console.log('mounted', route.query.id)
-  })
 </script>
 <style lang="scss" scoped></style>

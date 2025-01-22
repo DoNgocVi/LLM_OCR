@@ -18,6 +18,7 @@
     </div>
     <div class="mt-6">
       <n-form
+        class="responsive-form"
         novalidate
         label-placement="left"
         label-width="210px"
@@ -134,7 +135,7 @@
                     feedbackTextColorError: '#ED584F'
                   }"
                 >
-                  <p class="mr-3 font-bold text-sm w-[246px] text-black">
+                  <p class="mr-3 font-bold text-sm w-[246px] text-black whitespace-nowrap">
                     {{ $t('dashboard.user_management.title_set_new_password') }}
                   </p>
                 </n-form-item>
@@ -273,10 +274,9 @@
     form.password = 'u!xH&j2t2LQX'
   }
 
-  const noWhitespaceOnly = helpers.withMessage(
-    t('validate.invalid_format'),
-    (value: string) => !!value && value.trim().length > 0
-  )
+  const noWhitespaceOnly = (message: string) => {
+    return helpers.withMessage(message, (value: string) => !!value && value.trim().length > 0)
+  }
 
   const rules = computed(() => {
     return {
@@ -285,14 +285,14 @@
           t('validate.require'),
           requiredIf(() => form.name.length === 0)
         ),
-        noWhitespaceOnly
+        noWhitespaceOnly: noWhitespaceOnly(t('validate.invalid_format'))
       },
       email: {
         required: helpers.withMessage(
           t('validate.require'),
           requiredIf(() => form.email.length === 0)
         ),
-        noWhitespaceOnly,
+        noWhitespaceOnly: noWhitespaceOnly(t('validate.invalid_format')),
         email: helpers.withMessage(t('validate.invalid_format'), email),
         duplicateMail: helpers.withMessage(t('validate.msg_duplicate_email'), (value: string) => {
           if (initFormEdit.email === value) return true
@@ -304,12 +304,15 @@
       },
       password: {
         required: helpers.withMessage(
-          t('validate.require'),
+          t('validate.msg_limit_char_password'),
           requiredIf(() => form.password.length === 0)
         ),
-        noWhitespaceOnly,
-        strongPassword: helpers.withMessage(t('validate.strong_password'), (value: string) =>
-          /^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)
+        noWhitespaceOnly: noWhitespaceOnly(t('validate.msg_limit_char_password')),
+        limitPassword: helpers.withMessage(t('validate.msg_limit_char_password'), (value: string) =>
+          /^.{6,64}$/.test(value)
+        ),
+        strongPassword: helpers.withMessage(t('validate.msg_format_password'), (value: string) =>
+          /^(?=.*[A-Za-z])(?=.*\d)/.test(value)
         )
       }
     }

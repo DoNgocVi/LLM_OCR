@@ -37,7 +37,7 @@ export type FileDetailsList = FileDetail[]
 
 export type FormRegisterJobType = {
   name: string
-  documentType: string,
+  documentType: string
   files: Array<UploadFileInfo>
 }
 
@@ -51,34 +51,35 @@ export type detailJobType = {
 }
 
 export type FormFilterJob = {
-  keyword: string;
-  status: string;
+  keyword: string
+  status: string
   startDate: {
-    date: number | null;
-    time: number | null | undefined;
-  };
+    date: number | null
+    time: number | null | undefined
+  }
   endDate: {
-    date: number | null;
-    time: number | null | undefined;
-  };
+    date: number | null
+    time: number | null | undefined
+  }
   startDate2: {
-    date: number | null;
-    time: number | null | undefined;
-  };
+    date: number | null
+    time: number | null | undefined
+  }
   endDate2: {
-    date: number | null;
-    time: number | null | undefined;
-  };
-};
+    date: number | null
+    time: number | null | undefined
+  }
+}
 
-export type Status = 'created' | 'updated' | 'readingCompleted' | 'loadingError' | 'timeoutError';
+export type Status = 'created' | 'updated' | 'readingCompleted' | 'loadingError' | 'timeoutError'
 
 export type JobType = {
-  id: number;
-  jobName: string;
-  status: Status;
-  owner: string;
-  createDate: number;
-  updateDate: string;
-  result: boolean;
+  id: number
+  jobName: string
+  status: Status
+  owner: string
+  createDate: number
+  updateDate: number | null
+  result: boolean
+  documentType?: string
 }

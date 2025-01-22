@@ -13,7 +13,7 @@ const { loadingSubmit, loadingDownload } = storeToRefs(commonStore)
 export const useJobApi = () => {
   const getJobDetail = async (id: string) => {
     try {
-      return new Promise<{ jobName: string, documentType: string }>((resolve) => {
+      return new Promise<{ jobName: string; documentType: string }>((resolve) => {
         setTimeout(() => {
           setListDetailJob(cloneDeep(JobDetailMock) as FileDetailsList)
           resolve({
@@ -39,8 +39,7 @@ export const useJobApi = () => {
       })
     } catch (error) {
       console.log(error)
-    }
-    finally {
+    } finally {
       loadingSubmit.value = false
     }
   }
@@ -91,18 +90,17 @@ export const useJobApi = () => {
         }, 600)
       })
       const csvString = csvContent.map((row) => row.join(',')).join('\n')
-      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
+      const blob = new Blob([csvString], { type: `text/${typeDownload};charset=utf-8;` })
       const link = document.createElement('a')
       const url = URL.createObjectURL(blob)
       link.href = url
-      link.setAttribute('download', 'data.csv')
+      link.setAttribute('download', `data.${typeDownload}`)
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
-
     } catch (error) {
-      console.error('Error during CSV download:', error);
+      console.error('Error during CSV download:', error)
     } finally {
       loadingDownload.value = false
     }

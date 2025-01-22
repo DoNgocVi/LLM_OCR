@@ -34,7 +34,10 @@
     "toast_reset_password": "入力に誤りがあります。もう一度入力してください。",
     "max_length_255": "最大255文字です",
     "msg_duplicate_email": "このメールアドレスはすでに使用されています",
-    "msg_required_file": "ファイルをアップロードしてください"
+    "msg_required_file": "ファイルをアップロードしてください",
+    "msg_require_one_digit": "少なくても１桁の数字を含める必要です",
+    "msg_limit_char_password": "6文字以上64文字以下で入力してください",
+    "msg_format_password": "半角英字と数字を組み合わせて入力してください"
   },
   "placeholder": {
     "enter_email": "メールアドレスを入力",

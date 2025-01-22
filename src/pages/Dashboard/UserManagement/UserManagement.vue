@@ -10,7 +10,7 @@
           @update:value="onUpdatePageSize"
         />
       </div>
-      <div v-html="renderRangePage" class="text-black"></div>
+      <div class="text-black" v-html="renderRangePage"></div>
     </div>
     <CustomButton class="max-w-220px" type="secondary" :loading="loading" @click="handleRegisterUser">
       <template #icon>

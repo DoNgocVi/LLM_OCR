@@ -17,8 +17,8 @@ export type SettingModalType = {
   content?: string
   title: string
   type: 'error' | 'default' | 'secondary'
-  width?: string,
-  textSubmit?: string,
+  width?: string
+  textSubmit?: string
   onSubmit?: () => void
   onDownload?: (typeDownload: string) => void
 }
@@ -45,11 +45,9 @@ export const showModalInfo = (modal: ReturnType<typeof useModal>, setting: Setti
     },
     content: () => {
       if (setting.content) {
-        return h(
-          'div',
-          { class: 'flex items-center justify-center gap-2 mt-2' },
-          [h('div', { class: 'text-sm text-[#5B5B5B]' }, setting.content)]
-        )
+        return h('div', { class: 'flex items-center justify-center gap-2 mt-2' }, [
+          h('div', { class: 'text-sm text-[#5B5B5B]' }, setting.content)
+        ])
       } else {
         return null
       }

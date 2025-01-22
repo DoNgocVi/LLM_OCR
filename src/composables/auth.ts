@@ -3,10 +3,10 @@ import InfoIcon from '@/assets/images/icons/InfoIcon.vue'
 import SuccessIcon from '@/assets/images/icons/SuccessIcon.vue'
 import { Component } from 'vue'
 
-const typeStyles: Record<MessageType, { backgroundColor: string, icon: Component | null }> = {
+const typeStyles: Record<MessageType, { backgroundColor: string; icon: Component | null }> = {
   success: {
     backgroundColor: '#11A572',
-    icon: SuccessIcon 
+    icon: SuccessIcon
   },
   error: {
     backgroundColor: '#D8392F',
@@ -20,10 +20,11 @@ const typeStyles: Record<MessageType, { backgroundColor: string, icon: Component
     backgroundColor: '#FFFFFF',
     icon: null
   },
-  info:{
+  info: {
     backgroundColor: '#FFFFFF',
     icon: null
-  }, warning:{
+  },
+  warning: {
     backgroundColor: '#FFFFFF',
     icon: null
   }
@@ -96,7 +97,7 @@ export const generatePassword = (length = 12) => {
   // Scramble the password so that required characters are not at the beginning
   for (let i = passwordArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-      ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
+    ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
   }
 
   return passwordArray.join('')

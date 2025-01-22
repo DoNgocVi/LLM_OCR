@@ -16,11 +16,10 @@ export const useUserManagementStore = defineStore('user-management', () => {
   })
 
   const listUser = ref<User[]>([])
-  
+
   // actions
   const setFormData = (data: Record<string, string>) => {
     form.value = merge({}, form.value, data)
-    console.log(form, 'form')
   }
 
   const setListUser = (data: User[]) => {

@@ -121,7 +121,6 @@
               color: '#5B5B5B',
               borderRadius: '8px'
             }"
-            @update:show="handleUpdateShow"
           >
             <template #trigger>
               <p :class="`text-primary cursor-pointer inline-block`" @click="copyPassword">
@@ -189,7 +188,6 @@
   })
 
   const handleCloseModal = () => {
-    console.log('function close modal')
     autoSetPassword.value = false
     showPassword.value === false
     //delete password
@@ -201,9 +199,6 @@
       }
       emit('update:show', false)
     })
-  }
-  const handleUpdateShow = (show: boolean) => {
-    console.log(show, 'show')
   }
   const setPassword = async () => {
     await emit('onRegisterPassword')

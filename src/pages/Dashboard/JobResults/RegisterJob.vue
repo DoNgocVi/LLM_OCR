@@ -222,10 +222,11 @@
         const dataPayload: JobType = {
           id: Date.now(),
           jobName: form.name,
+          documentType: form.documentType,
           status: status,
           owner: '江戸川コナン',
           createDate: Date.now(),
-          updateDate: '',
+          updateDate: null,
           result: Math.floor(Math.random() * 1) === 0 && status !== 'loadingError' && status !== 'timeoutError'
         }
         await createJobApi(dataPayload)

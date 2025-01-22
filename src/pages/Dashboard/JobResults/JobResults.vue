@@ -11,7 +11,7 @@
         <div class="flex gap-col-8 gap-row-3 mt-2 flex-wrap">
           <n-form-item class="max-w-[280px] w-full">
             <n-input
-              v-model:value="formFilter.keyword"
+              v-model:value="formFilterJob.keyword"
               placeholder="キーワード検索"
               class="w-full"
               :theme-overrides="{
@@ -27,18 +27,18 @@
             </n-input>
           </n-form-item>
           <n-form-item label="ステータス" :show-feedback="false" style="--n-label-padding: 0 24px 0 0">
-            <CustomSelect v-model:value="formFilter.status" class="w-[180px]" :options="statusOption" />
+            <CustomSelect v-model:value="formFilterJob.status" class="w-[180px]" :options="statusOption" />
           </n-form-item>
           <n-form-item label="作成日時" :show-feedback="false" style="--n-label-padding: 0 24px 0 0">
             <div class="flex items-center gap-2 min-w-[226px]">
               <div class="flex">
                 <CustomDatePicker
-                  v-model:timestamp="formFilter.startDate.date"
+                  v-model:timestamp="formFilterJob.startDate.date"
                   class="max-w-[150px]"
                   :disable-after="startDateDisable"
                 />
                 <n-time-picker
-                  v-model:value="formFilter.startDate.time"
+                  v-model:value="formFilterJob.startDate.time"
                   class="custom-time-picker"
                   format="HH:mm"
                   placeholder="時間"
@@ -70,12 +70,12 @@
               <p>〜</p>
               <div class="flex">
                 <CustomDatePicker
-                  v-model:timestamp="formFilter.endDate.date"
+                  v-model:timestamp="formFilterJob.endDate.date"
                   class="max-w-[150px]"
                   :disable-before="endDateDisable"
                 />
                 <n-time-picker
-                  v-model:value="formFilter.endDate.time"
+                  v-model:value="formFilterJob.endDate.time"
                   class="custom-time-picker"
                   format="HH:mm"
                   placeholder="時間"
@@ -110,12 +110,12 @@
             <div class="flex items-center gap-2 min-w-[226px]">
               <div class="flex">
                 <CustomDatePicker
-                  v-model:timestamp="formFilter.startDate2.date"
+                  v-model:timestamp="formFilterJob.startDate2.date"
                   class="max-w-[150px]"
                   :disable-after="startDateDisable2"
                 />
                 <n-time-picker
-                  v-model:value="formFilter.startDate2.time"
+                  v-model:value="formFilterJob.startDate2.time"
                   class="custom-time-picker"
                   placeholder="時間"
                   format="HH:mm"
@@ -147,12 +147,12 @@
               <p>〜</p>
               <div class="flex">
                 <CustomDatePicker
-                  v-model:timestamp="formFilter.endDate2.date"
+                  v-model:timestamp="formFilterJob.endDate2.date"
                   class="max-w-[150px]"
                   :disable-before="endDateDisable2"
                 />
                 <n-time-picker
-                  v-model:value="formFilter.endDate2.time"
+                  v-model:value="formFilterJob.endDate2.time"
                   class="custom-time-picker"
                   placeholder="時間"
                   format="HH:mm"
@@ -205,7 +205,7 @@
               @update:value="onUpdatePageSize"
             />
           </div>
-          <div v-html="renderRangePage" class="text-black"></div>
+          <div class="text-black" v-html="renderRangePage"></div>
         </div>
         <div class="flex-1 flex flex-wrap items-center justify-end gap-col-6 gap-row-2">
           <CustomButton
@@ -310,7 +310,7 @@
 </template>
 
 <script setup lang="ts">
-  import { c, DataTableRowKey, PaginationInfo, useMessage, useModal } from 'naive-ui'
+  import { DataTableRowKey, PaginationInfo, useMessage, useModal } from 'naive-ui'
   import { useCommonStore } from '@/stores/commonStore'
   import { storeToRefs } from 'pinia'
   import { Search } from '@vicons/ionicons5'
@@ -338,7 +338,7 @@
   const { deleteJobApi, downloadCsvApi } = useJobApi()
   const { setListJob } = jobManagementStore
   const { dashboardTitle } = storeToRefs(commonStore)
-  const { listJob } = storeToRefs(jobManagementStore)
+  const { listJob, formFilterJob, infoDetailJob } = storeToRefs(jobManagementStore)
   const pageSize = ref<string>(DEFAULT_PAGE_SIZE)
   const currentPage = ref<number>(1)
   const isLoading = ref<boolean>(false)
@@ -373,7 +373,7 @@
       time: null
     }
   }
-  const formFilter = reactive<FormFilterJob>(cloneDeep(formFilterInit))
+  // const formFilterJob = reactive<FormFilterJob>(cloneDeep(formFilterInit))
 
   const pagination = ref({
     pageSize: +pageSize.value,
@@ -430,6 +430,8 @@
         })
       },
       viewDetail(row: JobType) {
+        infoDetailJob.value.jobName = row.jobName
+        infoDetailJob.value.documentType = row.documentType || ''
         router.push({
           name: 'Preview',
           query: {
@@ -511,7 +513,7 @@
 
   const clearConditions = () => {
     const clonedFormFilterInit = cloneDeep(formFilterInit)
-    Object.assign(formFilter, clonedFormFilterInit)
+    Object.assign(formFilterJob.value, clonedFormFilterInit)
   }
 
   // function createData() {
@@ -528,7 +530,12 @@
   // }
 
   watch(
-    [formFilter.startDate, formFilter.endDate, formFilter.startDate2, formFilter.endDate2],
+    [
+      formFilterJob.value.startDate,
+      formFilterJob.value.endDate,
+      formFilterJob.value.startDate2,
+      formFilterJob.value.endDate2
+    ],
     ([newEndDate, newStartDate, newEndDate2, newStartDate2]) => {
       endDateDisable.value = newEndDate.date
       startDateDisable.value = newStartDate.date

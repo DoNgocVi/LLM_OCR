@@ -54,7 +54,7 @@
 <script setup lang="ts">
   import { useMessage } from 'naive-ui'
   import { useVuelidate } from '@vuelidate/core'
-  import { required, helpers, sameAs } from '@vuelidate/validators'
+  import { required, helpers, sameAs, requiredIf } from '@vuelidate/validators'
   import { renderMessage } from '@/composables/auth'
   import { useI18n } from 'vue-i18n'
   import { DEFAULT_DURATION_TOAST } from '@/constants/common'
@@ -87,9 +87,19 @@
   const rules = computed(() => {
     return {
       password: {
-        required: helpers.withMessage(t('validate.require'), required),
-        strongPassword: helpers.withMessage(t('validate.strong_password'), (value: string) =>
-          /^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)
+        required: helpers.withMessage(
+          t('validate.msg_limit_char_password'),
+          requiredIf(() => form.password.length === 0)
+        ),
+        noWhitespaceOnly: helpers.withMessage(
+          t('validate.invalid_format'),
+          (value: string) => !!value && value.trim().length > 0
+        ),
+        limitPassword: helpers.withMessage(t('validate.msg_limit_char_password'), (value: string) =>
+          /^.{6,64}$/.test(value)
+        ),
+        strongPassword: helpers.withMessage(t('validate.msg_format_password'), (value: string) =>
+          /^(?=.*[A-Za-z])(?=.*\d)$/.test(value)
         )
       },
       confirmPassword: {

@@ -180,7 +180,7 @@ export const menuOptions: MenuOption[] = [
   }
 ]
 
-export const jobStatus: Record<string, { text: string, color: string }> = {
+export const jobStatus: Record<string, { text: string; color: string }> = {
   pending: {
     text: '読込中...',
     color: '#858D9D'
@@ -244,4 +244,4 @@ export const statusOption: SelectOptions = [
     label: 'タイムアウト',
     value: 'timeout'
   }
-];
+]

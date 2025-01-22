@@ -112,7 +112,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/') {
     next({ name: 'Login' })
   }
-  if (isAuthenticated && ['Login', 'ForgotPassword', 'ResetPassword',].includes(String(to.name))) {
+  if (isAuthenticated && ['Login', 'ForgotPassword', 'ResetPassword'].includes(String(to.name))) {
     next('/dashboard/job-result')
   } else if (to.meta.requiresAuth && !isAuthenticated) {
     next({ name: 'Login' })

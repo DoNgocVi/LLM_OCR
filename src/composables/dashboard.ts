@@ -91,11 +91,15 @@ export const createColumnsJob = ({
       key: 'owner',
       width: '15%',
       render: (row) => {
-        return h('div', {
-          style: {
-            whiteSpace: 'nowrap'
-          }
-        }, row.owner)
+        return h(
+          'div',
+          {
+            style: {
+              whiteSpace: 'nowrap'
+            }
+          },
+          row.owner
+        )
       }
     },
     {
@@ -103,11 +107,15 @@ export const createColumnsJob = ({
       maxWidth: '12%',
       key: 'createDate',
       render: (row) => {
-        return h('div', {
-          style: {
-            whiteSpace: 'nowrap'
-          }
-        }, convertTimeStampToString(row.createDate))
+        return h(
+          'div',
+          {
+            style: {
+              whiteSpace: 'nowrap'
+            }
+          },
+          convertTimeStampToString(row.createDate)
+        )
       },
       sorter: (a, b) => a.createDate - b.createDate
     },
@@ -116,7 +124,22 @@ export const createColumnsJob = ({
       maxWidth: '12%',
       minWidth: '110px',
       key: 'updateDate',
-      sorter: (a, b) => a.createDate - b.createDate
+      render: (row) => {
+        return h(
+          'div',
+          {
+            style: {
+              whiteSpace: 'nowrap'
+            }
+          },
+          convertTimeStampToString(row.updateDate)
+        )
+      },
+      sorter: (a, b) => {
+        const dateA = a.updateDate || 0
+        const dateB = b.updateDate || 0
+        return dateA - dateB
+      }
     },
     {
       title: '結果',
@@ -184,7 +207,7 @@ export const createColumnsJob = ({
                 ),
               default: () => [
                 h('div', {}, t('dashboard.job.msg_job_result_error01')),
-                h('div', {}, t('dashboard.job.msg_job_result_error02')),
+                h('div', {}, t('dashboard.job.msg_job_result_error02'))
               ]
             }
           )
@@ -234,8 +257,8 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
               color: row.isChange ? '#EAF8FF' : '#FFF'
             },
             'onUpdate:value': (newValue) => {
-              ; (row.value = newValue, row.isChange = true)
-            },
+              ;(row.value = newValue), (row.isChange = true)
+            }
           })
         } else if (row.type === 'date') {
           return h(CustomDatePicker, {
@@ -248,8 +271,8 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
               }
             },
             'onUpdate:value': (newValue: string) => {
-              ; (row.value = newValue, row.isChange = true)
-            },
+              ;(row.value = newValue), (row.isChange = true)
+            }
           })
         } else if (row.type === 'text-area') {
           return h(NInput, {
@@ -272,8 +295,8 @@ export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
               color: row.isChange ? '#EAF8FF' : '#FFF'
             },
             'onUpdate:value': (newValue) => {
-              ; (row.value = newValue, row.isChange = true)
-            },
+              ;(row.value = newValue), (row.isChange = true)
+            }
           })
         }
       }
@@ -327,14 +350,14 @@ export const createColumnsUser = ({
   ]
 }
 
-
-export const convertTimeStampToString = (timestamp: number) => {
-  var time = new Date(timestamp);
-  const date = String(time.getDate()).padStart(2, '0');
-  const month = String(time.getMonth() + 1).padStart(2, '0');
+export const convertTimeStampToString = (timestamp: number | null) => {
+  if (!timestamp) return ''
+  var time = new Date(timestamp)
+  const date = String(time.getDate()).padStart(2, '0')
+  const month = String(time.getMonth() + 1).padStart(2, '0')
   const year = time.getFullYear()
-  const hours = String(time.getHours()).padStart(2, '0');
-  const minutes = String(time.getMinutes()).padStart(2, '0');
-  var formattedTime = `${year}/${month}/${date} ${hours}:${minutes.substr(-2)}`;
+  const hours = String(time.getHours()).padStart(2, '0')
+  const minutes = String(time.getMinutes()).padStart(2, '0')
+  var formattedTime = `${year}/${month}/${date} ${hours}:${minutes.substr(-2)}`
   return formattedTime
 }

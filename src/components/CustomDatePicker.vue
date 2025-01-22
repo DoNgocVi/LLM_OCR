@@ -91,7 +91,6 @@
 
   const timestamp = ref<number | null>(props.timestamp)
   const selectDate = (value: number) => {
-    console.log(value)
     emit('update:timestamp', value)
   }
 
