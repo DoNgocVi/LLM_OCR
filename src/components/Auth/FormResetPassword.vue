@@ -22,6 +22,9 @@
           <n-icon :size="24" :component="EyeOff" />
         </template>
       </n-input>
+      <template #feedback>
+        <div class="leading-[24px]" v-html="errors.password"></div>
+      </template>
     </n-form-item>
     <n-form-item
       :validation-status="validationStatus('confirmPassword')"
@@ -92,14 +95,14 @@
           requiredIf(() => form.password.length === 0)
         ),
         noWhitespaceOnly: helpers.withMessage(
-          t('validate.invalid_format'),
+          t('validate.msg_limit_char_password1'),
           (value: string) => !!value && value.trim().length > 0
         ),
-        limitPassword: helpers.withMessage(t('validate.msg_limit_char_password'), (value: string) =>
+        limitCharPassword: helpers.withMessage(t('validate.msg_limit_char_password1'), (value: string) =>
           /^.{6,64}$/.test(value)
         ),
         strongPassword: helpers.withMessage(t('validate.msg_format_password'), (value: string) =>
-          /^(?=.*[A-Za-z])(?=.*\d)$/.test(value)
+          /^(?=.*[A-Za-z])(?=.*\d)/.test(value)
         )
       },
       confirmPassword: {

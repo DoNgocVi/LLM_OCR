@@ -243,13 +243,15 @@
     tooltip: {
       trigger: 'item',
       position: function (pt, params, dom, rect, size) {
+        const chartWidth = size.viewSize[0]
+        const tooltipWidth = size.contentSize[0]
         const chartHeight = size.viewSize[1] - spaceHeightTooltip.value
-        const barHeight = rect?.height
-        const positionX = rect?.x
-        if (barHeight && positionX) {
-          return [positionX, chartHeight - barHeight]
+        const barHeight = rect?.height ?? 0
+        let positionX = rect?.x ?? 0
+        if (positionX + tooltipWidth > chartWidth) {
+          positionX = chartWidth - tooltipWidth - 10
         }
-        return [pt[0], pt[1]]
+        return [positionX, chartHeight - barHeight]
       }
     },
     series: series
@@ -295,7 +297,6 @@
         const dataZoom2 = option.value.dataZoom[1]
         dataZoom.end = end || 10
         dataZoom2.end = end || 10
-
         if (end === 100) {
           isChartScroll.value = false
           //@ts-ignore
@@ -350,13 +351,13 @@
       tooltip: {
         formatter: () => {
           return `
-             <div class="flex items-center gap-2 font-sans">
-               <div class="w-[12px] h-[12px] rounded-full bg-gradient-to-t from-[#22CAAD] to-[#2BB2FE]"></div>
-               <p>利用枚数</p>
-               <span>:</span>
-               <strong>${value}</strong><br/>
-             </div>
-           `
+               <div class="flex items-center gap-2 font-sans">
+                 <div class="w-[12px] h-[12px] rounded-full bg-gradient-to-t from-[#22CAAD] to-[#2BB2FE]"></div>
+                 <p>利用枚数</p>
+                 <span>:</span>
+                 <strong>${value}</strong><br/>
+               </div>
+             `
         },
         backgroundColor: '#5b5b5b',
         borderColor: '#5b5b5b',

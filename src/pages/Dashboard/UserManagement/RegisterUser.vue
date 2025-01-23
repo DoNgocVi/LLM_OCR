@@ -179,7 +179,10 @@
                       }"
                     >
                       <template #trigger>
-                        <p class="text-primary cursor-pointer inline-block mr-6" @click="copyPassword">
+                        <p
+                          class="text-primary hover:text-dark_blue cursor-pointer inline-block mr-6"
+                          @click="copyPassword"
+                        >
                           {{ $t('dashboard.user_management.copy_password') }}
                         </p>
                       </template>
@@ -307,8 +310,8 @@
           t('validate.msg_limit_char_password'),
           requiredIf(() => form.password.length === 0)
         ),
-        noWhitespaceOnly: noWhitespaceOnly(t('validate.msg_limit_char_password')),
-        limitPassword: helpers.withMessage(t('validate.msg_limit_char_password'), (value: string) =>
+        noWhitespaceOnly: noWhitespaceOnly(t('validate.msg_limit_char_password1')),
+        limitCharPassword: helpers.withMessage(t('validate.msg_limit_char_password1'), (value: string) =>
           /^.{6,64}$/.test(value)
         ),
         strongPassword: helpers.withMessage(t('validate.msg_format_password'), (value: string) =>

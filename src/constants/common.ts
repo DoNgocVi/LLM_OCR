@@ -65,5 +65,9 @@ export const dataUsageOption: SelectOptions = [
 
 export const DEFAULT_DURATION_TOAST: number = 2000
 export const DEFAULT_PAGE_SIZE: string = '50'
-export const ALLOWED_FORMATS = '.pdf,.jpg,.png,.zip'
+export const ALLOWED_FORMATS = '.pdf,.zip'
 export const MAX_SIZE = 100 * 1024 * 1024 // 100MB
+export const LOWER_CASE = 'abcdefghijklmnopqrstuvwxyz'
+export const UPPER_CASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+export const SPECIAL_CHARS = '!@#$%^&*()_+[]{}|;:,.<>?'
+export const DIGIT = '0123456789'

@@ -103,7 +103,7 @@
           />
         </div>
       </div>
-      <div v-else-if="fileSource" class="image-wrapper h-full w-full">
+      <!-- <div v-else-if="fileSource" class="image-wrapper h-full w-full">
         <div class="playground">
           <div class="projection-wrapper">
             <zoompinch
@@ -127,7 +127,7 @@
             </zoompinch>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- <div v-if="loadingFile" class="loader pos-absolute mt-[200px] ml-200px"></div> -->
     </div>
     <div class="detail-job col-span-3 flex flex-col flex-1 flex-basis-3/5 pt3">
@@ -158,7 +158,7 @@
 <script lang="ts" setup>
   import '@tato30/vue-pdf/style.css'
   import 'zoompinch/style.css'
-  import type { detailJobType } from '@/types/dashboard'
+  import type { DetailJobType } from '@/types/dashboard'
   import type { LoadedEventPayload } from '@tato30/vue-pdf/dist/types'
   import { optionDocumentType } from '@/constants/dashboard'
   import { Zoompinch } from 'zoompinch'
@@ -199,20 +199,20 @@
   const isFitParent = ref(true)
   const currentFile = ref()
   const listFile = ref<{ label: string; value: number }[]>([])
-  const detailJob = ref<detailJobType[]>([])
+  const detailJob = ref<DetailJobType[]>([])
   const isFilePdf = ref<boolean>(true)
   const loadingTable = ref<boolean>(false)
   const loadingFile = ref<boolean>(false)
 
-  const mouseEvents = ref(true)
-  const touchEvents = ref(true)
-  const wheelEvents = ref(true)
-  const gestureEvents = ref(true)
+  // const mouseEvents = ref(true)
+  // const touchEvents = ref(true)
+  // const wheelEvents = ref(true)
+  // const gestureEvents = ref(true)
   const rotation = ref(true)
   const bounds = ref(false)
   const zoompinchRef = ref<InstanceType<typeof Zoompinch>>()
 
-  const offset = reactive({ top: 10, right: 10, bottom: 10, left: 10 })
+  // const offset = reactive({ top: 10, right: 10, bottom: 10, left: 10 })
   const transform = ref({ x: 0, y: 0, scale: 1, rotate: 0 })
 
   const columns = ref(createColumnsPreviewJob())

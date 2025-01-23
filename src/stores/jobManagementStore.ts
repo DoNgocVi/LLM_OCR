@@ -1,4 +1,4 @@
-import type { JobType, FileDetailsList, detailJobType, FormFilterJob } from '@/types/dashboard'
+import type { JobType, FileDetailsList, DetailJobType, FormFilterJob } from '@/types/dashboard'
 import { cloneDeep, remove } from 'lodash'
 import { defineStore } from 'pinia'
 
@@ -51,7 +51,7 @@ export const useJobManagementStore = defineStore('job-management', () => {
     listJob.value = [data, ...listJob.value]
   }
 
-  const saveDetailJob = async (id: number, data: detailJobType[]) => {
+  const saveDetailJob = async (id: number, data: DetailJobType[]) => {
     const jobIndex = listDetailJob.value.findIndex((item) => item.id === id)
     if (jobIndex !== -1) {
       listDetailJob.value[jobIndex] = { ...listDetailJob.value[jobIndex], data: data }

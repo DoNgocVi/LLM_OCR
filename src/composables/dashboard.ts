@@ -1,6 +1,6 @@
 import DownloadIcon from '@/assets/images/icons/DownloadIcon.vue'
 import TrashIcon from '@/assets/images/icons/TrashIcon.vue'
-import type { JobType, detailJobType } from '@/types/dashboard'
+import type { JobType, DetailJobType } from '@/types/dashboard'
 import { DataTableColumns, NButton, NIcon, NInput, NSwitch, NTooltip } from 'naive-ui'
 import { jobStatus } from '@/constants/dashboard'
 import CustomButton from '@/components/CustomButton.vue'
@@ -228,7 +228,7 @@ export const createColumnsJob = ({
   ]
 }
 
-export const createColumnsPreviewJob = (): DataTableColumns<detailJobType> => {
+export const createColumnsPreviewJob = (): DataTableColumns<DetailJobType> => {
   return [
     {
       title: '項目名 ',

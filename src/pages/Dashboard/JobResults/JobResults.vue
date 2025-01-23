@@ -335,7 +335,7 @@
   const modal = useModal()
   const jobManagementStore = useJobManagementStore()
   const commonStore = useCommonStore()
-  const { deleteJobApi, downloadCsvApi } = useJobApi()
+  const { deleteJobApi, downloadCsvApi, getListJobApi } = useJobApi()
   const { setListJob } = jobManagementStore
   const { dashboardTitle } = storeToRefs(commonStore)
   const { listJob, formFilterJob, infoDetailJob } = storeToRefs(jobManagementStore)
@@ -516,19 +516,6 @@
     Object.assign(formFilterJob.value, clonedFormFilterInit)
   }
 
-  // function createData() {
-  //   const statuses = ['created', 'updated', 'readingCompleted', 'loadingError', 'timeoutError']
-  //   return Array.from({ length: 20 }).map((_, index) => ({
-  //     id: index,
-  //     jobName: `Job-${index}`,
-  //     status: statuses[Math.floor(Math.random() * statuses.length)],
-  //     owner: '江戸川コナン',
-  //     createDate: '',
-  //     updateDate: '',
-  //     result: Math.floor(Math.random() * 10) === 0
-  //   }))
-  // }
-
   watch(
     [
       formFilterJob.value.startDate,
@@ -571,7 +558,7 @@
     }
   )
 
-  onMounted(() => {
+  onMounted(async () => {
     dashboardTitle.value = t('dashboard.job.list_job_title')
     isLoading.value = true
     setTimeout(() => {
@@ -584,7 +571,7 @@
     }
     // const data = createData()
     // itemCount.value = data.length
-    setListJob([])
+    await getListJobApi()
   })
 </script>
 <style lang="scss" scoped>

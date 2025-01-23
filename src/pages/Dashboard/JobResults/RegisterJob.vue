@@ -49,54 +49,52 @@
       <div class="mt-3 bg-white rounded-[20px] px-6 py-8">
         <p class="text-base leading-[24px]">ファイルアップロード</p>
         <div class="mt-4 flex gap-4 items-start flex-wrap">
-          <div class="py-8 px-6 bg-[#F5F5F5] rounded-[20px]">
-            <div class="flex items-center gap-2 rounded-[4px] whitespace-nowrap">
-              <n-form-item
-                :validation-status="validationStatus('files')"
-                :feedback="errors.files"
-                :show-feedback="!!errors.files"
-                :theme-overrides="{
-                  feedbackTextColorError: '#ED584F'
-                }"
-              >
-                <n-upload
-                  class="custom-upload"
-                  directory-dnd
-                  :multiple="true"
-                  :show-file-list="false"
-                  :accept="ALLOWED_FORMATS"
-                  :theme-overrides="{
-                    draggerBorder: '1px dashed #d1d1d1',
-                    draggerBorderHover: '1px dashed #d1d1d1',
-                    draggerColor: '#F5F5F5'
-                  }"
-                  @before-upload="validateFile"
-                  @change="handleUploadFile"
-                  @dragover="handleDragEnter"
-                  @dragleave="handleDragLeave"
-                >
-                  <n-upload-dragger :class="{ dragging: isDragging }">
-                    <div class="flex flex-wrap items-center justify-center gap-2">
-                      <CustomButton class="max-w-[226px]" type="primary" content="" size="default">
-                        <template #icon>
-                          <n-icon size="14" class="pr-3">
-                            <DownloadIcon />
-                          </n-icon>
-                        </template>
-                        ファイルをアップロード
-                      </CustomButton>
-                      <n-text style="font-size: 16px">またはここにファイルをドロップ</n-text>
-                    </div>
-                  </n-upload-dragger>
-                </n-upload>
-              </n-form-item>
+          <div>
+            <div class="py-8 px-6 bg-[#F5F5F5] rounded-[20px]">
+              <div class="flex items-center gap-2 rounded-[4px] whitespace-nowrap">
+                <n-form-item :validation-status="validationStatus('files')" :show-feedback="false">
+                  <n-upload
+                    class="custom-upload"
+                    directory-dnd
+                    :multiple="true"
+                    :show-file-list="false"
+                    :accept="ALLOWED_FORMATS"
+                    :theme-overrides="{
+                      draggerBorder: '1px dashed #d1d1d1',
+                      draggerBorderHover: '1px dashed #d1d1d1',
+                      draggerColor: '#F5F5F5'
+                    }"
+                    @before-upload="validateFile"
+                    @change="handleUploadFile"
+                    @dragover="handleDragEnter"
+                    @dragleave="handleDragLeave"
+                  >
+                    <n-upload-dragger :class="{ dragging: isDragging }">
+                      <div class="flex flex-wrap items-center justify-center gap-2">
+                        <CustomButton class="max-w-[226px]" type="primary" content="" size="default">
+                          <template #icon>
+                            <n-icon size="14" class="pr-3">
+                              <DownloadIcon />
+                            </n-icon>
+                          </template>
+                          ファイルをアップロード
+                        </CustomButton>
+                        <n-text style="font-size: 16px">またはここにファイルをドロップ</n-text>
+                      </div>
+                    </n-upload-dragger>
+                  </n-upload>
+                </n-form-item>
+              </div>
+              <div class="text-center mt-4">
+                <dl class="inline-block text-left">
+                  <dd>形式：pdf、最大サイズ：10MB</dd>
+                  <dd>上記形式のZIPファイルも利用可能です。</dd>
+                  <dd>ZIPファイルの最大サイズは100MBです。</dd>
+                </dl>
+              </div>
             </div>
-            <div class="text-center mt-4">
-              <dl class="inline-block">
-                <dd>形式：pdf /jpg /png、最大サイズ：10MB</dd>
-                <dd>上記形式のZIPファイルも利用可能です。</dd>
-                <dd>ZIPファイルの最大サイズは100MBです。</dd>
-              </dl>
+            <div v-if="errors.files" class="bg-[#FEECEE] py-3 px-6 mt-8 rounded-[4px] color-red">
+              <p v-html="errors.files"></p>
             </div>
           </div>
           <div
@@ -202,12 +200,16 @@
       required: helpers.withMessage(
         t('validate.msg_required_file'),
         requiredIf(() => form.files.length === 0)
-      )
+      ),
+      invalidFiles: helpers.withMessage(t('validate.msg_duplicate_file'), () => {
+        return hasValidFile.value
+      })
     }
   }))
 
   const v$ = useVuelidate(rules, form)
   const validateForm = async () => {
+    hasValidFile.value = true
     const result = await v$.value.$validate()
     if (result) {
       loading.value = true
@@ -255,23 +257,37 @@
   const backToList = () => {
     router.push('list-job')
   }
-
+  const hasValidFile = ref<boolean>(true)
   const validateFile = ({ file }: { file: UploadFileInfo }) => {
+    const isDuplicate = form.files.findIndex((item) => {
+      return item.file?.size === file.file?.size && item.file?.name === file.file?.name
+    })
+    if (isDuplicate !== -1) {
+      hasValidFile.value = false
+      errors.files = t('validate.msg_duplicate_file')
+      setTimeout(() => {
+        if (!hasValidFile.value) {
+          message.error(t('dashboard.job.msg_upload_file_fail'), {
+            render: renderMessage,
+            duration: DEFAULT_DURATION_TOAST
+          })
+        }
+      }, 50)
+      return false
+    }
     const isZip = file.name.endsWith('.zip')
     const maxAllowedSize = isZip ? MAX_SIZE : 10 * 1024 * 1024 // 10MB for non-zip files
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'application/zip']
+    const allowedTypes = ['application/pdf', 'application/zip']
 
     if (!file.file || !allowedTypes.includes(file.file.type)) {
       // window.$message.error('Định dạng không được hỗ trợ. Chỉ hỗ trợ: pdf, jpg, png, zip.')
       return false
     }
-
     if (file.file.size > maxAllowedSize) {
       // const sizeLimit = isZip ? '100MB' : '10MB'
       // window.$message.error(`Tệp vượt quá kích thước tối đa (${sizeLimit}).`)
       return false
     }
-
     return true
   }
 
@@ -287,11 +303,10 @@
 
   const handleUploadFile = ({ file }: { file: UploadFileInfo }) => {
     form.files = [...form.files, file]
+    hasValidFile.value = true
+    errors.files = ''
   }
 
-  watch(errors, () => {
-    console.log('errors', errors)
-  })
   onMounted(() => {
     dashboardTitle.value = t('dashboard.job.register_job_title')
   })

@@ -61,7 +61,6 @@
                     type="password"
                     class="rounded-lg h-[36px] flex items-center text-black max-w-[680px] w-full"
                     :validation-status="props.error ? 'error' : ''"
-                    :feedback="props.error"
                     :show-feedback="props.error"
                     :theme-overrides="{
                       borderError: '1px solid #ED584F'
@@ -77,6 +76,9 @@
                       <n-icon :size="24" :component="EyeOff" />
                     </template>
                   </n-input>
+                  <template #feedback>
+                    <div class="leading-[24px]" v-html="props.error"></div>
+                  </template>
                 </n-form-item>
               </n-form>
             </div>
@@ -123,7 +125,7 @@
             }"
           >
             <template #trigger>
-              <p :class="`text-primary cursor-pointer inline-block`" @click="copyPassword">
+              <p :class="`text-primary hover:text-dark_blue cursor-pointer inline-block`" @click="copyPassword">
                 {{ $t('dashboard.user_management.copy_password') }}
               </p>
             </template>

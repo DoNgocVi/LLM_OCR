@@ -30,7 +30,7 @@ type FileDetail = {
   name: string
   type: 'pdf'
   url: string
-  data: detailJobType[]
+  data: DetailJobType[]
 }
 
 export type FileDetailsList = FileDetail[]
@@ -41,7 +41,7 @@ export type FormRegisterJobType = {
   files: Array<UploadFileInfo>
 }
 
-export type detailJobType = {
+export type DetailJobType = {
   name: string
   key: string
   type: 'date' | 'text' | 'text-area'

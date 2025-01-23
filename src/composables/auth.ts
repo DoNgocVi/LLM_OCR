@@ -2,6 +2,7 @@ import { MessageRenderMessage, MessageType, NAlert } from 'naive-ui'
 import InfoIcon from '@/assets/images/icons/InfoIcon.vue'
 import SuccessIcon from '@/assets/images/icons/SuccessIcon.vue'
 import { Component } from 'vue'
+import { DIGIT, LOWER_CASE, SPECIAL_CHARS, UPPER_CASE } from '@/constants/common'
 
 const typeStyles: Record<MessageType, { backgroundColor: string; icon: Component | null }> = {
   success: {
@@ -70,22 +71,16 @@ export const renderMessage: MessageRenderMessage = (props) => {
 }
 
 export const generatePassword = (length = 12) => {
-  const lowerCase = 'abcdefghijklmnopqrstuvwxyz'
-  const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  const numbers = '0123456789'
-  const specialChars = '!@#$%^&*()_+[]{}|;:,.<>?'
-  const allChars = lowerCase + upperCase + numbers + specialChars
-
+  const allChars = LOWER_CASE + UPPER_CASE + DIGIT + SPECIAL_CHARS
   if (length < 4) {
     console.error('Password length must be at least 4 to include all required character types.')
   }
-
   // Make sure each required character type appears at least once
   const passwordArray = [
-    lowerCase[Math.floor(Math.random() * lowerCase.length)],
-    upperCase[Math.floor(Math.random() * upperCase.length)],
-    numbers[Math.floor(Math.random() * numbers.length)],
-    specialChars[Math.floor(Math.random() * specialChars.length)]
+    LOWER_CASE[Math.floor(Math.random() * LOWER_CASE.length)],
+    UPPER_CASE[Math.floor(Math.random() * UPPER_CASE.length)],
+    DIGIT[Math.floor(Math.random() * DIGIT.length)],
+    SPECIAL_CHARS[Math.floor(Math.random() * SPECIAL_CHARS.length)]
   ]
 
   // Fill in the remaining characters in the password
@@ -97,7 +92,7 @@ export const generatePassword = (length = 12) => {
   // Scramble the password so that required characters are not at the beginning
   for (let i = passwordArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
+      ;[passwordArray[i], passwordArray[j]] = [passwordArray[j], passwordArray[i]]
   }
 
   return passwordArray.join('')

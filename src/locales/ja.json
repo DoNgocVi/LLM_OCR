@@ -37,7 +37,9 @@
     "msg_required_file": "ファイルをアップロードしてください",
     "msg_require_one_digit": "少なくても１桁の数字を含める必要です",
     "msg_limit_char_password": "6文字以上64文字以下で入力してください",
-    "msg_format_password": "半角英字と数字を組み合わせて入力してください"
+    "msg_format_password": "半角英字と数字を組み合わせて入力してください",
+    "msg_limit_char_password1": "6文字以上64文字以下で入力してください <br/> 半角英字と数字を組み合わせて入力してください",
+    "msg_duplicate_file": "同じ名前のファイルがすでにアップロードされています。<br/> 別のファイル名に変更してください。"
   },
   "placeholder": {
     "enter_email": "メールアドレスを入力",
@@ -71,6 +73,7 @@
       "msg_confirm_back": "編集した内容は保存されません。本当に移動しますか？",
       "title_save_job": "変更内容を保存しますか？",
       "msg_delete_success": "ジョブを削除しました",
+      "msg_upload_file_fail": "ファイルのアップロードに失敗しました",
       "register_job_title": "ジョブ結果-新規作成",
       "list_job_title": "ジョブ結果",
       "msg_job_result_error01": "エラーが発生したため、ファイルを読み込めませんでした。",

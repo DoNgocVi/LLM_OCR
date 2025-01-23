@@ -209,9 +209,9 @@
   },
   {
     "id": 3,
-    "name": "demo.png",
-    "type": "image",
-    "url": "/demo.png",
+    "name": "pdf_sample2.pdf",
+    "type": "pdf",
+    "url": "/pdf_sample2.pdf",
     "data": [
       {
         "name": "発行日",

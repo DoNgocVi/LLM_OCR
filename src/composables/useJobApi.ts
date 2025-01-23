@@ -1,13 +1,13 @@
 import { useJobManagementStore } from '@/stores/jobManagementStore'
 import { useCommonStore } from '@/stores/commonStore'
-import { detailJobType, FileDetailsList, JobType } from '@/types/dashboard'
+import { DetailJobType, FileDetailsList, JobType } from '@/types/dashboard'
 import { storeToRefs } from 'pinia'
 import { cloneDeep } from 'lodash'
 import JobDetailMock from '../mocks/JobDetailMock.json'
 
 const commonStore = useCommonStore()
 const jobManagementStore = useJobManagementStore()
-const { saveDetailJob, createJob, deleteJob, setListDetailJob } = jobManagementStore
+const { setListJob, saveDetailJob, createJob, deleteJob, setListDetailJob } = jobManagementStore
 const { loadingSubmit, loadingDownload } = storeToRefs(commonStore)
 
 export const useJobApi = () => {
@@ -27,10 +27,23 @@ export const useJobApi = () => {
     }
   }
 
-  const saveDetailJobApi = async ({ id, data }: { id: number; data: detailJobType[] }) => {
+  const getListJobApi = async () => {
+    try {
+      return new Promise<DetailJobType[]>((resolve) => {
+        setTimeout(() => {
+          setListJob([])
+          resolve([])
+        }, 400)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const saveDetailJobApi = async ({ id, data }: { id: number; data: DetailJobType[] }) => {
     try {
       loadingSubmit.value = true
-      await new Promise<{ id: number; data: detailJobType[] }>((resolve) => {
+      await new Promise<{ id: number; data: DetailJobType[] }>((resolve) => {
         setTimeout(() => {
           resolve({ id, data })
         }, 600)
@@ -106,6 +119,7 @@ export const useJobApi = () => {
     }
   }
   return {
+    getListJobApi,
     getJobDetail,
     saveDetailJobApi,
     downloadCsvApi,

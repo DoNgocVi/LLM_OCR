@@ -60,8 +60,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-  // import { renderMessage } from '@/composables/auth'
-  // import { DEFAULT_DURATION_TOAST } from '@/constants/common'
   import type { User } from '@/types/dashboard'
   import AddIcon from '@/assets/images/icons/AddIcon.vue'
   import { useMessage } from 'naive-ui'
@@ -182,16 +180,6 @@
     const end = Math.min(currentPage.value * size, totalItems)
     return `${start}-${end}&nbsp;&nbsp/&nbsp;&nbsp${totalItems}`
   })
-  // Todo: remove when implement api
-  // function createData() {
-  //   return Array.from({ length: 10 }).map((_, index) => ({
-  //     id: index,
-  //     name: `david-${index}`,
-  //     email: `example${index}@email.com`,
-  //     role: Math.floor(Math.random() * 20) % 2 === 1 ? '管理者' : 'ユーザー',
-  //     address: `New York name. ${index} Lake Park`
-  //   })) as User[]
-  // }
 
   watch(
     () => itemCount.value,
@@ -219,9 +207,6 @@
     //TODO: call api
     await getListUser()
     isLoading.value = false
-    // const data = createData()
-    // itemCount.value = data.length
-    // setListUser([])
   })
 </script>
 <style lang="scss" scoped>
